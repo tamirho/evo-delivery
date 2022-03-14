@@ -1,86 +1,103 @@
 import pygad
+import numpy as nn
+import math
+from operator import itemgetter
 
 # Distance between each pair of cities
-w0 = [999, 1, 999, 999]
-w1 = [999, 999, 1, 999]
-w2 = [999, 999, 999, 1]
-w3 = [1, 999, 999, 999]
+w0 = [999, 50, 50, 50, 50, 999]
+w1 = [50, 999, 50, 999, 999, 999]
+w2 = [50, 999, 999, 999, 999, 999]
+w3 = [50, 999, 999, 999, 999, 1]
+w4 = [50, 999, 999, 999, 999, 999]
+w5 = [999, 999, 999, 999, 1, 999]
 
-distances = {0: w0, 1: w1, 2: w2, 3: w3}
+distances = {0: w0, 1: w1, 2: w2, 3: w3, 4: w4, 5: w5}
 
+drivers = [0, 1]
+
+counter = 0
 # ----------------------------------------------------------------
 
 
 def calculate_length(route):
     length = 0
     for previous, current in zip(route, route[1:]):
-        length += distances[previous][current]
+        length += distances[previous[0]][current[0]]
+    length += distances[0][route[0][0]] + distances[route[len(route) - 1][0]][0]
     return length
 
 
-def fitness_func(solution, solution_idx):
-    print("sol:")
-    print(solution)
-    pen = (max(ga_instance.lengths) - calculate_length(solution)) / max(ga_instance.lengths)
-    return pen * 100
+def group_by_driver(route):
+    values = set(map(lambda x: x[1], route))
+    return [[y for y in route if y[1] == x] for x in values]
 
 
-fitness_function = fitness_func
+def chromosome2routes(chromosome):
+    """
+    convert chromosome to better representation of routes
+    :param chromosome: optional solution to be converted to route
+    :return: list of the route for each driver where each order represented as (orderIdx, driverIdx, randomKey)
+    """
+    indexed = [(i + 1, math.floor(r), r - math.floor(r)) for i, r in enumerate(chromosome)]
+    s_list = sorted(indexed, key=itemgetter(2))
+    return group_by_driver(s_list)
+
+
+def fitness_func(chromosome, solution_idx):
+    penalty = 0
+    overweight = 0
+    drivers_routes = chromosome2routes(chromosome)
+    print(f"solution {drivers_routes}")
+    sum_of = 0
+    for route in drivers_routes:
+        route_len = calculate_length(route)
+        print(f"route_len {route_len}")
+        sum_of += route_len
+
+    print(f"sumof {sum_of}")
+    return 1 / (sum_of + 0.0000001) * 100 - penalty * 100 + overweight
 
 
 def on_start(ga_instance):
     print("on_start()")
-    lengths = []
-    for sol in ga_instance.population:
-        lengths.append(calculate_length(sol))
-
-    ga_instance.lengths = lengths
-    print(ga_instance.population)
-    print(ga_instance.lengths)
 
 
 def on_generation(ga_instance):
     print("on_generation()")
-    lengths = []
-    for sol in ga_instance.population:
-        lengths.append(calculate_length(sol))
-
-    ga_instance.lengths = lengths
-    print(ga_instance.population)
-    print(ga_instance.lengths)
 
 
 def on_stop(ga_instance, last_population_fitness):
     print("on_stop()")
 
 
-ga_instance = pygad.GA(num_generations=10,
-                       num_parents_mating=3,
-                       initial_population=[[3, 1, 0, 2], [0, 2, 1, 3], [2, 0, 1, 3], [2, 0, 3, 1]],
+
+if __name__ == "__main__":
+    fitness_function = fitness_func
+
+    ga_instance = pygad.GA(num_generations=100,
+                       num_parents_mating=4,
                        fitness_func=fitness_function,
                        allow_duplicate_genes=False,
-                       gene_space=range(0, len(distances)),
-                       sol_per_pop=4,
-                       gene_type=int,
-                       num_genes=len(distances),
+                       gene_space=nn.arange(0, len(drivers), 0.01),
+                       num_genes=len(distances) - 1,
+                       sol_per_pop=10,
+                       gene_type=float,
                        on_start=on_start,
                        on_generation=on_generation,
-                       mutation_num_genes=2,
-                       mutation_type='random',
+                       mutation_num_genes=4,
+                       crossover_type='two_points'
                        )
 
-ga_instance.run()
-ga_instance.plot_fitness()
-print(ga_instance.best_solution())
+    ga_instance.run()
 
-# def on_fitness(ga_instance, population_fitness):
-#     print("on_fitness()")
-#
-# def on_parents(ga_instance, selected_parents):
-#     print("on_parents()")
-#
-# def on_crossover(ga_instance, offspring_crossover):
-#     print("on_crossover()")
-#
-# def on_mutation(ga_instance, offspring_mutation):
-#     print("on_mutation()")
+    ga_instance.plot_fitness()
+    solution, solution_fitness, solution_idx = ga_instance.best_solution(ga_instance.last_generation_fitness)
+    print(f"Parameters of the best solution : {solution}")
+    print(f"Fitness value of the best solution = {solution_fitness}")
+    print(f"Index of the best solution : {solution_idx}")
+
+    if ga_instance.best_solution_generation != -1:
+        print("Best fitness value reached after {best_solution_generation} generations.".format(best_solution_generation=ga_instance.best_solution_generation))
+
+
+
