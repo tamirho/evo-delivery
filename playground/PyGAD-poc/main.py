@@ -69,9 +69,12 @@ def on_generation(ga_instance):
 def on_stop(ga_instance, last_population_fitness):
     print("on_stop()")
 
-fitness_function = fitness_func
 
-ga_instance = pygad.GA(num_generations=50,
+
+if __name__ == "__main__":
+    fitness_function = fitness_func
+
+    ga_instance = pygad.GA(num_generations=100,
                        num_parents_mating=4,
                        fitness_func=fitness_function,
                        allow_duplicate_genes=False,
@@ -85,16 +88,16 @@ ga_instance = pygad.GA(num_generations=50,
                        crossover_type='two_points'
                        )
 
-ga_instance.run()
+    ga_instance.run()
 
-ga_instance.plot_fitness()
-solution, solution_fitness, solution_idx = ga_instance.best_solution(ga_instance.last_generation_fitness)
-print(f"Parameters of the best solution : {solution}")
-print(f"Fitness value of the best solution = {solution_fitness}")
-print(f"Index of the best solution : {solution_idx}")
+    ga_instance.plot_fitness()
+    solution, solution_fitness, solution_idx = ga_instance.best_solution(ga_instance.last_generation_fitness)
+    print(f"Parameters of the best solution : {solution}")
+    print(f"Fitness value of the best solution = {solution_fitness}")
+    print(f"Index of the best solution : {solution_idx}")
 
-if ga_instance.best_solution_generation != -1:
-    print("Best fitness value reached after {best_solution_generation} generations.".format(best_solution_generation=ga_instance.best_solution_generation))
+    if ga_instance.best_solution_generation != -1:
+        print("Best fitness value reached after {best_solution_generation} generations.".format(best_solution_generation=ga_instance.best_solution_generation))
 
 
 
