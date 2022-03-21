@@ -27,7 +27,6 @@ class EA:
         self.mutate_type, self.mutate_kwargs = Mutates.get_default()
         self.selection_type, self.selection_kwargs = Selection.get_default()
 
-
     def build(self):
         creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
         creator.create("Individual", list, fitness=creator.FitnessMin)
@@ -86,8 +85,8 @@ class EA:
     def eval_model(self):
         self.build()
         self.result = algorithms.eaSimple(self.__pop, self.__toolbox,
-                                   cxpb=self.cxpb, mutpb=self.mutpd,
-                                   ngen=self.num_generations, verbose=False)
+                                          cxpb=self.cxpb, mutpb=self.mutpd,
+                                          ngen=self.num_generations, verbose=False)
         return self.result
 
     def __get_distance(self, from_order_id, to_order_id):
@@ -97,31 +96,51 @@ class EA:
         return self.data["drivers"][driver_index]["id"]
 
     def __evaluation(self, individual):
-        '''Evaluates an individual by converting it into
-        a list of cities and passing that list to total_distance'''
+        # [(0, 0.32), (1, 0.43), (2, 1.45)]
         indexed_individual = list(enumerate(individual))
-        # [(0, 0.32), (2, 0.43), (1, 1.45)]
-        sorted_orders = sorted(indexed_individual, key=itemgetter(1))
+        sorted_individual = sorted(indexed_individual, key=itemgetter(1))
 
-        drivers_total_length = [0] * len(self.data["drivers"])
-        drivers_total_capcity = [0] * len(self.data["drivers"])
-        prev_order_per_driver = [0] * len(self.data["drivers"])
+        drivers_total_distance = [0] * self.num_drivers
+        drivers_total_weight = [0] * self.num_drivers
+        prev_order_per_driver = [0] * self.num_drivers
 
-        for order_index, val in sorted_orders:
-            driver_index = math.floor(val)
-            driver_id = self.data["drivers"][driver_index]["id"]
-            order_capacity = self.data["orders"][order_index]["capacity"]
-            order_id = self.data["orders"][order_index]["id"]
+        for index, gen in sorted_individual:
+            driver_index = math.floor(gen)
+            # driver_id = self.data["drivers"][driver_index]["id"]
+            order_weight = self.data["orders"][index]["weight"]
+            order_id = self.data["orders"][index]["id"]
 
-            drivers_total_capcity[driver_index] += order_capacity
-            drivers_total_length[driver_index] += self.__get_distance(
+            drivers_total_weight[driver_index] += order_weight
+            drivers_total_distance[driver_index] += self.__get_distance(
                 prev_order_per_driver[driver_index], order_id)
+
             prev_order_per_driver[driver_index] = order_id
 
-        # calculate the distance from the last order to the intialiat spot
+        # calculate the distance from the last order to the initial spot
         for index, prev_order in enumerate(prev_order_per_driver):
-            drivers_total_length[index] += self.__get_distance(
+            drivers_total_distance[index] += self.__get_distance(
                 prev_order, 0)
 
-        sum_lengths = sum(drivers_total_length)
-        return (sum_lengths,)
+        # need to think on the penalty weight
+        fitness = sum(drivers_total_distance) \
+             + self.weight_penalty(drivers_total_weight) \
+             + self.distance_penalty(drivers_total_distance)
+
+        return (fitness,)
+
+
+    def weight_penalty(self, drivers_total_weight):
+        penalty = 0 
+        for index, total_weight in enumerate(drivers_total_weight):
+            if total_weight > self.data["drivers"][index]["max_capacity"]:
+                penalty += 1 
+
+        return penalty
+
+    def distance_penalty(self, drivers_total_distance):
+        penalty = 0 
+        for index, total_distance in enumerate(drivers_total_distance):
+            if total_distance > self.data["drivers"][index]["max_distance"]:
+                penalty += 1 
+
+        return penalty

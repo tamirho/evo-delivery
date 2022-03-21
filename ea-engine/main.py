@@ -8,17 +8,17 @@ from sel import Selection
 
 data = {
     "drivers": [
-        {"id": 11, "max_capacity": 5, "max_len": 2},
-        {"id": 12, "max_capacity": 6, "max_len": 8},
-        {"id": 13, "max_capacity": 6, "max_len": 8},
+        {"id": 11, "max_capacity": 5, "max_distance": 2},
+        {"id": 12, "max_capacity": 6, "max_distance": 8},
+        {"id": 13, "max_capacity": 6, "max_distance": 8},
     ],
     "orders": [
-        {"id": 1, "capacity": 5},
-        {"id": 2, "capacity": 5},
-        {"id": 3, "capacity": 5},
-        {"id": 4, "capacity": 5},
-        {"id": 5, "capacity": 5},
-        {"id": 6, "capacity": 5},
+        {"id": 1, "weight": 5},
+        {"id": 2, "weight": 5},
+        {"id": 3, "weight": 5},
+        {"id": 4, "weight": 5},
+        {"id": 5, "weight": 5},
+        {"id": 6, "weight": 5},
     ],
     "distances": {
         0: {0: 0, 1: 99, 2: 99, 3: 1, 4: 1, 5: 1, 6: 33},
