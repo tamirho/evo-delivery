@@ -138,6 +138,7 @@ celerybeat.pid
 # Environments
 .env
 .venv
+virtualenv/
 env/
 venv/
 ENV/
@@ -176,3 +177,5 @@ cython_debug/
 .idea/
 ea-engine/.DS_Store
 .DS_Store
+
+.vscode/
