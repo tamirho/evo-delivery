@@ -2,12 +2,10 @@ from functools import partial
 import math
 import random
 from deap import algorithms, base, creator, tools
-import numpy as nn
 from operator import itemgetter
-from cx import Crossovers
-from mut import Mutates
-from sel import Selection
-
+from ea_server.engine.cx import Crossovers
+from ea_server.engine.mut import Mutates
+from ea_server.engine.sel import Selection
 
 class EA:
 
@@ -130,17 +128,17 @@ class EA:
 
 
     def weight_penalty(self, drivers_total_weight):
-        penalty = 0 
+        penalty = 0
         for index, total_weight in enumerate(drivers_total_weight):
             if total_weight > self.data["drivers"][index]["max_capacity"]:
-                penalty += 1 
+                penalty += 1
 
         return penalty
 
     def distance_penalty(self, drivers_total_distance):
-        penalty = 0 
+        penalty = 0
         for index, total_distance in enumerate(drivers_total_distance):
             if total_distance > self.data["drivers"][index]["max_distance"]:
-                penalty += 1 
+                penalty += 1
 
         return penalty
