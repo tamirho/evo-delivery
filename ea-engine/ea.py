@@ -102,7 +102,7 @@ class EA:
 
         drivers_total_distance = [0] * self.num_drivers
         drivers_total_weight = [0] * self.num_drivers
-        prev_order_per_driver = [0] * self.num_drivers
+        prev_order_per_driver = ["0"] * self.num_drivers
 
         for index, gen in sorted_individual:
             driver_index = math.floor(gen)
@@ -119,7 +119,7 @@ class EA:
         # calculate the distance from the last order to the initial spot
         for index, prev_order in enumerate(prev_order_per_driver):
             drivers_total_distance[index] += self.__get_distance(
-                prev_order, 0)
+                prev_order, "0")
 
         # need to think on the penalty weight
         fitness = sum(drivers_total_distance) \
