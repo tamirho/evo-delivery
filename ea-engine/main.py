@@ -8,9 +8,9 @@ from sel import Selection
 
 data = {
     "drivers": [
-        {"id": 11, "max_capacity": 5, "max_distance": 2},
-        {"id": 12, "max_capacity": 6, "max_distance": 8},
-        {"id": 13, "max_capacity": 6, "max_distance": 8},
+        {"id": "11", "max_capacity": 5, "max_distance": 2},
+        {"id": "12", "max_capacity": 6, "max_distance": 8},
+        {"id": "13", "max_capacity": 6, "max_distance": 8},
     ],
     "orders": [
         {"id": "1", "weight": 5},
