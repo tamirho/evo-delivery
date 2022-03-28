@@ -11,6 +11,7 @@ api_blueprint = Blueprint('api', __name__, url_prefix='/api/v1')
 @api_blueprint.route('/ea', methods=['GET'])
 def evaluate():
     data = request.get_json()
+
     ea = EA(data) \
         .set_pop_size(100) \
         .set_crossover(Crossovers.SINGLE_POINT) \
