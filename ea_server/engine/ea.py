@@ -9,6 +9,7 @@ from ea_server.engine.sel import Selection
 
 
 class EA:
+    REQUIRED_DATA_KEYS = ['drivers', 'orders']
 
     @staticmethod
     def get_best_individual(result, top=1):

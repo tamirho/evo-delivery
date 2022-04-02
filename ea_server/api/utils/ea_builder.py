@@ -17,12 +17,12 @@ class EABuilder:
         return self
 
     def build(self):
+        self.validate_data()
         self.ea = EA(self.data)
         self.set_args()
         return self.ea
 
     def set_args(self):
-
         if num_orders := self.args.get('num_orders', type=int):
             self.ea.set_num_orders(num_orders)
 
@@ -51,3 +51,8 @@ class EABuilder:
 
         if num_generations := self.args.get('num_generations', type=int):
             self.ea.set_num_generations(num_generations)
+
+    def validate_data(self):
+        for key in EA.REQUIRED_DATA_KEYS:
+            if self.data.get(key) is None:
+                raise ValueError(f'Missing {key} in data')
