@@ -36,7 +36,7 @@ def chromosome2routes(chromosome):
     """
     convert chromosome to better representation of routes
     :param chromosome: optional solution to be converted to route
-    :return: list of the route for each driver where each order represented as (orderIdx, driverIdx, randomKey)
+    :return: list of the route for each driver where each order represented as (orderIdx, driver_idx, randomKey)
     """
     indexed = [(i + 1, math.floor(r), r - math.floor(r)) for i, r in enumerate(chromosome)]
     s_list = sorted(indexed, key=itemgetter(2))

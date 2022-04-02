@@ -1,10 +1,11 @@
 import functools
 from flask import Blueprint, jsonify, request
+from ea_server.api.utils import transform
 from ea_server.engine.ea import EA
 from ea_server.engine.cx import Crossovers
 from ea_server.engine.mut import Mutates
 from ea_server.engine.sel import Selection
-
+import json
 api_blueprint = Blueprint('api', __name__, url_prefix='/api/v1')
 
 
@@ -20,6 +21,7 @@ def evaluate():
 
     result, log = ea.eval_model()
     best_individual = EA.get_best_individual(result)
-    print('best individual: ', best_individual)
+    object_result = transform(best_individual,data)
+    print('best individual: ', object_result)
 
-    return f"best individual: {best_individual}"
+    return object_result
