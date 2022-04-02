@@ -12,6 +12,6 @@ def create_app(config_class=Config):
     from ea_server.api import routes
 
     # Register Blueprints
-    app.register_blueprint(routes.api_blueprint)
+    app.register_blueprint(routes.api_v1_blueprint)
 
     return app

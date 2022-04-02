@@ -7,6 +7,7 @@ from ea_server.engine.cx import Crossovers
 from ea_server.engine.mut import Mutates
 from ea_server.engine.sel import Selection
 
+
 class EA:
 
     @staticmethod
@@ -42,41 +43,41 @@ class EA:
             "select", self.selection_type, **self.selection_kwargs)
         self.__pop = self.__toolbox.population(n=self.pop_size)
 
-    def set_num_orders(self, num_orders):
+    def set_num_orders(self, num_orders: int):
         self.num_orders = num_orders
         return self
 
-    def set_num_drivers(self, num_drivers):
+    def set_num_drivers(self, num_drivers: int):
         self.num_drivers = num_drivers
         return self
 
-    def set_crossover(self, crossover_type):
-        self.crossover_type = crossover_type
+    def set_crossover(self, crossover_name: str):
+        self.crossover_type = Crossovers.get(crossover_name)
         return self
 
-    def set_mutate(self, mutate_type, **kwargs):
-        self.mutate_type = mutate_type
+    def set_mutate(self, mutate_name: str, **kwargs):
+        self.mutate_type = Mutates.get(mutate_name)
         self.mutate_kwargs = kwargs
         return self
 
-    def set_selection(self, selection_type, **kwargs):
-        self.selection_type = selection_type
+    def set_selection(self, selection_name: str, **kwargs):
+        self.selection_type = Selection.get(selection_name)
         self.selection_kwargs = kwargs
         return self
 
-    def set_pop_size(self, pop_size):
+    def set_pop_size(self, pop_size: int):
         self.pop_size = pop_size
         return self
 
-    def set_cxpb(self, cxpb):
+    def set_cxpb(self, cxpb: float):
         self.cxpb = cxpb
         return self
 
-    def set_mutpd(self, mutpd):
+    def set_mutpd(self, mutpd: float):
         self.mutpd = mutpd
         return self
 
-    def set_num_generations(self, num_generations):
+    def set_num_generations(self, num_generations: int):
         self.num_generations = num_generations
         return self
 
@@ -121,11 +122,10 @@ class EA:
 
         # need to think on the penalty weight
         fitness = sum(drivers_total_distance) \
-             + self.weight_penalty(drivers_total_weight) \
-             + self.distance_penalty(drivers_total_distance)
+            + self.weight_penalty(drivers_total_weight) \
+            + self.distance_penalty(drivers_total_distance)
 
         return (fitness,)
-
 
     def weight_penalty(self, drivers_total_weight):
         penalty = 0
