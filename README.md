@@ -20,11 +20,11 @@ The problem is – Find the most optimistic routing of N drivers to M deliveries
 
 ### The system's main components
 
-![EvoDelivery - The system's main components](https://user-images.githubusercontent.com/57661886/147407380-993f5385-3f87-4df0-9abb-ac30582319bc.png)
+![EvoDelivery - The system's main components](https://user-images.githubusercontent.com/65215909/161393254-75d3acb2-967e-4cff-a2f8-95b6d138ede7.png)
 
 ### Technology Stack:
 - Front-End: React
-- REST API: Java Spring
-- EA microservice: Python
+- REST API: Node.js
+- EA service: Python
 - EA framework: pyeasyga [(docs)](https://pyeasyga.readthedocs.io/en/latest/index.html)
 - DB: will be selected soon
