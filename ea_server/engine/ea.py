@@ -3,8 +3,8 @@ import math
 import random
 from deap import algorithms, base, creator, tools
 from operator import itemgetter
-from ea_server.engine.cx import Crossovers
-from ea_server.engine.mut import Mutates
+from ea_server.engine.cx import Crossover
+from ea_server.engine.mut import Mutate
 from ea_server.engine.sel import Selection
 
 
@@ -23,9 +23,9 @@ class EA:
         self.mutpd = 0.2
         self.num_drivers = len(data["drivers"])
         self.num_orders = len(data["orders"])
-        self.crossover_type = Crossovers.get_default()
-        self.mutate_type, self.mutate_kwargs = Mutates.get_default()
-        self.selection_type, self.selection_kwargs = Selection.get_default()
+        self.crossover_type, self.crossover_kwargs = Crossover.default()
+        self.mutate_type, self.mutate_kwargs = Mutate.default()
+        self.selection_type, self.selection_kwargs = Selection.default()
 
     def build(self):
         creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
@@ -37,7 +37,7 @@ class EA:
         self.__toolbox.register(
             "population", tools.initRepeat, list, self.__toolbox.individual)
         self.__toolbox.register("evaluate", self.__evaluation)
-        self.__toolbox.register("mate", self.crossover_type)
+        self.__toolbox.register("mate", self.crossover_type , **self.crossover_kwargs)
         self.__toolbox.register(
             "mutate", self.mutate_type, **self.mutate_kwargs)
         self.__toolbox.register(
@@ -52,12 +52,13 @@ class EA:
         self.num_drivers = num_drivers
         return self
 
-    def set_crossover(self, crossover_name: str):
-        self.crossover_type = Crossovers.get(crossover_name)
+    def set_crossover(self, crossover_name: str, **kwargs):
+        self.crossover_type = Crossover.get(crossover_name)
+        self.crossover_kwargs = kwargs
         return self
 
     def set_mutate(self, mutate_name: str, **kwargs):
-        self.mutate_type = Mutates.get(mutate_name)
+        self.mutate_type = Mutate.get(mutate_name)
         self.mutate_kwargs = kwargs
         return self
 
