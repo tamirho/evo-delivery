@@ -27,7 +27,6 @@ def parse_result(result, data):
         result_as_dict[driver_id].append(item)
 
     for driver in result_as_dict:
-        print(result_as_dict[driver])
         result_as_dict[driver] = sorted(result_as_dict[driver], key=itemgetter(1))
         result_as_dict[driver] = [i[0] for i in result_as_dict[driver]]
 
