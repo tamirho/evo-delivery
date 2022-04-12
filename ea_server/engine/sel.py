@@ -39,5 +39,5 @@ class Selection():
             if len(missing) > 0:
                 raise MissingParameter(
                     f'Missing keys {missing} for {type} (in {cls.__name__})')
-        
+
         return True
