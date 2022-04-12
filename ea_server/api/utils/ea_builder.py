@@ -30,15 +30,16 @@ class EABuilder:
             self.ea.set_num_drivers(num_drivers)
 
         if crossover := self.args.get('crossover'):
-            self.ea.set_crossover(crossover)
+            kwargs = self.data.get('crossover_kwargs', {})
+            self.ea.set_crossover(crossover, **kwargs)
 
         if mutate := self.args.get('mutate'):
-            # TODO: deal with selection kwargs and add validation
-            self.ea.set_mutate(mutate)
+            kwargs = self.data.get('mutate_kwargs', {})
+            self.ea.set_mutate(mutate, **kwargs)
 
         if selection := self.args.get('selection'):
-            # TODO: deal with selection kwargs and add validation
-            self.ea.set_selection(selection)
+            kwargs = self.data.get('selection_kwargs', {})
+            self.ea.set_selection(selection, **kwargs)
 
         if pop_size := self.args.get('pop_size', type=int):
             self.ea.set_pop_size(pop_size)
