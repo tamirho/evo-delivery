@@ -1,4 +1,3 @@
-import os
 from flask import Flask
 from ea_server.api.config import Config
 

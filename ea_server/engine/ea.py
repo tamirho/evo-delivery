@@ -1,4 +1,3 @@
-from functools import partial
 import math
 import random
 from deap import algorithms, base, creator, tools
