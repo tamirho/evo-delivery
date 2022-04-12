@@ -2,7 +2,22 @@ import math
 from operator import itemgetter
 
 
-def transform(result, data):
+def parse_result(result, data):
+    """
+    Object Structure
+    { 
+        "driver_id1":[orderId , orderId,...],
+        "driver_id2":[orderId , orderId,...],
+        "driver_id3":[orderId , orderId,...]
+    }
+    The object with current data:
+    {
+        "11": ["4", "1"],
+        "12": ["5", "6"],
+        "13": ["3", "2"]
+    }    
+    """
+
     result_as_dict = {driver["id"]:[] for driver in data["drivers"]}
 
     for order_index, number in enumerate(result):
@@ -17,24 +32,3 @@ def transform(result, data):
         result_as_dict[driver] = [i[0] for i in result_as_dict[driver]]
 
     return result_as_dict
-
-# Object Structure
-# { "driver_id1":[orderId , orderId,...],
-#   "driver_id2":[orderId , orderId,...],
-#   "driver_id3":[orderId , orderId,...]
-# }
-# The object with current data:
-# {
-#  "11": [
-#    "4",
-#    "1"
-#  ],
-#  "12": [
-#    "5",
-#    "6"
-#  ],
-#  "13": [
-#    "3",
-#    "2"
-#  ]
-# }
