@@ -26,6 +26,7 @@ class EA:
         self.crossover_type, self.crossover_kwargs = Crossover.default()
         self.mutate_type, self.mutate_kwargs = Mutate.default()
         self.selection_type, self.selection_kwargs = Selection.default()
+        self.fitness_strategy = self.penalty_strategy_one
 
     def build(self):
         creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
@@ -130,16 +131,13 @@ class EA:
         infeas_num_weight, overweight = self.weight_penalty(drivers_total_weight)
         infeas_num_distance, overdistnace = self.distance_penalty(drivers_total_distance)
 
-        return (100000 - sum(drivers_total_distance)) / 100000 \
-                  + overweight * infeas_num_weight \
-                  + overdistnace * infeas_num_distance
+        return (100000 - sum(drivers_total_distance)) / 100000 + overweight * infeas_num_weight + overdistnace * infeas_num_distance
 
     def penalty_strategy_two(self, drivers_total_distance, drivers_total_weight):
         infeas_num_weight, overweight = self.weight_penalty(drivers_total_weight)
         infeas_num_distance, overdistnace = self.distance_penalty(drivers_total_distance)
 
-        return sum(drivers_total_distance) + \
-               (pow(overweight, 2) + pow(overdistnace, 2)) * (infeas_num_distance + infeas_num_weight)
+        return sum(drivers_total_distance) + (pow(overweight, 2) + pow(overdistnace, 2)) * (infeas_num_distance + infeas_num_weight)
 
     def weight_penalty(self, drivers_total_weight):
         infeas_num = 0
