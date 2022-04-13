@@ -6,6 +6,7 @@ class EABuilder:
     def __init__(self):
         self.data = {}
         self.args = MultiDict[str, str]()
+        self.ea = None
         pass
 
     def with_data(self, data):

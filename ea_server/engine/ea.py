@@ -122,25 +122,43 @@ class EA:
             drivers_total_distance[index] += self.__get_distance(
                 prev_order, "0")
 
-        # need to think on the penalty weight
-        fitness = sum(drivers_total_distance) \
-            + self.weight_penalty(drivers_total_weight) \
-            + self.distance_penalty(drivers_total_distance)
+        fitness = self.fitness_strategy(drivers_total_distance, drivers_total_weight)
 
         return (fitness,)
 
-    def weight_penalty(self, drivers_total_weight):
-        penalty = 0
-        for index, total_weight in enumerate(drivers_total_weight):
-            if total_weight > self.data["drivers"][index]["max_capacity"]:
-                penalty += 1
+    def penalty_strategy_one(self, drivers_total_distance, drivers_total_weight):
+        infeas_num_weight, overweight = self.weight_penalty(drivers_total_weight)
+        infeas_num_distance, overdistnace = self.distance_penalty(drivers_total_distance)
 
-        return penalty
+        return (100000 - sum(drivers_total_distance)) / 100000 \
+                  + overweight * infeas_num_weight \
+                  + overdistnace * infeas_num_distance
+
+    def penalty_strategy_two(self, drivers_total_distance, drivers_total_weight):
+        infeas_num_weight, overweight = self.weight_penalty(drivers_total_weight)
+        infeas_num_distance, overdistnace = self.distance_penalty(drivers_total_distance)
+
+        return sum(drivers_total_distance) + \
+               (pow(overweight, 2) + pow(overdistnace, 2)) * (infeas_num_distance + infeas_num_weight)
+
+    def weight_penalty(self, drivers_total_weight):
+        infeas_num = 0
+        overweight = 0
+        for index, total_weight in enumerate(drivers_total_weight):
+            max_capacity = self.data["drivers"][index]["max_capacity"]
+            if total_weight > max_capacity:
+                infeas_num += 1
+                overweight += total_weight - max_capacity
+
+        return infeas_num, overweight
 
     def distance_penalty(self, drivers_total_distance):
-        penalty = 0
+        infeas_num = 0
+        overdistnace = 0
         for index, total_distance in enumerate(drivers_total_distance):
-            if total_distance > self.data["drivers"][index]["max_distance"]:
-                penalty += 1
+            max_distance = self.data["drivers"][index]["max_distance"]
+            if total_distance > max_distance:
+                infeas_num += 1
+                overdistnace += total_distance - max_distance
 
-        return penalty
+        return infeas_num, overdistnace
