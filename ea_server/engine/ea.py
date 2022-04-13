@@ -1,4 +1,3 @@
-from functools import partial
 import math
 import random
 from deap import algorithms, base, creator, tools
@@ -37,7 +36,8 @@ class EA:
         self.__toolbox.register(
             "population", tools.initRepeat, list, self.__toolbox.individual)
         self.__toolbox.register("evaluate", self.__evaluation)
-        self.__toolbox.register("mate", self.crossover_type , **self.crossover_kwargs)
+        self.__toolbox.register(
+            "mate", self.crossover_type, **self.crossover_kwargs)
         self.__toolbox.register(
             "mutate", self.mutate_type, **self.mutate_kwargs)
         self.__toolbox.register(
