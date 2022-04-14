@@ -6,7 +6,7 @@
   "scripts": {
     "start": "ts-node-dev src/index.ts",
     "start:build": "npm run build && node dist/index.js",
-    "start:dev": "nodemon",
+    "start:nodemon": "nodemon",
     "build": "rimraf ./dist && tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
