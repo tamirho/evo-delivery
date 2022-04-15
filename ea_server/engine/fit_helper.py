@@ -21,8 +21,8 @@ def power_strategy(data: EaRequestDataModel, individual):
     drivers_total_distance, drivers_total_weight = \
         calculate_routes_distance_and_weight_from_individual(data, individual)
 
-    infeas_num_weight, over_weight = weight_penalty(drivers_total_weight)
-    infeas_num_distance, over_distance = distance_penalty(drivers_total_distance)
+    infeas_num_weight, over_weight = weight_penalty(data.drivers, drivers_total_weight)
+    infeas_num_distance, over_distance = distance_penalty(data.drivers, drivers_total_distance)
 
     # todo make this numbers configurable
     return sum(drivers_total_distance) + (

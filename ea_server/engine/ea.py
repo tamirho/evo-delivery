@@ -28,8 +28,8 @@ class EA:
         self.mutate_type, self.mutate_kwargs = Mutate.default()
         self.selection_type, self.selection_kwargs = Selection.default()
         self.fitness_strategy = FitnessStrategy.default()
+        self.fitness_strategy_kwargs = None  # todo
         self.__pop = None
-
 
     def build(self):
         self.__toolbox = base.Toolbox()
@@ -68,6 +68,11 @@ class EA:
     def set_selection(self, selection_name: str, **kwargs):
         self.selection_type = Selection.get(selection_name)
         self.selection_kwargs = kwargs
+        return self
+
+    def set_fitness(self, fitness_name: str, **kwargs):
+        self.fitness_strategy = FitnessStrategy.get(fitness_name)
+        self.fitness_strategy_kwargs = kwargs
         return self
 
     def set_pop_size(self, pop_size: int):

@@ -35,12 +35,12 @@ class EaRequestDataModel:
         orders_ids.add(INIT_ORDER_ID)
 
         if orders_ids != self.distances.keys():
-            raise MissingValueError(f"Distances from order ids: {orders_ids.difference(self.distances.keys())}")
+            raise MissingValueError(f"distances, from order ids: {orders_ids.difference(self.distances.keys())}")
 
         orders_distance: Dict
         for order_id, orders_distance in self.distances.items():
             if orders_distance.keys() != orders_ids:
-                raise MissingValueError(f"Distances from {order_id} to order ids: {orders_ids.difference(orders_distance.keys())}")
+                raise MissingValueError(f"distances, from order {order_id} to order ids: {orders_ids.difference(orders_distance.keys())}")
 
     def __post_init__(self):
         self.validate_distances()
