@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, json, request
 from ea_server.api.utils.parser import parse_result
 from ea_server.engine.ea import EA
 from ea_server.api.utils.ea_builder import EABuilder
@@ -6,9 +6,14 @@ from ea_server.api.utils.ea_builder import EABuilder
 api_v1_blueprint = Blueprint('api', __name__, url_prefix='/api/v1')
 
 
-@api_v1_blueprint.route('/ea', methods=['GET'])
+@api_v1_blueprint.route('/ea', methods=['POST'])
 def evaluate():
-    data = request.get_json()
+    content_type = request.headers.get('Content-Type')
+    if content_type == 'application/json':
+        data = request.get_json()
+    else:
+        data = json.loads(request.data)
+
     args = request.args
 
     ea = EABuilder() \
