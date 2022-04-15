@@ -1,3 +1,6 @@
+from dacite import from_dict
+
+from ea_server.data.ea_request_model import EaRequestDataModel
 from ea_server.engine.ea import EA
 from werkzeug.datastructures import MultiDict
 
@@ -10,7 +13,7 @@ class EABuilder:
         pass
 
     def with_data(self, data):
-        self.data = data
+        self.data = from_dict(data_class=EaRequestDataModel, data=data)
         return self
 
     def with_args(self, args: MultiDict[str, str]):
@@ -18,18 +21,11 @@ class EABuilder:
         return self
 
     def build(self):
-        self.validate_data()
         self.ea = EA(self.data)
         self.set_args()
         return self.ea
 
     def set_args(self):
-        if num_orders := self.args.get('num_orders', type=int):
-            self.ea.set_num_orders(num_orders)
-
-        if num_drivers := self.args.get('num_drivers', type=int):
-            self.ea.set_num_drivers(num_drivers)
-
         if crossover := self.args.get('crossover'):
             kwargs = self.data.get('crossover_kwargs', {})
             self.ea.set_crossover(crossover, **kwargs)
@@ -53,8 +49,3 @@ class EABuilder:
 
         if num_generations := self.args.get('num_generations', type=int):
             self.ea.set_num_generations(num_generations)
-
-    def validate_data(self):
-        for key in EA.REQUIRED_DATA_KEYS:
-            if self.data.get(key) is None:
-                raise ValueError(f'Missing {key} in data')
