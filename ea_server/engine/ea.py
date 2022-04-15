@@ -7,6 +7,9 @@ from ea_server.engine.fit import FitnessStrategy
 from ea_server.engine.mut import Mutate
 from ea_server.engine.sel import Selection
 
+creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
+creator.create("Individual", list, fitness=creator.FitnessMin)
+
 
 class EA:
     @staticmethod
@@ -27,9 +30,8 @@ class EA:
         self.fitness_strategy = FitnessStrategy.default()
         self.__pop = None
 
+
     def build(self):
-        creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
-        creator.create("Individual", list, fitness=creator.FitnessMin)
         self.__toolbox = base.Toolbox()
         self.__toolbox.register("indices", random.uniform, 0, self.num_drivers)
         self.__toolbox.register("individual", tools.initRepeat,
