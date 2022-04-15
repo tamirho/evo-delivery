@@ -1,39 +1,61 @@
 import { Request, Response, NextFunction } from 'express';
 import { driverService } from '../services';
+import { Driver } from '../types';
+import { INVALID, OK } from '../utils/response.utils';
 
-// Example for controller
-export const getDrivers = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getDrivers = async (req: Request, res: Response) => {
   const page = req.params.page || 1;
   const limit = req.params.limit || 10;
 
   try {
     const drivers = await driverService.getDrivers({}, page, limit);
-    return res.status(200).json({
-      status: 200,
-      data: drivers,
-      message: 'Successfully Drivers Retrieved',
-    });
+    return res.status(200).json(OK(drivers));
   } catch (e: any) {
-    return res.status(400).json({ status: 400, message: e.message });
+    return res.status(400).json(INVALID(400, e.message));
   }
 };
 
 export const getDriver = async (req: Request, res: Response) => {
-  return res.send('get driver by id');
+  const driverId = req.params.id;
+
+  try {
+    const driver = await driverService.getDriver(driverId);
+    return res.status(200).json(OK(driver));
+  } catch (e: any) {
+    return res.status(400).json(INVALID(400, e.message));
+  }
 };
 
 export const createDriver = async (req: Request, res: Response) => {
-  return res.send('create new driver');
+  const driverDetails: Driver = req.body.driver;
+
+  try {
+    await driverService.createDriver(driverDetails);
+    return res.status(200).json(OK());
+  } catch (e: any) {
+    return res.status(400).json(INVALID(400, e.message));
+  }
 };
 
 export const updateDriver = async (req: Request, res: Response) => {
-  return res.send('update driver by id');
+  const driverId: string = req.params.id;
+  const driverDetails: Partial<Driver> = req.body.driver;
+
+  try {
+    await driverService.updateDriver(driverId, driverDetails);
+    return res.status(200).json(OK());
+  } catch (e: any) {
+    return res.status(400).json(INVALID(400, e.message));
+  }
 };
 
 export const deleteDriver = async (req: Request, res: Response) => {
-  return res.send('delete driver by id');
+  const driverId = req.params.id;
+
+  try {
+    await driverService.deleteDriver(driverId);
+    return res.status(200).json(OK());
+  } catch (e: any) {
+    return res.status(400).json(INVALID(400, e.message));
+  }
 };
