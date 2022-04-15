@@ -12,7 +12,7 @@ def evaluate():
     if content_type == 'application/json':
         data = request.get_json()
     else:
-        data = json.loads(request.data)
+        data = json.loads(str(request.data))
 
     args = request.args
 
