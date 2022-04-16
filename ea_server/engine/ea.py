@@ -1,7 +1,7 @@
 import random
 from deap import algorithms, base, creator, tools
 
-from ea_server.data.ea_request_model import EaRequestDataModel
+from ea_server.data.ea_request_model import EaRequestModel, EaData
 from ea_server.engine.cx import Crossover
 from ea_server.engine.fit import FitnessStrategy
 from ea_server.engine.mut import Mutate
@@ -16,7 +16,7 @@ class EA:
     def get_best_individual(result, top=1):
         return tools.selBest(result, top)[0]
 
-    def __init__(self, data: EaRequestDataModel) -> None:
+    def __init__(self, data: EaData) -> None:
         self.data = data
         self.pop_size = 100
         self.cxpb = 0.8

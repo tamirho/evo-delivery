@@ -28,6 +28,5 @@ def create_app(config_class=Config):
 
     # Register Blueprints
     app.register_blueprint(routes.api_v1_blueprint)
-    app.register_error_handler(400, handle_exception)
 
     return app

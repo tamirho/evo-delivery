@@ -20,7 +20,7 @@ class Order:
 
 
 @dataclass(frozen=True)
-class EaRequestDataModel:
+class EaData:
     drivers: List[Driver]
     orders: List[Order]
     distances: Dict
@@ -47,3 +47,10 @@ class EaRequestDataModel:
 
     def get_distance(self, from_order_id, to_order_id):
         return self.distances[from_order_id][to_order_id]
+
+
+@dataclass(frozen=True)
+class EaRequestModel:
+    data: EaData
+    kwargs: Dict
+

@@ -2,10 +2,10 @@ import math
 from operator import itemgetter
 
 from ea_server.api.utils.constans import INIT_ORDER_ID
-from ea_server.data.ea_request_model import EaRequestDataModel
+from ea_server.data.ea_request_model import EaData
 
 
-def bounded_distance_strategy(data: EaRequestDataModel, individual):
+def bounded_distance_strategy(data: EaData, individual):
     drivers_total_distance, drivers_total_weight = \
         calculate_routes_distance_and_weight_from_individual(data, individual)
 
@@ -17,7 +17,7 @@ def bounded_distance_strategy(data: EaRequestDataModel, individual):
            (over_weight * infeas_num_weight + over_distance * infeas_num_distance)
 
 
-def power_strategy(data: EaRequestDataModel, individual):
+def power_strategy(data: EaData, individual):
     drivers_total_distance, drivers_total_weight = \
         calculate_routes_distance_and_weight_from_individual(data, individual)
 
