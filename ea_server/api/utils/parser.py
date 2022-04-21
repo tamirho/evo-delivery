@@ -1,8 +1,10 @@
 import math
 from operator import itemgetter
 
+from ea_server.data.ea_request_model import EaData
 
-def parse_result(result, data):
+
+def parse_result(result, data: EaData):
     """
     Object Structure
     { 
@@ -18,12 +20,12 @@ def parse_result(result, data):
     }    
     """
 
-    result_as_dict = {driver["id"]: [] for driver in data["drivers"]}
+    result_as_dict = {driver.id: [] for driver in data.drivers}
 
     for order_index, number in enumerate(result):
         driver_index = math.floor(number)
-        driver_id = data["drivers"][driver_index]["id"]
-        item = (data["orders"][order_index]["id"], number)
+        driver_id = data.drivers[driver_index].id
+        item = (data.orders[order_index].id, number)
         result_as_dict[driver_id].append(item)
 
     for driver in result_as_dict:
