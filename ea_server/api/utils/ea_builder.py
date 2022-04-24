@@ -42,7 +42,6 @@ class EABuilder:
                 self.ea.set_selection(selection, **kwargs)
 
             if fitness := self.args.get('fitness'):
-                print(f"Fitness type entered: {fitness}")
                 kwargs = self.kwargs.get('fitness_kwargs', {})
                 self.ea.set_fitness(fitness, **kwargs)
 

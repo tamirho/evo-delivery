@@ -3,7 +3,7 @@ from deap import algorithms, base, creator, tools
 
 from ea_server.data.ea_request_model import EaRequestModel, EaData
 from ea_server.engine.cx import Crossover
-from ea_server.engine.fit import FitnessStrategy
+from ea_server.engine.fit import Fitness
 from ea_server.engine.mut import Mutate
 from ea_server.engine.sel import Selection
 
@@ -27,8 +27,7 @@ class EA:
         self.crossover_type, self.crossover_kwargs = Crossover.default()
         self.mutate_type, self.mutate_kwargs = Mutate.default()
         self.selection_type, self.selection_kwargs = Selection.default()
-        self.fitness_strategy = FitnessStrategy.default()
-        self.fitness_strategy_kwargs = None  # todo
+        self.fitness_type, self.fitness_kwargs = Fitness.default()
         self.__pop = None
 
     def build(self):
@@ -36,15 +35,11 @@ class EA:
         self.__toolbox.register("indices", random.uniform, 0, self.num_drivers)
         self.__toolbox.register("individual", tools.initRepeat,
                                 creator.Individual, self.__toolbox.indices, n=self.num_orders)
-        self.__toolbox.register(
-            "population", tools.initRepeat, list, self.__toolbox.individual)
+        self.__toolbox.register("population", tools.initRepeat, list, self.__toolbox.individual)
         self.__toolbox.register("evaluate", self._evaluation)
-        self.__toolbox.register(
-            "mate", self.crossover_type, **self.crossover_kwargs)
-        self.__toolbox.register(
-            "mutate", self.mutate_type, **self.mutate_kwargs)
-        self.__toolbox.register(
-            "select", self.selection_type, **self.selection_kwargs)
+        self.__toolbox.register("mate", self.crossover_type, **self.crossover_kwargs)
+        self.__toolbox.register("mutate", self.mutate_type, **self.mutate_kwargs)
+        self.__toolbox.register("select", self.selection_type, **self.selection_kwargs)
         self.__pop = self.__toolbox.population(n=self.pop_size)
 
     def set_num_orders(self, num_orders: int):
@@ -71,8 +66,8 @@ class EA:
         return self
 
     def set_fitness(self, fitness_name: str, **kwargs):
-        self.fitness_strategy = FitnessStrategy.get(fitness_name)
-        self.fitness_strategy_kwargs = kwargs
+        self.fitness_type = Fitness.get(fitness_name)
+        self.fitness_kwargs = kwargs
         return self
 
     def set_pop_size(self, pop_size: int):
@@ -88,6 +83,8 @@ class EA:
         return self
 
     def set_num_generations(self, num_generations: int):
+        if num_generations < 1:
+            raise ValueError("num_generations should be greater then 1")
         self.num_generations = num_generations
         return self
 
@@ -100,6 +97,6 @@ class EA:
 
     def _evaluation(self, individual):
         # individual example: [(0, 0.32), (1, 0.43), (2, 1.45)]
-        fitness = self.fitness_strategy(self.data, individual)
+        fitness = self.fitness_type(self.data, individual, **self.fitness_kwargs)
 
         return (fitness,)

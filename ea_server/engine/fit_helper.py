@@ -5,28 +5,28 @@ from ea_server.api.utils.constans import INIT_ORDER_ID
 from ea_server.data.ea_request_model import EaData
 
 
-def bounded_distance_strategy(data: EaData, individual):
+def bounded_distance_strategy(data: EaData, individual, bound):
     drivers_total_distance, drivers_total_weight = \
         calculate_routes_distance_and_weight_from_individual(data, individual)
 
     infeas_num_weight, over_weight = weight_penalty(data.drivers, drivers_total_weight)
     infeas_num_distance, over_distance = distance_penalty(data.drivers, drivers_total_distance)
 
-    # todo make this numbers configurable
-    return (100000 - sum(drivers_total_distance)) / 100000 + \
+    return (bound - sum(drivers_total_distance)) / bound + \
            (over_weight * infeas_num_weight + over_distance * infeas_num_distance)
 
 
-def power_strategy(data: EaData, individual):
+def power_strategy(data: EaData, individual, power):
+    if power < 0:
+        raise ValueError("Power can't be negative value")
     drivers_total_distance, drivers_total_weight = \
         calculate_routes_distance_and_weight_from_individual(data, individual)
 
     infeas_num_weight, over_weight = weight_penalty(data.drivers, drivers_total_weight)
     infeas_num_distance, over_distance = distance_penalty(data.drivers, drivers_total_distance)
 
-    # todo make this numbers configurable
     return sum(drivers_total_distance) + (
-            pow(over_weight, 2) + pow(over_distance, 2)) * (infeas_num_distance + infeas_num_weight)
+            pow(over_weight, power) + pow(over_distance, power)) * (infeas_num_distance + infeas_num_weight)
 
 
 def weight_penalty(drivers_data, drivers_total_weight):
@@ -39,6 +39,7 @@ def weight_penalty(drivers_data, drivers_total_weight):
             over_weight += total_weight - max_capacity
 
     return infeas_num, over_weight
+
 
 def distance_penalty(drivers_data, drivers_total_distance):
     infeas_num = 0
