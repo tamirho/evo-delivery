@@ -1,3 +1,4 @@
+from click import MissingParameter
 from flask import Blueprint, request
 from werkzeug.exceptions import BadRequest, InternalServerError
 
@@ -26,7 +27,7 @@ def evaluate():
             .with_args(request_args) \
             .with_kwargs(ea_request_model.kwargs) \
             .build()
-    except (MissingValueError, EaBuilderError) as e:
+    except (MissingValueError, EaBuilderError, MissingParameter) as e:
         raise BadRequest(e.__str__())
     except Exception as e:
         raise InternalServerError(e.__str__())
@@ -43,6 +44,8 @@ def evaluate():
         raise InternalServerError(e.__str__())
 
 
+# todo routes move to inner folder
+# todo maybe return types and kwargs in one response object
 @api_v1_blueprint.route('/ea/sel/<type>/kwargs', methods=['GET'])
 def get_selection_kwargs_by_type(type):
     return {"kwargs": Selection.get_default_kwargs_names(type)}

@@ -34,7 +34,7 @@ class Selection:
 
     @classmethod
     def get_default_kwargs_names(cls, type: str):
-        func = cls.FUNCTIONS[SelectionTypes(type)]
+        func = cls.get(type)
         args = inspect.getfullargspec(func).args[2:-1]
         return args
 

@@ -23,7 +23,7 @@ class Fitness:
 
     @classmethod
     def get_default_kwargs_names(cls, type: str):
-        func = cls.FUNCTIONS[FitnessType(type)]
+        func = cls.get(type)
         args = inspect.getfullargspec(func).args[2:]
         return args
 

@@ -3,7 +3,7 @@ from enum import Enum
 from click import MissingParameter
 from deap import tools
 
-from ea_server.api.utils.constans import SINGLE_POINT, TWO_POINTS, UNIFORM, PARTIAL_MATCHED, BLEND, INDPB, ALPHA
+from ea_server.api.utils.constans import SINGLE_POINT, TWO_POINTS, UNIFORM, PARTIAL_MATCHED, BLEND
 
 
 class CrossoverTypes(Enum):
@@ -34,7 +34,7 @@ class Crossover:
 
     @classmethod
     def get_default_kwargs_names(cls, type: str):
-        func = cls.FUNCTIONS[CrossoverTypes(type)]
+        func = cls.get(type)
         args = inspect.getfullargspec(func).args[2:]
         return args
 
