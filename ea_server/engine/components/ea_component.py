@@ -1,20 +1,20 @@
-from enum import Enum
+import abc
 from typing import List
 
-from ea_server.data.deap_function_model import DeapFunctionModel
+from ea_server.model.ea_function_model import EaFunctionModel
+from abc import ABC
 
 
-class EaComponent:
-
+class EaComponent(ABC):
     functions = {}
     type_enum = None
 
     @classmethod
-    def get(cls, type: str) -> DeapFunctionModel:
+    def get(cls, type: str) -> EaFunctionModel:
         return cls.functions[cls.type_enum(type)]
 
     @classmethod
-    def get(cls) -> List[DeapFunctionModel]:
+    def get(cls) -> List[EaFunctionModel]:
         return [cls.get(type) for type in cls.type_enum]
 
     @classmethod
@@ -25,11 +25,8 @@ class EaComponent:
             "kwargs": [k.__dict__ for k in cls.functions[type].kwargs]
         } for type in cls.type_enum]
 
-    # @classmethod
-    # def validate(cls, type: str, **kwargs):
-    #     args = cls.get_default_kwargs_names(type)
-    #     missing = [arg for arg in args if arg not in kwargs]
-    #     if len(missing) > 0:
-    #         raise MissingParameter(f'Missing keys {missing} for {type} (in {cls.__name__})')
-    #
-    #     return True
+    @classmethod
+    @abc.abstractmethod
+    def default(cls):
+        """return default function"""
+        return

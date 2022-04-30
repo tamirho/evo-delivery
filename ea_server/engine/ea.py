@@ -1,10 +1,10 @@
 import random
 from deap import algorithms, base, creator, tools
 
-from ea_server.data.ea_request_model import EaData
-from ea_server.engine.components.crossover.crossover import Crossover
+from ea_server.model.ea_request_model import EaData
+from ea_server.engine.components.crossover.cx import Crossover
 from ea_server.engine.components.fitness.fit import Fitness
-from ea_server.engine.components.mut import Mutate
+from ea_server.engine.components.mutates.mut import Mutate
 from ea_server.engine.components.selection.sel import Selection
 
 creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
@@ -51,19 +51,16 @@ class EA:
         return self
 
     def set_crossover(self, crossover_name: str, **kwargs):
-        Crossover.validate(crossover_name, **kwargs)
         self.crossover_type = Crossover.get(crossover_name)
         self.crossover_kwargs = kwargs
         return self
 
     def set_mutate(self, mutate_name: str, **kwargs):
-        Mutate.validate(mutate_name, **kwargs)
         self.mutate_type = Mutate.get(mutate_name)
         self.mutate_kwargs = kwargs
         return self
 
     def set_selection(self, selection_name: str, **kwargs):
-        Selection.validate(selection_name, **kwargs)
         self.selection_type = Selection.get(selection_name)
         self.selection_kwargs = kwargs
         return self

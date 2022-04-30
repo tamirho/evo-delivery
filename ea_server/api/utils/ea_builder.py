@@ -1,5 +1,4 @@
 from ea_server.engine.ea import EA
-from werkzeug.datastructures import MultiDict
 
 
 class EABuilder:

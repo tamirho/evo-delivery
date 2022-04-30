@@ -10,9 +10,9 @@ class KwargModel:
     description: str
 
 
-# class representation of possible Deap function to choose
+# class representation of possible EA functions to choose
 @dataclass
-class DeapFunctionModel:
+class EaFunctionModel:
     function: Callable
     description: str
     kwargs: List[KwargModel]

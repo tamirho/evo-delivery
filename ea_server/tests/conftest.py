@@ -28,13 +28,13 @@ def api_version():
 
 @pytest.fixture()
 def ea_url(api_version):
-    return f'/api/{api_version}/ea'
+    return f'/api/{api_version}/evaluate'
 
 
 @pytest.fixture()
 def test_data():
     return {
-        "data": {
+        "model": {
             "drivers": [
                 {
                     "id": "11",
