@@ -1,11 +1,11 @@
 import random
 from deap import algorithms, base, creator, tools
 
-from ea_server.data.ea_request_model import EaRequestModel, EaData
-from ea_server.engine.cx import Crossover
-from ea_server.engine.fit import Fitness
-from ea_server.engine.mut import Mutate
-from ea_server.engine.sel import Selection
+from ea_server.data.ea_request_model import EaData
+from ea_server.engine.components.crossover.crossover import Crossover
+from ea_server.engine.components.fitness.fit import Fitness
+from ea_server.engine.components.mut import Mutate
+from ea_server.engine.components.selection.sel import Selection
 
 creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
 creator.create("Individual", list, fitness=creator.FitnessMin)

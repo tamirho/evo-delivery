@@ -4,9 +4,9 @@ from werkzeug.datastructures import MultiDict
 
 class EABuilder:
     def __init__(self):
-        self.data = {}
+        self.data = None
         self.kwargs = {}
-        self.args = MultiDict[str, str]()
+        self.args = None
         self.ea = None
         pass
 
@@ -14,7 +14,7 @@ class EABuilder:
         self.data = data
         return self
 
-    def with_args(self, args: MultiDict[str, str]):
+    def with_args(self, args):
         self.args = args
         return self
 

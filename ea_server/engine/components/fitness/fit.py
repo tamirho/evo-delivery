@@ -2,7 +2,7 @@ import inspect
 from enum import Enum
 
 from ea_server.api.utils.constans import DEFAULT_BOUNDED_DISTANCE, BOUND, BOUNDED_DISTANCE, POWER
-from ea_server.engine.fit_helper import bounded_distance_strategy, power_strategy
+from ea_server.engine.components.fitness.fit_helper import bounded_distance_strategy, power_strategy
 
 
 class FitnessType(Enum):
