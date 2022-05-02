@@ -34,7 +34,7 @@ def ea_url(api_version):
 @pytest.fixture()
 def test_data():
     return {
-        "model": {
+        "data": {
             "drivers": [
                 {
                     "id": "11",
