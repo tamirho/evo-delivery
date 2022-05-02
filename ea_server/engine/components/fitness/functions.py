@@ -1,35 +1,36 @@
 import math
 from operator import itemgetter
 
-from ea_server.api.utils.constans import INIT_ORDER_ID
-from ea_server.data.ea_request_model import EaData
+from ea_server.api.utils.constans import INIT_ORDER_ID, BOUND, POWER
+from ea_server.model.ea_function_model import EaFunctionModel, KwargModel
+from ea_server.model.ea_request_model import EaData
 
 
-def bounded_distance_strategy(data: EaData, individual):
+def __bounded_distance_strategy(data: EaData, individual, bound):
     drivers_total_distance, drivers_total_weight = \
-        calculate_routes_distance_and_weight_from_individual(data, individual)
+        __calculate_routes_distance_and_weight_from_individual(data, individual)
 
-    infeas_num_weight, over_weight = weight_penalty(data.drivers, drivers_total_weight)
-    infeas_num_distance, over_distance = distance_penalty(data.drivers, drivers_total_distance)
+    infeas_num_weight, over_weight = __weight_penalty(data.drivers, drivers_total_weight)
+    infeas_num_distance, over_distance = __distance_penalty(data.drivers, drivers_total_distance)
 
-    # todo make this numbers configurable
-    return (100000 - sum(drivers_total_distance)) / 100000 + \
+    return (bound - sum(drivers_total_distance)) / bound + \
            (over_weight * infeas_num_weight + over_distance * infeas_num_distance)
 
 
-def power_strategy(data: EaData, individual):
+def __power_strategy(data: EaData, individual, power):
+    if power < 0:
+        raise ValueError("Power can't be negative value")
     drivers_total_distance, drivers_total_weight = \
-        calculate_routes_distance_and_weight_from_individual(data, individual)
+        __calculate_routes_distance_and_weight_from_individual(data, individual)
 
-    infeas_num_weight, over_weight = weight_penalty(data.drivers, drivers_total_weight)
-    infeas_num_distance, over_distance = distance_penalty(data.drivers, drivers_total_distance)
+    infeas_num_weight, over_weight = __weight_penalty(data.drivers, drivers_total_weight)
+    infeas_num_distance, over_distance = __distance_penalty(data.drivers, drivers_total_distance)
 
-    # todo make this numbers configurable
     return sum(drivers_total_distance) + (
-            pow(over_weight, 2) + pow(over_distance, 2)) * (infeas_num_distance + infeas_num_weight)
+            pow(over_weight, power) + pow(over_distance, power)) * (infeas_num_distance + infeas_num_weight)
 
 
-def weight_penalty(drivers_data, drivers_total_weight):
+def __weight_penalty(drivers_data, drivers_total_weight):
     infeas_num = 0
     over_weight = 0
     for driver_index, total_weight in enumerate(drivers_total_weight):
@@ -40,7 +41,8 @@ def weight_penalty(drivers_data, drivers_total_weight):
 
     return infeas_num, over_weight
 
-def distance_penalty(drivers_data, drivers_total_distance):
+
+def __distance_penalty(drivers_data, drivers_total_distance):
     infeas_num = 0
     over_distance = 0
     for driver_index, total_distance in enumerate(drivers_total_distance):
@@ -52,7 +54,7 @@ def distance_penalty(drivers_data, drivers_total_distance):
     return infeas_num, over_distance
 
 
-def calculate_routes_distance_and_weight_from_individual(data, individual):
+def __calculate_routes_distance_and_weight_from_individual(data, individual):
     indexed_individual = list(enumerate(individual))
     sorted_individual = sorted(indexed_individual, key=itemgetter(1))
 
@@ -76,3 +78,16 @@ def calculate_routes_distance_and_weight_from_individual(data, individual):
         drivers_total_distance[index] += data.get_distance(prev_order, INIT_ORDER_ID)
 
     return drivers_total_distance, drivers_total_weight
+
+
+bound = EaFunctionModel(function=__bounded_distance_strategy,
+                        description="",
+                        kwargs=[KwargModel(name=BOUND,
+                                           description="The maximum travel distance that all the drivers will do togther",
+                                           type="int")])
+
+power = EaFunctionModel(function=__power_strategy,
+                        description="",
+                        kwargs=[KwargModel(name=POWER,
+                                           description="",
+                                           type="int")])

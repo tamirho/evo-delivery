@@ -12,7 +12,7 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
 
     # Import Blueprints
-    from ea_server.api import routes
+    from ea_server.api.routes import evaluate_blueprint, components_blueprint
 
     @app.errorhandler(HTTPException)
     def handle_exception(e):
@@ -27,6 +27,7 @@ def create_app(config_class=Config):
         return response
 
     # Register Blueprints
-    app.register_blueprint(routes.api_v1_blueprint)
+    app.register_blueprint(evaluate_blueprint.evaluate_blueprint, url_prefix='/api/v1')
+    app.register_blueprint(components_blueprint.components_blueprint, url_prefix='/api/v1')
 
     return app

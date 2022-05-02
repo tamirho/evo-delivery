@@ -1,7 +1,7 @@
 import pytest
 from dacite import from_dict, MissingValueError
 
-from ea_server.data.ea_request_model import EaData, Driver, Order
+from ea_server.model.ea_request_model import EaData, Driver, Order
 
 
 def test_valid_data(valid_data, expected_data_model):

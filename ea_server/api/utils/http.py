@@ -1,7 +1,7 @@
 import json
 from dacite import from_dict
 
-from ea_server.data.ea_request_model import EaRequestModel
+from ea_server.model.ea_request_model import EaRequestModel
 
 
 def get_json_body_from_request(request_obj):

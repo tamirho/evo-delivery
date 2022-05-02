@@ -1,7 +1,7 @@
 import math
 from operator import itemgetter
 
-from ea_server.data.ea_request_model import EaData
+from ea_server.model.ea_request_model import EaData
 
 
 def parse_result(result, data: EaData):
@@ -12,7 +12,7 @@ def parse_result(result, data: EaData):
         "driver_id2":[orderId , orderId,...],
         "driver_id3":[orderId , orderId,...]
     }
-    The object with current data:
+    The object with current model:
     {
         "11": ["4", "1"],
         "12": ["5", "6"],
