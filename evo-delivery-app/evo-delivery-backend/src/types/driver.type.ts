@@ -3,4 +3,6 @@ export type Driver = {
   name: string;
   maxCapacity: number;
   maxLength: number;
+  createdAt:Date;
+  updatedAt:Date;
 };

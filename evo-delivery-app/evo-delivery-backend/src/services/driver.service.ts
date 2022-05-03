@@ -9,7 +9,7 @@ export const getDriver = async (id: string) => {
   return DRIVERS[parseInt(id) % 2] as Driver;
 };
 
-export const createDriver = async (driver: Driver) => {
+export const createDriver = async (driver: Partial<Driver>) => {
   return DRIVERS.push(driver);
 };
 

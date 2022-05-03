@@ -1,6 +1,6 @@
 import { Driver } from '../types';
 
-export const DRIVERS: Driver[] = [
+export const DRIVERS: Partial<Driver>[] = [
   {
     id: '1',
     name: 'Tamir',

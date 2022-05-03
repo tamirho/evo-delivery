@@ -5,4 +5,6 @@ export type Order = {
   shippingAddress: Address;
   shippingDate: Date;
   weight: number;
+  createdAt:Date;
+  updatedAt:Date;
 };
