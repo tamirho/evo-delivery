@@ -1,13 +1,14 @@
 import { Driver } from '../types';
 import { DRIVERS } from './tmp-data';
 import driverModel, { IDriver } from '../database/models/driver.model';
+import mongoose from 'mongoose';
 
 export const getDrivers = async (query, page, limit) => {
   return driverModel.find();
 };
 
 export const getDriver = async (id: string) => {
-  return driverModel.find({id:id})
+  return driverModel.findById({_id:id})
 };
 
 export const createDriver = async (driver: Partial<Driver>) => {
