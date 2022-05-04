@@ -15,8 +15,6 @@ app.listen(PORT, () => {
 });
 
 connect()
-
 async function connect () {
   await mongoose.connect("mongodb://localhost:27017/Test",{connectTimeoutMS: 3000},() => console.log("connected to database"))
 }
-
