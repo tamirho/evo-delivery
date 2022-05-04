@@ -1,16 +1,18 @@
 import { Driver } from '../types';
 import { DRIVERS } from './tmp-data';
+import driverModel, { IDriver } from '../database/models/driver.model';
 
 export const getDrivers = async (query, page, limit) => {
-  return DRIVERS as Driver[];
+  return driverModel.find();
 };
 
 export const getDriver = async (id: string) => {
-  return DRIVERS[parseInt(id) % 2] as Driver;
+  return driverModel.find({id:id})
 };
 
 export const createDriver = async (driver: Partial<Driver>) => {
-  return DRIVERS.push(driver);
+  const res = (await driverModel.create(driver as IDriver)).save()
+  return res;
 };
 
 export const updateDriver = async (id: string, driver: Partial<Driver>) => {

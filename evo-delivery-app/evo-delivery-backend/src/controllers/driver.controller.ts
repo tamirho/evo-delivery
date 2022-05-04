@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { IDriver } from '../database/models/driver.model';
 import { driverService } from '../services';
 import { Driver } from '../types';
 import { INVALID, OK } from '../utils/response.utils';
@@ -9,6 +10,7 @@ export const getDrivers = async (req: Request, res: Response) => {
 
   try {
     const drivers = await driverService.getDrivers({}, page, limit);
+    console.log("gert");
     return res.status(200).json(OK(drivers));
   } catch (e: any) {
     return res.status(400).json(INVALID(400, e.message));
@@ -27,7 +29,8 @@ export const getDriver = async (req: Request, res: Response) => {
 };
 
 export const createDriver = async (req: Request, res: Response) => {
-  const driverDetails: Partial<Driver> = req.body.driver;
+  const driverDetails :IDriver = req.body;
+  console.log(driverDetails)
 
   try {
     const driver = await driverService.createDriver(driverDetails);
