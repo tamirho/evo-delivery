@@ -1,7 +1,7 @@
 import { Driver } from '../types';
 import { DRIVERS } from './tmp-data';
 
-export const getDrivers = async (query, page, limit) => {
+export const getDrivers = async (query, page: number, limit: number) => {
   return DRIVERS as Driver[];
 };
 
