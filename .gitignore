@@ -20,3 +20,5 @@
 *.rar
 
 .vscode/
+
+.idea/

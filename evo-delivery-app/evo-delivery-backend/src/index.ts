@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import express, { Express } from 'express';
 import { json } from 'body-parser';
 import { apiRouter } from './routes';
