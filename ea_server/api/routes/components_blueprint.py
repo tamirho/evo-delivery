@@ -1,4 +1,6 @@
 from flask import Blueprint
+from werkzeug.exceptions import BadRequest
+
 from ea_server.engine.components.crossover.cx import Crossover
 from ea_server.engine.components.fitness.fit import Fitness
 from ea_server.engine.components.mutates.mut import Mutate
@@ -18,5 +20,7 @@ def get_component_types(component):
         types = Mutate.get_details()
     elif component == 'crossover':
         types = Crossover.get_details()
+    else:
+        raise BadRequest("Invalid component name")
 
     return {"types": types}

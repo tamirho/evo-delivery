@@ -16,7 +16,7 @@ class Fitness(EaComponent):
         FitnessType.Power: power
     }
 
-    enum_type = FitnessType
+    type_enum = FitnessType
 
     @classmethod
     def default(cls):

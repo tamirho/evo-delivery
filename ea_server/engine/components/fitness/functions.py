@@ -80,6 +80,7 @@ def __calculate_routes_distance_and_weight_from_individual(data, individual):
     return drivers_total_distance, drivers_total_weight
 
 
+# todo: add description
 bound = EaFunctionModel(function=__bounded_distance_strategy,
                         description="",
                         kwargs=[KwargModel(name=BOUND,
@@ -87,7 +88,7 @@ bound = EaFunctionModel(function=__bounded_distance_strategy,
                                            type="int")])
 
 power = EaFunctionModel(function=__power_strategy,
-                        description="",
+                        description="Need to be added",
                         kwargs=[KwargModel(name=POWER,
                                            description="",
                                            type="int")])
