@@ -5,6 +5,7 @@ export type RegularAddress = {
   buildingNumber: number;
   apartmentNumber: number;
   postalCode: number;
+  coordinates: CoordinatesAddress;
 };
 
 export type CoordinatesAddress = {

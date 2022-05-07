@@ -1,27 +1,22 @@
 import { Driver } from '../types';
-import { DRIVERS } from './tmp-data';
 import driverModel, { IDriver } from '../database/models/driver.model';
-import mongoose from 'mongoose';
 
-export const getDrivers = async (query, page, limit) => {
-  return driverModel.find();
+export const getDrivers = async (filter: Object, page:number, limit:number) => {
+  return await driverModel.find({},null,{limit:limit});
 };
 
-export const getDriver = async (id: string) => {
-  return driverModel.findById({_id:id})
+export const getDriver = async (driverId: string) => {
+  return await driverModel.findById({_id:driverId})
 };
 
 export const createDriver = async (driver: Partial<Driver>) => {
-  const res = (await driverModel.create(driver as IDriver)).save()
-  return res;
+  return (await driverModel.create(driver as IDriver)).save()
 };
 
-export const updateDriver = async (id: string, driver: Partial<Driver>) => {
-  const prevDriver = DRIVERS[parseInt(id) % 2];
-  DRIVERS[parseInt(id) % 2] = { ...prevDriver, ...driver };
-  return {};
+export const updateDriver = async (driverId: string, driver: Partial<Driver>) => {
+  return await driverModel.findOneAndUpdate({_id:driverId}, driver as IDriver, {returnOriginal: false})
 };
 
 export const deleteDriver = async (id: string) => {
-  return {};
+  return await driverModel.deleteOne({_id:id})
 };

@@ -1,5 +1,6 @@
-import mongoose,{Document, Schema} from "mongoose";
-export interface IDriver extends Document{
+import mongoose,{Schema} from "mongoose";
+
+export interface IDriver{
     _id?: mongoose.Types.ObjectId;
     name: string;
     maxCapacity: number;
