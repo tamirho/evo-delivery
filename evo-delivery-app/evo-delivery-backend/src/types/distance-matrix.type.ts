@@ -11,4 +11,4 @@ export type DistanceMatrixColumnData = {
     duration: DistanceMatrixAttributes;
 }
 
-export type DistanceMatrixAttributes = {text: string, value: number};
+export type DistanceMatrixAttributes = { text: string, value: number };

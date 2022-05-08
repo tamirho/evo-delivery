@@ -1,6 +1,6 @@
-import {Client, DistanceMatrixResponse, DistanceMatrixResponseData} from "@googlemaps/google-maps-services-js";
-import {Order, DistanceMatrix, DistanceMatrixColumnData, DistanceMatrixRowData} from "../types";
-import {GoogleMatrixClient} from "./GoogleMatrixClient";
+import { Client, DistanceMatrixResponse, DistanceMatrixResponseData } from "@googlemaps/google-maps-services-js";
+import { Order, DistanceMatrix, DistanceMatrixColumnData, DistanceMatrixRowData } from "../types";
+import { GoogleMatrixClient } from "./GoogleMatrixClient";
 
 export class GoogleMatrixClientImpl implements GoogleMatrixClient {
     private client;
@@ -34,14 +34,14 @@ export class GoogleMatrixClientImpl implements GoogleMatrixClient {
     private parseResponse(response: DistanceMatrixResponseData, originArr: Order[], destinationArr: Order[]): DistanceMatrix {
         if (response.status !== 'OK') throw Error
 
-        return response.rows.reduce((distanceMatrix, {elements}, i) => {
+        return response.rows.reduce((distanceMatrix, { elements }, i) => {
             const originId = originArr[i].id
 
-            distanceMatrix[originId] = elements.reduce((distanceObj, {distance, duration, status}, j) => {
+            distanceMatrix[originId] = elements.reduce((distanceObj, { distance, duration, status }, j) => {
                 if (status !== 'OK') throw Error
                 const destinationId = destinationArr[j].id
 
-                distanceObj[destinationId] = {distance, duration} as DistanceMatrixColumnData
+                distanceObj[destinationId] = { distance, duration } as DistanceMatrixColumnData
                 return distanceObj
             }, {} as DistanceMatrixRowData);
 
