@@ -1,11 +1,6 @@
-import { DistanceMatrix, EaComponentDetails, EaComponentTypes } from '../types';
-
-
-export type EaEvaluateResponse = {
-
-};
+import { DistanceMatrix, Driver, EaComponentDetails, EaComponentTypes, EaEvaluateResponse, Order } from '../types';
 
 export interface EaClient {
-    evaluate: (distanceMatrix: DistanceMatrix) => Promise<EaEvaluateResponse>
-    getComponentTypes: (componentType: EaComponentTypes) => Promise<EaComponentDetails[]>
+	evaluate: (drivers: Driver[], orders: Order[], distanceMatrix: DistanceMatrix) => Promise<EaEvaluateResponse>;
+	getComponentTypes: (componentType: EaComponentTypes) => Promise<EaComponentDetails[]>;
 }

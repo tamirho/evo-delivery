@@ -1,9 +1,10 @@
-import 'dotenv/config'
+import 'dotenv/config';
 import express, { Express } from 'express';
 import { json } from 'body-parser';
 import { apiRouter } from './routes';
-import { eaClient } from './clients';
+import { eaClient, googleMatrixClient } from './clients';
 import { EaComponentTypes } from './types';
+import { DRIVERS, ORDERS } from './services/tmp-data';
 
 const app: Express = express();
 
@@ -12,13 +13,14 @@ app.use(json());
 app.use('/api', apiRouter);
 
 app.get('/test', async (req, res) => {
-
-  console.log("Fetch types from ea server");
-  const response = await eaClient.getComponentTypes(EaComponentTypes.CROSSOVER);
-  console.log(response);
-  res.send(response);
-})
+	console.log('googleMatrixClient');
+	const distanceMatrix = await googleMatrixClient.getDistance(ORDERS as any, ORDERS as any);
+  console.log('eaClient.evaluate');
+	const response = await eaClient.evaluate(DRIVERS as any, ORDERS as any, distanceMatrix);
+	console.log(response);
+	res.send(response);
+});
 
 app.listen(PORT, () => {
-  console.log(`server is listening on port ${PORT}`);
+	console.log(`server is listening on port ${PORT}`);
 });
