@@ -1,8 +1,8 @@
 import axios from 'axios'
-import { HttpClientRequestParameters } from './HttpClient';
+import { HttpClient, HttpClientRequestParameters } from './HttpClient';
 
 
-export class HttpClientImpl implements HttpClientImpl {
+export class AxiosHttpClient implements HttpClient {
 
     async get<T, S>(parameters: HttpClientRequestParameters<S>): Promise<T> {
         try {
