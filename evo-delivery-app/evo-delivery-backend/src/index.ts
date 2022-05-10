@@ -12,6 +12,7 @@ const PORT: string | number = process.env.PORT || 3000;
 app.use(json());
 app.use('/api', apiRouter);
 
+// test - should be removed
 app.get('/test', async (req, res) => {
   const ordersAndStart = [
     ...ORDERS,
@@ -35,7 +36,6 @@ app.get('/test', async (req, res) => {
     { selectionKwargs: { tournsize: 2 } }
   );
 
-  console.log(response);
   res.send(response);
 });
 
