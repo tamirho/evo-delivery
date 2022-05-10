@@ -13,14 +13,32 @@ app.use(json());
 app.use('/api', apiRouter);
 
 app.get('/test', async (req, res) => {
-	console.log('googleMatrixClient');
-	const distanceMatrix = await googleMatrixClient.getDistance(ORDERS as any, ORDERS as any);
-  console.log('eaClient.evaluate');
-	const response = await eaClient.evaluate(DRIVERS as any, ORDERS as any, distanceMatrix);
-	console.log(response);
-	res.send(response);
+  const ordersAndStart = [
+    ...ORDERS,
+    {
+      id: '0',
+      shippingAddress: 'Lod',
+      weight: 0,
+    },
+  ];
+
+  const distanceMatrix = await googleMatrixClient.getDistance(
+    ordersAndStart as any,
+    ordersAndStart as any
+  );
+
+  const response = await eaClient.evaluate(
+    DRIVERS as any,
+    ORDERS as any,
+    distanceMatrix,
+    { selection: 'tournament' },
+    { selectionKwargs: { tournsize: 2 } }
+  );
+
+  console.log(response);
+  res.send(response);
 });
 
 app.listen(PORT, () => {
-	console.log(`server is listening on port ${PORT}`);
+  console.log(`server is listening on port ${PORT}`);
 });

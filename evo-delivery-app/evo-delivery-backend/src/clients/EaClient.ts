@@ -1,6 +1,23 @@
-import { DistanceMatrix, Driver, EaComponentDetails, EaComponentTypes, EaEvaluateResponse, Order } from '../types';
+import {
+  DistanceMatrix,
+  Driver,
+  EaComponentDetails,
+  EaComponentTypes,
+  EaEvaluateArgs,
+  EaEvaluateHttpResponse,
+  EaEvaluateKwargs,
+  Order,
+} from '../types';
 
 export interface EaClient {
-	evaluate: (drivers: Driver[], orders: Order[], distanceMatrix: DistanceMatrix) => Promise<EaEvaluateResponse>;
-	getComponentTypes: (componentType: EaComponentTypes) => Promise<EaComponentDetails[]>;
+  evaluate: (
+    drivers: Driver[],
+    orders: Order[],
+    distanceMatrix: DistanceMatrix,
+    args?: EaEvaluateArgs,
+    kwargs?: EaEvaluateKwargs
+  ) => Promise<EaEvaluateHttpResponse>;
+  getComponentTypes: (
+    componentType: EaComponentTypes
+  ) => Promise<EaComponentDetails[]>;
 }
