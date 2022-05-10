@@ -24,10 +24,10 @@ class EA:
         self.mutpd = 0.2
         self.num_drivers = len(data.drivers)
         self.num_orders = len(data.orders)
-        self.crossover_type, self.crossover_kwargs = Crossover.default()
-        self.mutate_type, self.mutate_kwargs = Mutate.default()
-        self.selection_type, self.selection_kwargs = Selection.default()
-        self.fitness_type, self.fitness_kwargs = Fitness.default()
+        self.crossover_func, self.crossover_kwargs = Crossover.default()
+        self.mutate_func, self.mutate_kwargs = Mutate.default()
+        self.selection_func, self.selection_kwargs = Selection.default()
+        self.fitness_func, self.fitness_kwargs = Fitness.default()
         self.__pop = None
 
     def build(self):
@@ -37,9 +37,9 @@ class EA:
                                 creator.Individual, self.__toolbox.indices, n=self.num_orders)
         self.__toolbox.register("population", tools.initRepeat, list, self.__toolbox.individual)
         self.__toolbox.register("evaluate", self._evaluation)
-        self.__toolbox.register("mate", self.crossover_type, **self.crossover_kwargs)
-        self.__toolbox.register("mutate", self.mutate_type, **self.mutate_kwargs)
-        self.__toolbox.register("select", self.selection_type, **self.selection_kwargs)
+        self.__toolbox.register("mate", self.crossover_func, **self.crossover_kwargs)
+        self.__toolbox.register("mutate", self.mutate_func, **self.mutate_kwargs)
+        self.__toolbox.register("select", self.selection_func, **self.selection_kwargs)
         self.__pop = self.__toolbox.population(n=self.pop_size)
 
     def set_num_orders(self, num_orders: int):
@@ -51,22 +51,22 @@ class EA:
         return self
 
     def set_crossover(self, crossover_name: str, **kwargs):
-        self.crossover_type = Crossover.get(crossover_name)
+        self.crossover_func = Crossover.get(crossover_name).function
         self.crossover_kwargs = kwargs
         return self
 
     def set_mutate(self, mutate_name: str, **kwargs):
-        self.mutate_type = Mutate.get(mutate_name)
+        self.mutate_func = Mutate.get(mutate_name).function
         self.mutate_kwargs = kwargs
         return self
 
     def set_selection(self, selection_name: str, **kwargs):
-        self.selection_type = Selection.get(selection_name)
+        self.selection_func = Selection.get(selection_name).function
         self.selection_kwargs = kwargs
         return self
 
     def set_fitness(self, fitness_name: str, **kwargs):
-        self.fitness_type = Fitness.get(fitness_name)
+        self.fitness_func = Fitness.get(fitness_name).function
         self.fitness_kwargs = kwargs
         return self
 
@@ -97,6 +97,6 @@ class EA:
 
     def _evaluation(self, individual):
         # individual example: [(0, 0.32), (1, 0.43), (2, 1.45)]
-        fitness = self.fitness_type(self.data, individual, **self.fitness_kwargs)
+        fitness = self.fitness_func(self.data, individual, **self.fitness_kwargs)
 
         return (fitness,)
