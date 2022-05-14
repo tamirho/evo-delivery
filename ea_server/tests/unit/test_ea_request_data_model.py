@@ -9,6 +9,12 @@ def test_valid_data(valid_data, expected_data_model):
     assert ea_data == expected_data_model
 
 
+def test_missing_order_id(missing_order_id_data):
+    with pytest.raises(MissingValueError) as exp:
+        from_dict(data_class=EaData, data=missing_order_id_data)
+    assert """missing value for field "root_id""""" in str(exp.value)
+
+
 def test_invalid_driver(missing_driver_data):
     with pytest.raises(MissingValueError) as exp:
         from_dict(data_class=EaData, data=missing_driver_data)
@@ -39,10 +45,12 @@ def expected_data_model():
                     "1": 99,
                 },
                 "1": {
-                    "0": 1,
-                    "1": 99
+                    "0": 99,
+                    "1": 00
                 }
-        })
+        },
+        root_id="0"
+    )
 
 
 @pytest.fixture()
@@ -72,10 +80,11 @@ def valid_data():
                 "1": 99,
             },
             "1": {
-                "0": 1,
-                "1": 99
+                "0": 99,
+                "1": 0
             }
-        }
+        },
+        "root_id": "0"
     }
 
 @pytest.fixture()
@@ -118,7 +127,8 @@ def missing_driver_data():
                 "1": 99,
                 "2": 0,
             }
-        }
+        },
+        "root_id": "0"
     }
 
 @pytest.fixture()
@@ -157,7 +167,8 @@ def missing_order_distances_data():
                 "1": 99,
                 "2": 0,
             }
-        }
+        },
+        "root_id": "0"
     }
 
 @pytest.fixture()
@@ -199,6 +210,40 @@ def missing_to_order_distance():
             "2": {
                 "0": 1,
                 "1": 99,
+            }
+        },
+        "root_id": "0"
+    }
+
+@pytest.fixture()
+def missing_order_id_data():
+    return {
+        "drivers": [
+            {
+                "id": "11",
+                "max_capacity": 6,
+                "max_distance": 8
+            },
+            {
+                "id": "12",
+                "max_capacity": 6,
+                "max_distance": 7
+            },
+        ],
+        "orders": [
+            {
+                "id": "1",
+                "weight": 5
+            }
+        ],
+        "distances": {
+            "0": {
+                "0": 0,
+                "1": 99,
+            },
+            "1": {
+                "0": 99,
+                "1": 0
             }
         }
     }

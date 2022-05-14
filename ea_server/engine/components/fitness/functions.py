@@ -1,7 +1,7 @@
 import math
 from operator import itemgetter
 
-from ea_server.api.utils.constans import INIT_ORDER_ID, BOUND, POWER
+from ea_server.api.utils.constans import BOUND, POWER
 from ea_server.model.ea_function_model import EaFunctionModel, KwargModel
 from ea_server.model.ea_request_model import EaData
 
@@ -54,14 +54,14 @@ def __distance_penalty(drivers_data, drivers_total_distance):
     return infeas_num, over_distance
 
 
-def __calculate_routes_distance_and_weight_from_individual(data, individual):
+def __calculate_routes_distance_and_weight_from_individual(data: EaData, individual):
     indexed_individual = list(enumerate(individual))
     sorted_individual = sorted(indexed_individual, key=itemgetter(1))
 
     num_drivers = len(data.drivers)
     drivers_total_distance = [0] * num_drivers
     drivers_total_weight = [0] * num_drivers
-    prev_order_per_driver = [INIT_ORDER_ID] * num_drivers
+    prev_order_per_driver = [data.root_id] * num_drivers
 
     for order_index, gen in sorted_individual:
         driver_index = math.floor(gen)
@@ -75,7 +75,7 @@ def __calculate_routes_distance_and_weight_from_individual(data, individual):
 
     # calculate the distance from the last order to the initial spot
     for index, prev_order in enumerate(prev_order_per_driver):
-        drivers_total_distance[index] += data.get_distance(prev_order, INIT_ORDER_ID)
+        drivers_total_distance[index] += data.get_distance(prev_order, data.root_id)
 
     return drivers_total_distance, drivers_total_weight
 

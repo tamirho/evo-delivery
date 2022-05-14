@@ -1,6 +1,4 @@
 # evaluation
-INIT_ORDER_ID = "0"
-
 # ----------------------------------------------
 
 # fitness types
