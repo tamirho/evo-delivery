@@ -25,6 +25,7 @@ export type EaEvaluateHttpRequestData = {
   drivers: EaHttpRequestDriver[];
   orders: EaHttpRequestOrder[];
   distances: EaHttpRequestDistances;
+  root_id: string;
 };
 
 export type EaEvaluateHttpRequestKwargs = {

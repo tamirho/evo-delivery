@@ -9,18 +9,24 @@ import {
   EaEvaluateHttpRequestArgs,
   EaEvaluateKwargs,
   EaEvaluateHttpRequestKwargs,
+  IdWithAddress,
 } from '../../types';
 import { convertObjCamelToSnakeCase } from '../../utils';
 
 export interface EaHttpConverter {
-    convertDriver(driver: Driver): EaHttpRequestDriver
-    convertOrder(order: Order): EaHttpRequestOrder
-    convertDistances(distanceMatrix: DistanceMatrix): EaHttpRequestDistances
-    convertArgs(args: EaEvaluateArgs): EaEvaluateHttpRequestArgs
-    convertKwargs(kwargs: EaEvaluateKwargs): EaEvaluateHttpRequestKwargs
+  convertRoot(rootAddress: IdWithAddress): string;
+  convertDriver(driver: Driver): EaHttpRequestDriver;
+  convertOrder(order: Order): EaHttpRequestOrder;
+  convertDistances(distanceMatrix: DistanceMatrix): EaHttpRequestDistances;
+  convertArgs(args: EaEvaluateArgs): EaEvaluateHttpRequestArgs;
+  convertKwargs(kwargs: EaEvaluateKwargs): EaEvaluateHttpRequestKwargs;
 }
 
 export class EaHttpConverterImpl implements EaHttpConverter {
+  convertRoot(rootAddress: IdWithAddress): string {
+    return rootAddress.id;
+  }
+
   convertDriver({ id, maxCapacity, maxDistance }: Driver) {
     return convertObjCamelToSnakeCase({
       id,

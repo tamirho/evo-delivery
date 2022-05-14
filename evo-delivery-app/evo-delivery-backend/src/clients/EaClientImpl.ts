@@ -13,9 +13,9 @@ import {
   EaHttpRequestDistances,
   EaHttpRequestDriver,
   EaHttpRequestOrder,
+  IdWithAddress,
   Order,
 } from '../types';
-import { convertObjCamelToSnakeCase } from '../utils';
 import { EaClient } from './EaClient';
 import { HttpClient } from './HttpClient';
 import { EaHttpConverter } from './utils/EaHttpConverter';
@@ -39,6 +39,7 @@ export class EaClientImpl implements EaClient {
   evaluate(
     _drivers: Driver[],
     _orders: Order[],
+    _rootAddress: IdWithAddress,
     _distances: DistanceMatrix,
     _args: EaEvaluateArgs = {},
     _kwargs: EaEvaluateKwargs = {}
@@ -59,8 +60,10 @@ export class EaClientImpl implements EaClient {
     const kwargs: EaEvaluateHttpRequestKwargs =
       this.converter.convertKwargs(_kwargs);
 
+    const root_id = this.converter.convertRoot(_rootAddress);
+
     const body: EaEvaluateRequestBody = {
-      data: { drivers, orders, distances },
+      data: { drivers, orders, distances, root_id },
       kwargs,
     };
 

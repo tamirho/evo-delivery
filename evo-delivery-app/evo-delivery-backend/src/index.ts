@@ -14,13 +14,12 @@ app.use('/api', apiRouter);
 
 // test - should be removed
 app.get('/test', async (req, res) => {
-  const ordersAndStart = [
-    ...ORDERS,
-    {
-      id: '0',
-      address: 'Lod',
-    },
-  ];
+  const rootAddress = {
+    id: '0',
+    address: 'Lod',
+  };
+
+  const ordersAndStart = [...ORDERS, rootAddress];
 
   const distanceMatrix = await googleMatrixClient.getDistance(
     ordersAndStart as any,
@@ -30,6 +29,7 @@ app.get('/test', async (req, res) => {
   const response = await eaClient.evaluate(
     DRIVERS as any,
     ORDERS as any,
+    rootAddress,
     distanceMatrix,
     { selection: 'tournament' },
     { selectionKwargs: { tournsize: 2 } }

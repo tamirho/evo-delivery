@@ -98,7 +98,8 @@ export class AxiosHttpClient implements HttpClient {
 
       const printable = `${new Date()} | Request: ${x.method.toUpperCase()} | ${
         x.url
-      }
+      } 
+      Params: ${JSON.stringify(x.params)}
       Headers: ${JSON.stringify(headers)}
       Data: ${JSON.stringify(x.data)}`;
 
