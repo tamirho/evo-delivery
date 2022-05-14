@@ -9,6 +9,7 @@ import {
   EaEvaluateHttpRequestKwargs,
   EaEvaluateHttpResponse,
   EaEvaluateKwargs,
+  EaEvaluateRequestBody,
   EaHttpRequestDistances,
   EaHttpRequestDriver,
   EaHttpRequestOrder,
@@ -17,56 +18,22 @@ import {
 import { convertObjCamelToSnakeCase } from '../utils';
 import { EaClient } from './EaClient';
 import { HttpClient } from './HttpClient';
+import { EaHttpConverter } from './utils/EaHttpConverter';
 
 export class EaClientImpl implements EaClient {
   private readonly httpClient: HttpClient;
+  private readonly converter: EaHttpConverter;
   private readonly baseUrl: string;
   private readonly apiUrlPrefix: string = EA_ENGINE_API_V1_URL;
 
-  constructor(httpClient: HttpClient, baseUrl: string) {
+  constructor(
+    httpClient: HttpClient,
+    converter: EaHttpConverter,
+    baseUrl: string
+  ) {
     this.httpClient = httpClient;
+    this.converter = converter;
     this.baseUrl = baseUrl;
-  }
-
-  private convertToEaHttpDriver({ id, maxCapacity, maxDistance }: Driver) {
-    return convertObjCamelToSnakeCase({
-      id,
-      maxCapacity,
-      maxDistance,
-    }) as EaHttpRequestDriver;
-  }
-
-  private convertToEaHttpOrder({ id, weight }: Order) {
-    return convertObjCamelToSnakeCase({
-      id,
-      weight,
-    }) as EaHttpRequestOrder;
-  }
-
-  private convertToEaHttpDistances(distanceMatrix: DistanceMatrix) {
-    return Object.entries(distanceMatrix).reduce(
-      (distancesAccumulator, [from, rowData]) => {
-        distancesAccumulator[from] = Object.entries(rowData).reduce(
-          (rowDataAccumulator, [to, colData]) => {
-            rowDataAccumulator[to] = colData.distance.value;
-            return rowDataAccumulator;
-          },
-          {}
-        );
-        return distancesAccumulator;
-      },
-      {}
-    ) as EaHttpRequestDistances;
-  }
-
-  private convertToEaHttpArgs(args: EaEvaluateArgs): EaEvaluateHttpRequestArgs {
-    return convertObjCamelToSnakeCase(args);
-  }
-
-  private convertToEaHttpKwargs(
-    kwargs: EaEvaluateKwargs
-  ): EaEvaluateHttpRequestKwargs {
-    return convertObjCamelToSnakeCase(kwargs);
   }
 
   evaluate(
@@ -77,25 +44,32 @@ export class EaClientImpl implements EaClient {
     _kwargs: EaEvaluateKwargs = {}
   ): Promise<EaEvaluateHttpResponse> {
     const drivers: EaHttpRequestDriver[] = _drivers.map(
-      this.convertToEaHttpDriver
+      this.converter.convertDriver
     );
-    const orders: EaHttpRequestOrder[] = _orders.map(this.convertToEaHttpOrder);
-    const distances: EaHttpRequestDistances =
-      this.convertToEaHttpDistances(_distances);
 
-    const params: EaEvaluateHttpRequestArgs = this.convertToEaHttpArgs(_args);
+    const orders: EaHttpRequestOrder[] = _orders.map(
+      this.converter.convertOrder
+    );
+
+    const distances: EaHttpRequestDistances =
+      this.converter.convertDistances(_distances);
+
+    const params: EaEvaluateHttpRequestArgs = this.converter.convertArgs(_args);
 
     const kwargs: EaEvaluateHttpRequestKwargs =
-      this.convertToEaHttpKwargs(_kwargs);
+      this.converter.convertKwargs(_kwargs);
 
-    const url = `${this.baseUrl}/${this.apiUrlPrefix}/evaluate`;
-    const data = JSON.stringify({
+    const body: EaEvaluateRequestBody = {
       data: { drivers, orders, distances },
       kwargs,
-    });
+    };
+
     const headers = {
       'Content-Type': 'application/json',
     };
+
+    const url = `${this.baseUrl}/${this.apiUrlPrefix}/evaluate`;
+    const data = JSON.stringify(body);
     const options = { headers, params };
 
     return this.httpClient.post({ url, data, options });

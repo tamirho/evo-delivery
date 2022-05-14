@@ -1,8 +1,11 @@
 export type Address = string | [number, number];
 
-export type Order = {
+export type IdWithAddress = {
   id: string;
-  shippingAddress: Address;
+  address: Address;
+}
+
+export type Order = IdWithAddress & {
   shippingDate: Date;
   weight: number;
   createdAt: Date;

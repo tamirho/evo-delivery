@@ -24,17 +24,17 @@ export const DRIVERS: Partial<Driver>[] = [
 export const ORDERS: Partial<Order>[] = [
 	{
 		id: '21',
-		shippingAddress: 'Tel Aviv',
+		address: 'Tel Aviv',
 		weight: 5
 	},
 	{
 		id: '22',
-		shippingAddress: 'Ramat Gan',
+		address: 'Ramat Gan',
 		weight: 34
 	},
 	{
 		id: '23',
-		shippingAddress: 'Lod',
+		address: 'Lod',
 		weight: 1
 	}
 ];

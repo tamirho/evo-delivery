@@ -5,13 +5,6 @@ export type EaHttpRequestOrder = {
   weight: number;
 };
 
-export type EaEvaluateHttpRequestKwargs = {
-  crossover_kwargs?: {};
-  mutate_kwargs?: {};
-  selection_kwargs?: {};
-  fitness_kwargs?: {};
-};
-
 export type EaHttpRequestDriver = {
   id: string;
   max_capacity: number;
@@ -32,6 +25,18 @@ export type EaEvaluateHttpRequestData = {
   drivers: EaHttpRequestDriver[];
   orders: EaHttpRequestOrder[];
   distances: EaHttpRequestDistances;
+};
+
+export type EaEvaluateHttpRequestKwargs = {
+  crossover_kwargs?: {};
+  mutate_kwargs?: {};
+  selection_kwargs?: {};
+  fitness_kwargs?: {};
+};
+
+export type EaEvaluateRequestBody = {
+  data: EaEvaluateHttpRequestData;
+  kwargs: EaEvaluateHttpRequestKwargs;
 };
 
 export type EaEvaluateHttpRequestArgs = {

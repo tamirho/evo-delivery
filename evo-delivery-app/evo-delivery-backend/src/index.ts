@@ -18,8 +18,7 @@ app.get('/test', async (req, res) => {
     ...ORDERS,
     {
       id: '0',
-      shippingAddress: 'Lod',
-      weight: 0,
+      address: 'Lod',
     },
   ];
 
