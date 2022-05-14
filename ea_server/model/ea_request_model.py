@@ -3,8 +3,6 @@ from typing import List, Dict
 
 from dacite import MissingValueError
 
-from ea_server.api.utils.constans import INIT_ORDER_ID
-
 
 @dataclass(frozen=True)
 class Driver:
@@ -24,6 +22,7 @@ class EaData:
     drivers: List[Driver]
     orders: List[Order]
     distances: Dict
+    root_id: str
 
     def validate_distances(self):
         """
@@ -32,7 +31,7 @@ class EaData:
         """
         orders_ids = set([order.id for order in self.orders])
         # root place id
-        orders_ids.add(INIT_ORDER_ID)
+        orders_ids.add(self.root_id)
 
         if orders_ids != self.distances.keys():
             raise MissingValueError(f"distances, from order ids: {orders_ids.difference(self.distances.keys())}")
@@ -40,7 +39,8 @@ class EaData:
         orders_distance: Dict
         for order_id, orders_distance in self.distances.items():
             if orders_distance.keys() != orders_ids:
-                raise MissingValueError(f"distances, from order {order_id} to order ids: {orders_ids.difference(orders_distance.keys())}")
+                raise MissingValueError(f"distances, from order {order_id} to order ids: "
+                                        f"{orders_ids.difference(orders_distance.keys())}")
 
     def __post_init__(self):
         self.validate_distances()
