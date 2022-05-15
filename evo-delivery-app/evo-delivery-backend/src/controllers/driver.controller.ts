@@ -91,36 +91,3 @@ export const getDrivers = async (req: Request, res: Response) => {
 //     return res.status(400).json(INVALID(400, e.message));
 //   }
 // };
-// export const createDriver = async (req: Request, res: Response) => {
-//   const driverDetails: Partial<Driver> = req.body.driver;
-//
-//   try {
-//     const driver = await driverService.createDriver(driverDetails);
-//     return res.status(200).json(OK({ driver }));
-//   } catch (e: any) {
-//     return res.status(400).json(INVALID(400, e.message));
-//   }
-// };
-//
-// export const updateDriver = async (req: Request, res: Response) => {
-//   const driverId: string = req.params.id;
-//   const driverDetails: Partial<Driver> = req.body.driver;
-//
-//   try {
-//     const driver = await driverService.updateDriver(driverId, driverDetails);
-//     return res.status(200).json(OK({ driver }));
-//   } catch (e: any) {
-//     return res.status(400).json(INVALID(400, e.message));
-//   }
-// };
-//
-// export const deleteDriver = async (req: Request, res: Response) => {
-//   const driverId = req.params.id;
-//
-//   try {
-//     await driverService.deleteDriver(driverId);
-//     return res.status(200).json(OK());
-//   } catch (e: any) {
-//     return res.status(400).json(INVALID(400, e.message));
-//   }
-// };
