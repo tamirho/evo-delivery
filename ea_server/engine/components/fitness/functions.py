@@ -1,7 +1,7 @@
 import math
 from operator import itemgetter
 
-from ea_server.api.utils.constans import BOUND, POWER
+from ea_server.api.utils.constans import BOUND, POWER, BOUNDED_DISTANCE
 from ea_server.model.ea_function_model import EaFunctionModel, KwargModel
 from ea_server.model.ea_request_model import EaData
 
@@ -83,7 +83,7 @@ def __calculate_routes_distance_and_weight_from_individual(data: EaData, individ
 # todo: add description
 bound = EaFunctionModel(function=__bounded_distance_strategy,
                         description="",
-                        kwargs=[KwargModel(name=BOUND,
+                        kwargs=[KwargModel(name=BOUNDED_DISTANCE,
                                            description="The maximum travel distance that all the drivers will do togther",
                                            type="int")])
 

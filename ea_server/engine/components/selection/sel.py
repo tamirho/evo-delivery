@@ -24,8 +24,3 @@ class Selection(EaComponent):
     }
 
     type_enum = SelectionTypes
-
-    @classmethod
-    def default(cls):
-        return cls.functions[SelectionTypes.Tournament].function, {TOUR_SIZE: DEFAULT_TOUR_SIZE}
-

@@ -11,7 +11,6 @@ components_blueprint = Blueprint('components_blueprint', import_name=__name__)
 
 @components_blueprint.route('/<component>/types', methods=['GET'])
 def get_component_types(component):
-    types = {}
     if component == 'selection':
         types = Selection.get_details()
     elif component == 'fitness':
