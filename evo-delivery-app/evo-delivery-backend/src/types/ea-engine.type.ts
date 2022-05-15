@@ -1,4 +1,11 @@
-export type EaEvaluateArgs = {
+export type EaEvaluateData = {
+  drivers: string[];
+  orders: string[];
+  rootId: string;
+  configParamsArgs: EaConfigParamsArgs;
+};
+
+export type EaConfigParams = {
   crossover?: string;
   mutate?: string;
   selection?: string;
@@ -9,7 +16,7 @@ export type EaEvaluateArgs = {
   numGenerations?: number;
 };
 
-export type EaEvaluateKwargs = {
+export type EaConfigParamsArgs = {
   crossoverKwargs?: {};
   mutateKwargs?: {};
   selectionKwargs?: {};

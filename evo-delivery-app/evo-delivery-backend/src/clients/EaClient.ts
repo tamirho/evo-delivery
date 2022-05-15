@@ -3,9 +3,9 @@ import {
   Driver,
   EaComponentDetails,
   EaComponentTypes,
-  EaEvaluateArgs,
+  EaConfigParams,
   EaEvaluateHttpResponse,
-  EaEvaluateKwargs,
+  EaConfigParamsArgs,
   IdWithAddress,
   Order,
 } from '../types';
@@ -16,11 +16,14 @@ export interface EaClient {
     orders: Order[],
     rootAddress: IdWithAddress,
     distanceMatrix: DistanceMatrix,
-    args?: EaEvaluateArgs,
-    kwargs?: EaEvaluateKwargs
+    args?: EaConfigParams,
+    kwargs?: EaConfigParamsArgs
   ) => Promise<EaEvaluateHttpResponse>;
   
   getComponentTypes: (
     componentType: EaComponentTypes
   ) => Promise<EaComponentDetails[]>;
 }
+
+
+

@@ -7,7 +7,7 @@ import {
   IdWithAddress,
   DistanceMatrix,
   DistanceMatrixColumnData,
-  DistanceMatrixRowData,
+  DistanceMatrixRowData, DistanceMatrixAttributes,
 } from '../types';
 import { GoogleMatrixClient } from './GoogleMatrixClient';
 
@@ -67,7 +67,7 @@ export class GoogleMatrixClientImpl implements GoogleMatrixClient {
           const destinationId = destinationArr[j].id;
 
           distanceObj[destinationId] = {
-            distance,
+            distance: {text: distance.text, value: this.normalizeValue(distance.value)},
             duration,
           } as DistanceMatrixColumnData;
           return distanceObj;
@@ -78,4 +78,9 @@ export class GoogleMatrixClientImpl implements GoogleMatrixClient {
       return distanceMatrix;
     }, {} as DistanceMatrix);
   }
+
+    private normalizeValue(value: number) {
+        const newVal = value / 1000
+        return newVal;
+    }
 }

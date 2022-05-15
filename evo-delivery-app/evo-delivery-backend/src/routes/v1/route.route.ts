@@ -7,10 +7,6 @@ router.get('/', routeController.getRoutes);
 
 router.get('/:id', routeController.getRoute);
 
-router.post('/', routeController.createRoute);
-
-router.put('/:id', routeController.updateRoute);
-
 router.delete('/:id', routeController.deleteRoute);
 
 export { router as routeRouter };

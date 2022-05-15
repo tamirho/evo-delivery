@@ -4,7 +4,7 @@ import { json } from 'body-parser';
 import { apiRouter } from './routes';
 import { eaClient, googleMatrixClient } from './clients';
 import { EaComponentTypes } from './types';
-import { DRIVERS, ORDERS } from './services/tmp-data';
+import { DRIVERS, ORDERS } from './models/tmp-data';
 
 const app: Express = express();
 
@@ -31,8 +31,8 @@ app.get('/test', async (req, res) => {
     ORDERS as any,
     rootAddress,
     distanceMatrix,
-    { selection: 'tournament' },
-    { selectionKwargs: { tournsize: 2 } }
+    { selection: 'best', numGenerations: 5000, crossover: "two_points"},
+    { }
   );
 
   res.send(response);

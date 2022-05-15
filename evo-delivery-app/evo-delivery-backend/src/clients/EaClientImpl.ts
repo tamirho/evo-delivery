@@ -4,11 +4,11 @@ import {
   Driver,
   EaComponentDetails,
   EaComponentTypes,
-  EaEvaluateArgs,
+  EaConfigParams,
   EaEvaluateHttpRequestArgs,
   EaEvaluateHttpRequestKwargs,
   EaEvaluateHttpResponse,
-  EaEvaluateKwargs,
+  EaConfigParamsArgs,
   EaEvaluateRequestBody,
   EaHttpRequestDistances,
   EaHttpRequestDriver,
@@ -41,8 +41,8 @@ export class EaClientImpl implements EaClient {
     _orders: Order[],
     _rootAddress: IdWithAddress,
     _distances: DistanceMatrix,
-    _args: EaEvaluateArgs = {},
-    _kwargs: EaEvaluateKwargs = {}
+    _args: EaConfigParams = {},
+    _kwargs: EaConfigParamsArgs = {}
   ): Promise<EaEvaluateHttpResponse> {
     const drivers: EaHttpRequestDriver[] = _drivers.map(
       this.converter.convertDriver
@@ -75,6 +75,7 @@ export class EaClientImpl implements EaClient {
     const data = JSON.stringify(body);
     const options = { headers, params };
 
+    console.log(data)
     return this.httpClient.post({ url, data, options });
   }
 
