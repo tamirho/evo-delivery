@@ -1,15 +1,6 @@
-import {
-  Client,
-  DistanceMatrixResponse,
-  DistanceMatrixResponseData,
-} from '@googlemaps/google-maps-services-js';
-import {
-  IdWithAddress,
-  DistanceMatrix,
-  DistanceMatrixColumnData,
-  DistanceMatrixRowData, DistanceMatrixAttributes,
-} from '../types';
-import { GoogleMatrixClient } from './GoogleMatrixClient';
+import {Client, DistanceMatrixResponse, DistanceMatrixResponseData,} from '@googlemaps/google-maps-services-js';
+import {DistanceMatrix, DistanceMatrixColumnData, DistanceMatrixRowData, Location,} from '../types';
+import {GoogleMatrixClient} from './GoogleMatrixClient';
 
 export type GoogleMapsClient = Client;
 export class GoogleMatrixClientImpl implements GoogleMatrixClient {
@@ -20,12 +11,12 @@ export class GoogleMatrixClientImpl implements GoogleMatrixClient {
   }
 
   async getDistance(
-    originArr: IdWithAddress[],
-    destinationArr: IdWithAddress[]
+    originsLocations: Location[],
+    destinationsLocations: Location[]
   ): Promise<DistanceMatrix> {
     try {
-      const origins = originArr.map((order) => order.address);
-      const destinations = destinationArr.map((order) => order.address);
+      const origins = originsLocations.map((order) => order.address);
+      const destinations = destinationsLocations.map((order) => order.address);
       console.log(origins);
       console.log(destinations);
 
@@ -42,8 +33,8 @@ export class GoogleMatrixClientImpl implements GoogleMatrixClient {
 
       return this.convertToDistanceMatrix(
         response.data,
-        originArr,
-        destinationArr
+        originsLocations,
+        destinationsLocations
       );
     } catch (e) {
       console.error('Failed to fetch distance from Google Matrix API');
@@ -53,21 +44,21 @@ export class GoogleMatrixClientImpl implements GoogleMatrixClient {
 
   private convertToDistanceMatrix(
     response: DistanceMatrixResponseData,
-    originArr: IdWithAddress[],
-    destinationArr: IdWithAddress[]
+    originsLocations: Location[],
+    destinationsLocations: Location[]
   ): DistanceMatrix {
     if (response.status !== 'OK') throw Error;
 
     return response.rows.reduce((distanceMatrix, { elements }, i) => {
-      const originId = originArr[i].id;
+      const originId = originsLocations[i].id;
 
       distanceMatrix[originId] = elements.reduce(
         (distanceObj, { distance, duration, status }, j) => {
           if (status !== 'OK') throw Error;
-          const destinationId = destinationArr[j].id;
+          const destinationId = destinationsLocations[j].id;
 
           distanceObj[destinationId] = {
-            distance: {text: distance.text, value: this.normalizeValue(distance.value)},
+            distance: {text: distance.text, value: GoogleMatrixClientImpl.normalizeValue(distance.value)},
             duration,
           } as DistanceMatrixColumnData;
           return distanceObj;
@@ -79,8 +70,8 @@ export class GoogleMatrixClientImpl implements GoogleMatrixClient {
     }, {} as DistanceMatrix);
   }
 
-    private normalizeValue(value: number) {
-        const newVal = value / 1000
-        return newVal;
+    private static normalizeValue(value: number) {
+      const ThousandMeters = 1000;
+      return value / ThousandMeters;
     }
 }

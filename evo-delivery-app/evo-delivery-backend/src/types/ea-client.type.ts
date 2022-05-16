@@ -28,27 +28,25 @@ export type EaEvaluateHttpRequestData = {
   root_id: string;
 };
 
-export type EaEvaluateHttpRequestKwargs = {
-  crossover_kwargs?: {};
-  mutate_kwargs?: {};
-  selection_kwargs?: {};
-  fitness_kwargs?: {};
-};
-
-export type EaEvaluateRequestBody = {
+export type EaEvaluateHttpRequestBody = {
   data: EaEvaluateHttpRequestData;
-  kwargs: EaEvaluateHttpRequestKwargs;
+  config: EaEvaluateHttpRequestConfig;
 };
 
-export type EaEvaluateHttpRequestArgs = {
-  crossover?: string;
-  mutate?: string;
-  selection?: string;
-  fitness?: string;
+export type EaHttpRequestComponentConfig = {
+  name: string;
+  args: { [key: string]: any };
+};
+
+export type EaEvaluateHttpRequestConfig = {
   pop_size?: number;
-  cxpb?: number;
-  mutpd?: number;
+  crossover_prob?: number;
+  mutate_prob?: number;
   num_generations?: number;
+  crossover?: EaHttpRequestComponentConfig;
+  fitness?: EaHttpRequestComponentConfig;
+  selection?: EaHttpRequestComponentConfig;
+  mutate?: EaHttpRequestComponentConfig;
 };
 
 export type EaEvaluateHttpResponse = {

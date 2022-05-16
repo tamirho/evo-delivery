@@ -1,4 +1,4 @@
-import {Driver, IdWithAddress, Order} from '../types';
+import {Depot, Driver, Order} from '../types';
 
 export const DRIVERS: Partial<Driver>[] = [
     {
@@ -39,7 +39,7 @@ export const ORDERS: Partial<Order>[] = [
     }
 ];
 
-export const ROOTS: IdWithAddress[] = [
+export const DEPOTS: Partial<Depot>[] = [
     {
         id: '0',
         address: 'Lod',
