@@ -19,7 +19,3 @@ class Mutate(EaComponent):
     }
 
     type_enum = MutatesTypes
-
-    @classmethod
-    def default(cls):
-        return cls.functions[MutatesTypes.Shuffle].function, {INDPB: DEFAULT_INDPB}

@@ -49,7 +49,7 @@ WORST = "worst"
 #selection params
 TOUR_SIZE = "tournsize"
 
-DEFAULT_TOUR_SIZE = 3
+DEFAULT_TOUR_SIZE = 2
 
 # ----------------------------------------------
 

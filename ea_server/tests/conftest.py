@@ -145,5 +145,5 @@ def test_data():
             },
             "root_id": "0"
         },
-        "kwargs": {}
+        "config": {}
     }
