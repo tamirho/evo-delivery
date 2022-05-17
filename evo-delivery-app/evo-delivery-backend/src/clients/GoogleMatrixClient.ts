@@ -1,6 +1,6 @@
-import { IdWithAddress } from "../types";
+import { Location } from "../types";
 import { DistanceMatrix } from "../types/distance-matrix.type";
 
 export interface GoogleMatrixClient {
-    getDistance: (originArr: IdWithAddress[], destinationArr: IdWithAddress[]) => Promise<DistanceMatrix>
+    getDistance: (originArr: Location[], destinationArr: Location[]) => Promise<DistanceMatrix>
 }

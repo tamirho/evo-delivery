@@ -1,20 +1,21 @@
 import { EA_ENGINE_LOCAL_BASE_URL } from '../configs';
-import { EaClientImpl } from './EaClientImpl';
+import { EaHttpClientImpl } from './EaHttpClientImpl';
 import { GoogleMatrixClientImpl } from './GoogleMatrixClientImpl';
 import { AxiosHttpClient } from './AxiosHttpClient';
 import { EaHttpConverterImpl } from './utils/EaHttpConverter';
+import {EaHttpClientAdapterImpl} from "./EaHttpClientAdapterImpl";
 
 export const axiosHttpClient = new AxiosHttpClient();
 
-export const googleMatrixClient = new GoogleMatrixClientImpl();
-
 const eaHttpConverter = new EaHttpConverterImpl();
-export const eaClient = new EaClientImpl(
-  axiosHttpClient,
-  eaHttpConverter,
-  EA_ENGINE_LOCAL_BASE_URL
+const eaClient = new EaHttpClientImpl(
+    axiosHttpClient,
+    EA_ENGINE_LOCAL_BASE_URL
 );
+
+export const googleMatrixClient = new GoogleMatrixClientImpl();
+export const eaHttpClientAdapter = new EaHttpClientAdapterImpl(eaClient, eaHttpConverter);
 
 export * from './HttpClient';
 export * from './GoogleMatrixClient';
-export * from './EaClient';
+export * from './EaHttpClient';

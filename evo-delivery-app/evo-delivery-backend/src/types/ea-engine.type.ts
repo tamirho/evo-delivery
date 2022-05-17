@@ -1,20 +1,22 @@
-export type EaEvaluateArgs = {
-  crossover?: string;
-  mutate?: string;
-  selection?: string;
-  fitness?: string;
-  popSize?: number;
-  cxpb?: number;
-  mutpd?: number;
-  numGenerations?: number;
-};
+// export type EaEvaluateData = {
+//   drivers: string[];
+//   orders: string[];
+//   rootId: string;
+//   configParamsArgs: EaConfigParamsArgs;
+// };
 
-export type EaEvaluateKwargs = {
-  crossoverKwargs?: {};
-  mutateKwargs?: {};
-  selectionKwargs?: {};
-  fitnessKwargs?: {};
-};
+// export type EaConfigParams = {
+//   crossover?: string;
+//   mutate?: string;
+//   selection?: string;
+//   fitness?: string;
+//   popSize?: number;
+//   cxpb?: number;
+//   mutpd?: number;
+//   numGenerations?: number;
+// };
+
+import {Depot} from "./depot.type";
 
 export enum EaComponentTypes {
   SELECTION = 'selection',
@@ -36,3 +38,23 @@ export type EaComponentDetails = {
 };
 
 export type EaDriverRoute = string[];
+
+export type EaEvaluateResponse = {
+  [driverId: string]: EaDriverRoute;
+};
+
+export type EaComponentConfig = {
+  name: string;
+  args: { [key: string]: any };
+};
+
+export type EaEvaluateConfig = {
+  popSize?: number;
+  crossoverProb?: number;
+  mutateProb?: number;
+  numGenerations?: number;
+  crossover?: EaComponentConfig;
+  fitness?: EaComponentConfig;
+  selection?: EaComponentConfig;
+  mutate?: EaComponentConfig;
+};
