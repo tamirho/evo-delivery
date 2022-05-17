@@ -44,10 +44,10 @@ export class EaHttpClientImpl implements EaHttpClient {
     return this.httpClient.post({ url, data, options });
   }
 
-  getComponentTypes(
+  getComponentDetails(
     componentType: EaComponentTypes
   ): Promise<EaComponentDetails[]> {
-    const url = `${this.baseUrl}/${this.apiUrlPrefix}/${componentType}/types`;
+    const url = `${this.baseUrl}/${this.apiUrlPrefix}/${componentType}/details`;
 
     console.log(`GET ${url}`);
 

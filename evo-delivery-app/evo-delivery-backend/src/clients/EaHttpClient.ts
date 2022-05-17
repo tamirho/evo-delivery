@@ -17,7 +17,7 @@ export interface EaHttpClient {
     config: EaEvaluateHttpRequestConfig
   ) => Promise<EaEvaluateResponse>;
   
-  getComponentTypes: (
+  getComponentDetails: (
     componentType: EaComponentTypes
   ) => Promise<EaComponentDetails[]>;
 }

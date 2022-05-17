@@ -39,9 +39,9 @@ export class EaHttpClientAdapterImpl implements EaHttpClientAdapter {
         return this.eaHttpClient.evaluate(drivers, orders, depotId, distances, config);
     }
 
-    getComponentTypes(
+    getComponentDetails(
         componentType: EaComponentTypes
     ): Promise<EaComponentDetails[]> {
-        return this.eaHttpClient.getComponentTypes(componentType);
+        return this.eaHttpClient.getComponentDetails(componentType);
     }
 }

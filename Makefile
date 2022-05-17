@@ -1,9 +1,13 @@
-run:
-	cd ea_server \
-    export FLASK_APP=api \
-    export FLASK_ENV=development \
-    echo 'Start ea-engine' \
-    flask run & \
-    cd evo-delivery-app/evo-delivery-backend \
-    echo 'Start evo-delivery-backend' \
-    npm start
+target: start-engine start-backend
+
+start-engine:
+	cd ea_server && \
+	source virtualenv/bin/activate && \
+	export FLASK_APP=api && \
+	export FLASK_ENV=development && \
+	flask run
+
+start-backend:
+	cd evo-delivery-app/evo-delivery-backend && \
+	npm start
+

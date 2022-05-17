@@ -9,8 +9,8 @@ from ea_server.engine.components.selection.sel import Selection
 components_blueprint = Blueprint('components_blueprint', import_name=__name__)
 
 
-@components_blueprint.route('/<component>/types', methods=['GET'])
-def get_component_types(component):
+@components_blueprint.route('/<component>/details', methods=['GET'])
+def get_component_details(component):
     if component == 'selection':
         types = Selection.get_details()
     elif component == 'fitness':

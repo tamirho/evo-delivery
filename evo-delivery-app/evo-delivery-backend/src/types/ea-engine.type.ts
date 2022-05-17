@@ -16,6 +16,8 @@
 //   numGenerations?: number;
 // };
 
+import {Depot} from "./depot.type";
+
 export enum EaComponentTypes {
   SELECTION = 'selection',
   FITNESS = 'fitness',

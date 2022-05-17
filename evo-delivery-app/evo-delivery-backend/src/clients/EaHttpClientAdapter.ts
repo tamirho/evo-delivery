@@ -18,7 +18,7 @@ import {
       config: EaEvaluateConfig
     ) => Promise<EaEvaluateResponse>;
     
-    getComponentTypes: (
+    getComponentDetails: (
       componentType: EaComponentTypes
     ) => Promise<EaComponentDetails[]>;
   }
