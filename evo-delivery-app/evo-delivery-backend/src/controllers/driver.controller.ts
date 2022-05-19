@@ -7,7 +7,6 @@ export const getDrivers = async (req: Request, res: Response) => {
   const page : number= Number(req.query.page as string) || 1;
   const limit : number= Number(req.query.limit as string) || 100;
   const filter: Object = req.query.filter as Object|| {}
-  console.log(limit)
   try {
     const drivers = await driverService.getDrivers(filter, page, limit);
     return res.status(200).json(OK(drivers));
