@@ -2,7 +2,7 @@ import express, { Express } from 'express';
 import { json } from 'body-parser';
 import { apiRouter } from './routes';
 import mongoose from 'mongoose';
-import { distancesService } from './services';
+import { addDistance,getDistance } from './services/distances.service';
 const app: Express = express();
 
 const PORT: string | number = process.env.PORT || 3000;

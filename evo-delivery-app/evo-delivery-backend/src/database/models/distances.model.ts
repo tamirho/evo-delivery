@@ -8,7 +8,8 @@ export interface IDistances{
 
 export interface IDistance {
     id: string,
-    distance: number
+    distance: number,
+    duration: number,
 }
 
 const distanceSchema = new Schema<IDistance>({
