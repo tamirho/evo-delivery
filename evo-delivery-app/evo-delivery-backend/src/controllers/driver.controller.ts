@@ -4,10 +4,10 @@ import { Driver } from '../types';
 import { INVALID, OK } from '../utils/response.utils';
 
 export const getDrivers = async (req: Request, res: Response) => {
-  const page :number= parseInt(req.query.page as string) || 1;
-  const limit :number= parseInt(req.query.limit as string) || 100;
+  const page : number= Number(req.query.page as string) || 1;
+  const limit : number= Number(req.query.limit as string) || 100;
   const filter: Object = req.query.filter as Object|| {}
-
+  console.log(limit)
   try {
     const drivers = await driverService.getDrivers(filter, page, limit);
     return res.status(200).json(OK(drivers));
@@ -28,7 +28,7 @@ export const getDriver = async (req: Request, res: Response) => {
 };
 
 export const createDriver = async (req: Request, res: Response) => {
-  const driverDetails :Partial<Driver> = req.body;
+  const driverDetails :Partial<Driver> = req.body.driver;
 
   try {
     const driver = await driverService.createDriver(driverDetails);
@@ -40,7 +40,7 @@ export const createDriver = async (req: Request, res: Response) => {
 
 export const updateDriver = async (req: Request, res: Response) => {
   const driverId: string = req.params.id;
-  const driverDetails: Partial<Driver> = req.body;
+  const driverDetails: Partial<Driver> = req.body.driver;
 
   try {
     const driver = await driverService.updateDriver(driverId, driverDetails);

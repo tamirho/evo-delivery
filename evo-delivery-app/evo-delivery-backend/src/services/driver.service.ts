@@ -2,11 +2,11 @@ import { Driver } from '../types';
 import driverModel, { IDriver } from '../database/models/driver.model';
 
 export const getDrivers = async (filter: Object, page:number, limit:number) => {
-  return await driverModel.find({},null,{limit:limit});
+  return driverModel.find({},null,{limit:limit});
 };
 
 export const getDriver = async (driverId: string) => {
-  return await driverModel.findById({_id:driverId})
+  return driverModel.findById({_id:driverId})
 };
 
 export const createDriver = async (driver: Partial<Driver>) => {

@@ -4,8 +4,8 @@ import { Order } from '../types/order.type';
 import { INVALID, OK } from '../utils/response.utils';
 
 export const getOrders = async (req: Request, res: Response) => {
-  const page :number= parseInt(req.query.page as string) || 1;
-  const limit :number= parseInt(req.query.limit as string) || 100;
+  const page : number= Number(req.query.page as string) || 1;
+  const limit : number= Number(req.query.limit as string) || 100;
   const filter: Object = req.query.filter as Object || {}
 
   try {
@@ -28,8 +28,8 @@ export const getOrder = async (req: Request, res: Response) => {
 };
 
 export const createOrder = async (req: Request, res: Response) => {
-  const orderDetails :Partial<Order> = req.body;
-  console.log(orderDetails);
+  const orderDetails : Partial<Order> = req.body.order;
+
   try {
     const order = await orderService.createOrder(orderDetails);
     return res.status(200).json(OK({ order }));
@@ -40,11 +40,11 @@ export const createOrder = async (req: Request, res: Response) => {
 
 export const updateOrder = async (req: Request, res: Response) => {
   const orderId: string = req.params.id;
-  const orderDetails: Partial<Order> = req.body;
+  const orderDetails: Partial<Order> = req.body.order;
 
   try {
-    const driver = await orderService.updateOrder(orderId, orderDetails);
-    return res.status(200).json(OK({ driver }));
+    const order = await orderService.updateOrder(orderId, orderDetails);
+    return res.status(200).json(OK({ order }));
   } catch (e: any) {
     return res.status(400).json(INVALID(400, e.message));
   }
