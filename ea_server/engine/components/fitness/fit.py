@@ -16,9 +16,4 @@ class Fitness(EaComponent):
         FitnessType.Power: power
     }
 
-    enum_type = FitnessType
-
-    @classmethod
-    def default(cls):
-        return cls.functions[FitnessType.BoundedDistance].function, {BOUND: DEFAULT_BOUNDED_DISTANCE}
-
+    type_enum = FitnessType

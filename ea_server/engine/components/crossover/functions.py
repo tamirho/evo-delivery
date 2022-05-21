@@ -1,4 +1,4 @@
-from ea_server.api.utils.constans import UNIFORM, ALPHA
+from ea_server.api.utils.constans import UNIFORM, ALPHA, INDPB
 from ea_server.model.ea_function_model import EaFunctionModel, KwargModel
 from deap import tools
 
@@ -12,7 +12,7 @@ two_points = EaFunctionModel(function=tools.cxTwoPoint,
 
 uniform = EaFunctionModel(function=tools.cxUniform,
                           description="https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)#Uniform_crossover",
-                          kwargs=[KwargModel(name=UNIFORM,
+                          kwargs=[KwargModel(name=INDPB,
                                              type="float",
                                              description="Independent probability for each attribute to be exchanged")]
                           )

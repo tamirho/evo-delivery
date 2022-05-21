@@ -10,12 +10,10 @@ class EaComponent(ABC):
     type_enum = None
 
     @classmethod
-    def get(cls, type: str) -> EaFunctionModel:
+    def get(cls, type: str = None) -> EaFunctionModel:
+        if type is None:
+            return [cls.get(type) for type in cls.type_enum]
         return cls.functions[cls.type_enum(type)]
-
-    @classmethod
-    def get(cls) -> List[EaFunctionModel]:
-        return [cls.get(type) for type in cls.type_enum]
 
     @classmethod
     def get_details(cls):

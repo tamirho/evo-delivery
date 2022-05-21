@@ -1,15 +1,7 @@
 import mongoose,{Schema} from "mongoose";
+import { Driver } from "../../types/driver.type";
 
-export interface IDriver{
-    _id?: mongoose.Types.ObjectId;
-    name: string;
-    maxCapacity: number;
-    maxLength: number;
-    createdAt: Date;
-    updatedAt: Date;
-}
-
-const driverSchema = new Schema<IDriver>({
+const driverSchema = new Schema<Driver>({
     name: {
         type: String,
         required: true
@@ -19,7 +11,7 @@ const driverSchema = new Schema<IDriver>({
         required: true,
         min: 1
     },
-    maxLength: {
+    maxDistance: {
         type: Number,
         required: true,
         min: 1
@@ -29,5 +21,5 @@ const driverSchema = new Schema<IDriver>({
         collection: 'Drivers'
     })
 
-export default mongoose.model<IDriver>('Driver', driverSchema);
+export default mongoose.model<Driver>('Driver', driverSchema);
 
