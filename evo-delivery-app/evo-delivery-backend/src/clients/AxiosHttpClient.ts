@@ -70,9 +70,9 @@ export class AxiosHttpClient implements HttpClient {
     }
   }
 
-  logError(error: unknown) {
+  logError(error: any) {
     if (axios.isAxiosError(error)) {
-      this.logger.error('error message: ', error.message);
+      this.logger.error('error message: ', error.response?.data);
     } else {
       this.logger.error('unexpected error: ', error);
     }

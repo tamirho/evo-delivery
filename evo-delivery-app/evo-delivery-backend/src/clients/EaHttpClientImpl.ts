@@ -39,8 +39,6 @@ export class EaHttpClientImpl implements EaHttpClient {
     const data = JSON.stringify(body);
     const options = { headers };
 
-    console.log(`POST ${url} with body ${data}`);
-
     return this.httpClient.post({ url, data, options });
   }
 
@@ -48,8 +46,6 @@ export class EaHttpClientImpl implements EaHttpClient {
     componentType: EaComponentTypes
   ): Promise<EaComponentDetails[]> {
     const url = `${this.baseUrl}/${this.apiUrlPrefix}/${componentType}/details`;
-
-    console.log(`GET ${url}`);
 
     return this.httpClient.get({ url });
   }

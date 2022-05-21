@@ -17,19 +17,24 @@ export class GoogleMatrixClientImpl implements GoogleMatrixClient {
     try {
       const origins = originsLocations.map((order) => order.address);
       const destinations = destinationsLocations.map((order) => order.address);
-      console.log(origins);
-      console.log(destinations);
 
-      const response: DistanceMatrixResponse = await this.client.distancematrix(
-        {
-          params: {
-            origins,
-            destinations,
-            key: process.env.GOOGLE_MAPS_API_KEY,
-          },
+      const params = {
+        origins,
+        destinations,
+        key: process.env.GOOGLE_MAPS_API_KEY,
+      };
+
+      console.log(`${new Date()} | Request: GoogleMapsClient
+      Params: ${JSON.stringify({origins, destinations})}`);
+
+      const response: DistanceMatrixResponse = await this.client.distancematrix({
+          params,
           timeout: 1000, // milliseconds
         }
       );
+
+      console.log(`${new Date()} | Response: GoogleMapsClient
+      Data: ${JSON.stringify(response.data)}`);
 
       return this.convertToDistanceMatrix(
         response.data,

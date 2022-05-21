@@ -26,5 +26,5 @@ The problem is – Find the most optimistic routing of N drivers to M deliveries
 - Front-End: React
 - REST API: Node.js
 - EA service: Python
-- EA framework: pyeasyga [(docs)](https://pyeasyga.readthedocs.io/en/latest/index.html)
-- DB: will be selected soon
+- EA framework: Deap [(docs)](https://deap.readthedocs.io/en/master/)
+- DB: MongoDB
