@@ -1,10 +1,8 @@
-import { Address } from './address.type';
+import { Location } from './location.type';
 
-export type Order = {
-  id: string;
-  shippingAddress: Address;
+export type Order = Location & {
   shippingDate: Date;
   weight: number;
-  createdAt:Date;
-  updatedAt:Date;
+  createdAt: Date;
+  updatedAt: Date;
 };

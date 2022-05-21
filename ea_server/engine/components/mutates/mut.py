@@ -9,18 +9,13 @@ from ea_server.engine.components.mutates.functions import shuffle, flip_bit
 
 class MutatesTypes(Enum):
     Shuffle = SHUFFLE
-    Gaussian = GAUSSIAN
     FlipBit = FLIP_BIT
 
 
 class Mutate(EaComponent):
     functions = {
         MutatesTypes.Shuffle: shuffle,
-        MutatesTypes.Gaussian: flip_bit
+        MutatesTypes.FlipBit: flip_bit
     }
 
     type_enum = MutatesTypes
-
-    @classmethod
-    def default(cls):
-        return cls.functions[MutatesTypes.Shuffle].function, {INDPB: DEFAULT_INDPB}

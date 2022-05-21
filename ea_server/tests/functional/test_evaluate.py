@@ -18,8 +18,8 @@ def test_evaluate_response(client, ea_url, test_data):
         assert set(res_drivers) == set(data_drivers)
         assert len(res_drivers) == len(data_drivers)
 
-        res_orders = [order for orderlist in res.values()
-                      for order in orderlist]
+        res_orders = [order for order_list in res.values()
+                      for order in order_list]
         data_orders = [order['id'] for order in test_data['data']['orders']]
         assert set(res_orders) == set(data_orders)
         assert len(res_orders) == len(data_orders)

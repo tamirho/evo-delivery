@@ -9,6 +9,10 @@ export const getDriver = async (driverId: string) => {
   return driverModel.findById({_id:driverId})
 };
 
+export const getByIds = (driverIds : string[]) => {
+  return driverIds.map(id => getDriver(id)) as unknown as Driver[]
+}
+
 export const createDriver = async (driver: Partial<Driver>) => {
   return (await driverModel.create(driver as IDriver)).save()
 };

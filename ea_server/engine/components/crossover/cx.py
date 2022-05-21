@@ -24,7 +24,3 @@ class Crossover(EaComponent):
     }
 
     type_enum = CrossoverTypes
-
-    @classmethod
-    def default(cls):
-        return cls.functions[CrossoverTypes.SinglePoint].function, {}

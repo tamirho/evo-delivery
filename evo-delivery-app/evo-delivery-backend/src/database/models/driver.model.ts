@@ -4,7 +4,7 @@ export interface IDriver{
     _id?: mongoose.Types.ObjectId;
     name: string;
     maxCapacity: number;
-    maxLength: number;
+    maxDistance: number;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -19,7 +19,7 @@ const driverSchema = new Schema<IDriver>({
         required: true,
         min: 1
     },
-    maxLength: {
+    maxDistance: {
         type: Number,
         required: true,
         min: 1

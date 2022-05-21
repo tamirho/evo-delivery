@@ -1,6 +1,4 @@
 # evaluation
-INIT_ORDER_ID = "0"
-
 # ----------------------------------------------
 
 # fitness types
@@ -43,15 +41,15 @@ DEFAULT_SIGMA = 0.5
 
 #selection types
 TOURNAMENT = 'tournament'
-
-#selection params
-TOUR_SIZE = "tournsize"
 ROULETTE = "roulette"
 RANDOM = "random"
 BEST = "best"
 WORST = "worst"
 
-DEFAULT_TOUR_SIZE = 3
+#selection params
+TOUR_SIZE = "tournsize"
+
+DEFAULT_TOUR_SIZE = 2
 
 # ----------------------------------------------
 

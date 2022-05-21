@@ -30,8 +30,9 @@ export const createDriver = async (req: Request, res: Response) => {
   const driverDetails :Partial<Driver> = req.body.driver;
 
   try {
+    const driverId = req.params.id;
     const driver = await driverService.createDriver(driverDetails);
-    return res.status(200).json(OK({ driver }));
+    return res.status(200).json(OK(driver ));
   } catch (e: any) {
     return res.status(400).json(INVALID(400, e.message));
   }

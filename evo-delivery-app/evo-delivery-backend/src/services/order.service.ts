@@ -1,7 +1,6 @@
 import { Order } from "../types";
 import orderModel, { IOrder } from '../database/models/order.model'
 
-
 export const getOrders = async (filter: Object, page: number, limit: number) => {
   return await orderModel.find({},null,{limit:limit})
 };
@@ -10,6 +9,9 @@ export const getOrder = async (orderId : string) => {
   return await orderModel.findById({_id:orderId})
 };
 
+export const getByIds = async (orderIds : string[]) => {
+  return orderIds.map(id => getOrder(id)) as unknown as Order[]
+}
 export const createOrder = async (order: Partial<Order>) => {
   return await orderModel.create(order);
 };
