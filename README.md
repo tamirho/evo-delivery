@@ -27,4 +27,4 @@ The problem is – Find the most optimistic routing of N drivers to M deliveries
 - REST API: Node.js
 - EA service: Python
 - EA framework: DEAP
-- DB: will be selected soon
+- DB: MongoDB
