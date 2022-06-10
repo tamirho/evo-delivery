@@ -79,6 +79,6 @@ class EaConfigModel:
 
 
 @dataclass(frozen=True)
-class EaRequestModel:
+class EaDraftModel:
     data: EaData
     config: EaConfigModel

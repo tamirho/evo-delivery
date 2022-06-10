@@ -6,10 +6,19 @@ from werkzeug.exceptions import HTTPException
 
 from ea_server.api.config import Config
 
+from flask import Flask
 
-def create_app(config_class=Config):
+import os
+import configparser
+
+def create_app():
     app = Flask(__name__)
-    app.config.from_object(config_class)
+
+    config = configparser.ConfigParser()
+    config.read(os.path.abspath(os.path.join(".ini")))
+
+    app.config['MONGO_URI'] = config['TEST']['DB_URI']
+    app.config['SECRET_KEY'] = config['TEST']['SECRET_KEY']
 
     # Import Blueprints
     from ea_server.api.routes import evaluate_blueprint, components_blueprint
