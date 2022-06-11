@@ -1,6 +1,5 @@
 import { Driver } from '../types';
 import driverModel from '../database/models/driver.model';
-import { DRIVERS } from '../models/tmp-data';
 
 export const getDrivers = async (filter: Object, page:number, limit:number) => {
   return driverModel.find({},null,{limit:limit});
