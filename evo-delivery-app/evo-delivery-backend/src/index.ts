@@ -48,8 +48,11 @@ app.listen(PORT, () => {
     console.log(`server is listening on port ${PORT}`);
 });
 
-connect()
+dbConnect()
 
-async function connect () {
-  await mongoose.connect("mongodb://localhost:27017/Test",{connectTimeoutMS: 3000},() => console.log("connected to database"))
+async function dbConnect () {
+    const mongo = process.env.MONGO_URI as string;
+    await mongoose.connect(mongo, {connectTimeoutMS: 3000},
+        (e) => {if (e) console.log(e.message);
+                else console.log("Connected to DB")})
 }

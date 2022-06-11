@@ -1,4 +1,4 @@
-import {Driver, EaEvaluateConfig, EaEvaluateResponse} from "../types";
+import {Driver, EaEvaluateConfig, EaEvaluateResponse, Order} from "../types";
 import {driverService, orderService, depotService} from '../services';
 import {googleMatrixClient, eaHttpClientAdapter} from "../clients";
 
@@ -14,7 +14,7 @@ export const evaluate = async (driversIds: string[], ordersIds: string[], depotI
       ordersAndRoot,
       ordersAndRoot
   );
-  const routes = await eaHttpClientAdapter.evaluate(await Promise.all(drivers) , orders, depot, distanceMatrix, config);
+  const routes = await eaHttpClientAdapter.evaluate(drivers , orders, depot, distanceMatrix, config);
 
   return await store(routes);
 };

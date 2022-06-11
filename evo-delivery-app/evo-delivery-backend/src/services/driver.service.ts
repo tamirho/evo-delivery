@@ -10,8 +10,8 @@ export const getDriver = async (driverId: string): Promise<Driver> => {
   return driverModel.findById({_id:driverId}).lean()
 };
 
-export const getByIds =  (driverIds : string[]) => {
-  return driverIds.map(id => getDriver(id)) 
+export const getByIds = async (driverIds : string[])=> {
+  return driverModel.find({_id: { $in: driverIds } })
 }
 
 // export const getByIds = async (driversIds: string[]) => {
