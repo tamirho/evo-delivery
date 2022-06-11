@@ -2,31 +2,31 @@ import {Depot, Driver, Order} from '../types';
 
 export const DRIVERS: Partial<Driver>[] = [
     {
-        id: '11',
+        _id: '11',
         name: 'Tamir',
         maxCapacity: 15,
         maxDistance: 400
     },
     {
-        id: '12',
+        _id: '12',
         name: 'Yuval',
         maxCapacity: 200,
         maxDistance: 600
     },
     {
-        id: '13',
+        _id: '13',
         name: 'Vladi',
         maxCapacity: 500,
         maxDistance: 150
     },
     {
-        id: '14',
+        _id: '14',
         name: 'Aviad',
         maxCapacity: 10,
         maxDistance: 10
     },
     {
-        id: '15',
+        _id: '15',
         name: 'Spaghetti',
         maxCapacity: 10,
         maxDistance: 10
