@@ -27,9 +27,9 @@ export class EaHttpConverterImpl implements EaHttpConverter {
         return depot.id;
     }
 
-    convertDriver({id, maxCapacity, maxDistance}: Driver) {
+    convertDriver({_id, maxCapacity, maxDistance}: Driver) {
         return convertObjCamelToSnakeCase({
-            id,
+            _id,
             maxCapacity,
             maxDistance,
         }) as EaHttpRequestDriver;
