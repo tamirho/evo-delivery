@@ -2,7 +2,7 @@ import { Driver } from '../types';
 import driverModel from '../database/models/driver.model';
 
 export const getDrivers = async (filter: Object, page:number, limit:number) => {
-  return driverModel.find({},null,{limit:limit});
+  return driverModel.find({},null,{limit:limit}).lean();
 };
 
 export const getDriver = async (driverId: string): Promise<Driver> => {

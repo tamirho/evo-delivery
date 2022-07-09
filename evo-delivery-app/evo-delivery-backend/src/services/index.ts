@@ -4,4 +4,5 @@ export * as routeService from './route.service';
 export * as distancesService from './distances.service';
 export * as eaEngineService from './ea-engine.service';
 export * as depotService from './depot.service';
+export * as draftService from './draft.service';
 
