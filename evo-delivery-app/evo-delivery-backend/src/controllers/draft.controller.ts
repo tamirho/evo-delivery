@@ -42,7 +42,7 @@ export const updateDraft = async (req: Request, res: Response) => {
     const draftDetails: Partial<Draft> = req.body.draft;
   
     try {
-      const draft = await draftService.updateDriver(draftId, draftDetails);
+      const draft = await draftService.updateDraft(draftId, draftDetails);
       return res.status(200).json(OK({ draft }));
     } catch (e: any) {
       return res.status(400).json(INVALID(400, e.message));
@@ -53,7 +53,7 @@ export const deleteDraft = async (req: Request, res: Response) => {
     const draftId = req.params.id;
   
     try {
-      await draftService.deleteDriver(draftId);
+      await draftService.deleteDraft(draftId);
       return res.status(200).json(OK());
     } catch (e: any) {
       return res.status(400).json(INVALID(400, e.message));

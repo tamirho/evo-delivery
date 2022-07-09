@@ -27,35 +27,27 @@ const eaComponenSchema = new Schema <EaComponentConfig>({
 const eaConfigSchema = new Schema<EaEvaluateConfig>({
     popSize: {
         type: Number,
-        default: 100
     },
     crossoverProb: {
         type: Number,
-        default: 0.5
     },
     mutateProb: {
         type: Number,
-        default: 0.5
     },
     numGenerations: {
         type: Number,
-        default: 200
     },
     crossover: {
         type:eaComponenSchema,
-        required: true
     },
     fitness: {
         type:eaComponenSchema,
-        required: true
     },
     selection: {
         type:eaComponenSchema,
-        required: true
     },
     mutate: {
         type:eaComponenSchema,
-        required: true
     }
 },{_id:false})
 
@@ -68,9 +60,17 @@ const distancesMatrixSchema = new Schema <DistanceMatrix>({
 
 const draftSchema = new Schema<Draft>({
     depot: {
-        type: depotSchema,
+        type: String,
         required: true
     },
+    orders:[{
+        type: String,
+        required: true
+    }],
+    drivers: [{
+        type : String,
+        required: true
+    }],
     eaConfig: {
         type: eaConfigSchema,
         required: true

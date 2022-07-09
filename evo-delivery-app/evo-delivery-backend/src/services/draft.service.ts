@@ -13,10 +13,10 @@ export const createDraft = async (draft: Partial<Draft>) => {
     return (await draftModel.create(draft)).save()
 };
 
-export const updateDriver = async (draftId: string, draft: Partial<Draft>) => {
+export const updateDraft = async (draftId: string, draft: Partial<Draft>) => {
     return await draftModel.findOneAndUpdate({_id:draftId}, draft, {returnOriginal: false})
 };
   
-export const deleteDriver = async (id: string) => {
+export const deleteDraft = async (id: string) => {
     return await draftModel.deleteOne({_id:id})
  };
