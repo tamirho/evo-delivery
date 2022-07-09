@@ -1,5 +1,5 @@
 export type Driver = {
-	_id: string;
+	id: string;
 	name: string;
 	maxCapacity: number;
 	maxDistance: number;

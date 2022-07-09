@@ -1,14 +1,17 @@
 import mongoose, {Schema} from "mongoose";
 import {MLocation} from "./location.model";
 
-export type MOrder = MLocation & {
-    shippingDate: Date;
-    weight: number;
+export type MDepot = MLocation & {
+    name: string;
     createdAt: Date;
     updatedAt: Date;
-};
+}
 
-const orderSchema = new Schema<MOrder>({
+const depotSchema = new Schema<MDepot>({
+        name: {
+            type: String,
+            required: true
+        },
         address: {
             type: String,
             required: true
@@ -20,20 +23,11 @@ const orderSchema = new Schema<MOrder>({
         longitude: {
             type: Number,
             required: true
-        },
-        shippingDate: {
-            type: Date,
-            default: new Date()
-        },
-        weight: {
-            type: Number,
-            required: true
         }
     },
     {
         timestamps: true,
-        collection: 'Orders'
-    }
-)
+        collection: 'Drivers'
+    })
 
-export default mongoose.model<MOrder>('Order', orderSchema);
+export default mongoose.model<MDepot>('Depot', depotSchema);
