@@ -1,7 +1,16 @@
-import mongoose, {Schema} from "mongoose";
+import mongoose, {Model, Schema} from "mongoose";
 import {Driver} from "../../types/driver.type";
+import {Draft} from "../../types/draft.type";
 
-const driverSchema = new Schema<Driver>({
+interface DriverModel extends Model<Driver> {
+    getAll(): Promise<Driver[]>;
+
+    getById(id: string): Promise<Driver>;
+
+    getByIds(ids: string[]): Promise<Driver[]>;
+}
+
+const DriverSchema = new Schema<Driver, DriverModel>({
         name: {
             type: String,
             required: true
@@ -20,4 +29,19 @@ const driverSchema = new Schema<Driver>({
         collection: 'Drivers'
     })
 
-export default mongoose.model<Driver>('Driver', driverSchema);
+DriverSchema.statics.getAll = function () {
+    return this.find({});
+}
+
+DriverSchema.statics.getById = function (id: string) {
+    return this.findById({_id: id}).lean()
+}
+
+DriverSchema.statics.getByIds = function (ids: string[]) {
+    return this.find({
+            '_id': {$in: ids.map(id => new mongoose.Types.ObjectId(id))}
+        }
+    );
+}
+
+export default mongoose.model<Driver, DriverModel>('Driver', DriverSchema);

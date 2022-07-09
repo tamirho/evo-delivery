@@ -10,7 +10,7 @@ interface OrderModel extends Model<Order> {
 }
 
 
-const orderSchema = new Schema<Order, OrderModel>({
+const OrderSchema = new Schema<Order, OrderModel>({
         address: {
             type: String,
             required: true
@@ -38,4 +38,19 @@ const orderSchema = new Schema<Order, OrderModel>({
     }
 )
 
-export default mongoose.model<Order, OrderModel>('Order', orderSchema);
+OrderSchema.statics.getAll = function () {
+    return this.find({});
+}
+
+OrderSchema.statics.getById = function (id: string) {
+    return this.findById({_id: id}).lean()
+}
+
+OrderSchema.statics.getByIds = function (ids: string[]) {
+    return this.find({
+            '_id': {$in: ids.map(id => new mongoose.Types.ObjectId(id))}
+        }
+    );
+}
+
+export default mongoose.model<Order, OrderModel>('Order', OrderSchema);

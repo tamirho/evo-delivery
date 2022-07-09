@@ -15,14 +15,14 @@ export type RouteEvaluateRequest = {
 }
 
 export const evaluateRoute = async (req: Request, res: Response) => {
-  try {
-    const {data: {drivers, orders, depot}, config}: RouteEvaluateRequest = req.body
-    const routes = await routeService.evaluate(drivers, orders, depot, config);
+    const draftId = req.query.id as string;
 
-    return res.status(200).json(OK(routes));
-  } catch (e: any) {
-    return res.status(400).json(INVALID(400, e.message));
-  }
+    try {
+        const routes = await routeService.evaluate(draftId);
+        return res.status(200).json(OK({routes}));
+    } catch (e: any) {
+        return res.status(400).json(INVALID(400, e.message));
+    }
 };
 
 export const getRoutes = async (req: Request, res: Response) => {

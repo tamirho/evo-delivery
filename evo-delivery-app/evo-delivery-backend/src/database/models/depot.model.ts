@@ -39,7 +39,7 @@ DepotSchema.statics.getById = function(id: string) {
 }
 
 DepotSchema.statics.getByIds = function(ids: string[]) {
-    return this.findById({
+    return this.find({
             '_id': {$in: ids.map(id => new mongoose.Types.ObjectId(id))}
         }
     );
