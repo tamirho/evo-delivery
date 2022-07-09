@@ -2,19 +2,12 @@ import {
   EaComponentDetails,
   EaComponentTypes,
   EaEvaluateResponse,
-  EaHttpRequestDriver,
-  EaHttpRequestOrder,
-  EaHttpRequestDistances,
-  EaEvaluateHttpRequestConfig,
+  EaEvaluateHttpRequestBody,
 } from '../types';
 
 export interface EaHttpClient {
   evaluate: (
-    drivers: EaHttpRequestDriver[],
-    orders: EaHttpRequestOrder[],
-    depotId: string,
-    distanceMatrix: EaHttpRequestDistances,
-    config: EaEvaluateHttpRequestConfig
+  requestBody: EaEvaluateHttpRequestBody
   ) => Promise<EaEvaluateResponse>;
   
   getComponentDetails: (

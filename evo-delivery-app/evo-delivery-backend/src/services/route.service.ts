@@ -7,7 +7,6 @@ export const evaluate = async (driversIds: string[], ordersIds: string[], depotI
   const ordersPromise = orderService.getByIds(ordersIds);
   const depotPromise = depotService.getById(depotId);
   const [drivers, orders, depot] = await Promise.all([driversPromise, ordersPromise, depotPromise])
-
   const ordersAndRoot = [...orders, depot];
 
   const distanceMatrix = await googleMatrixClient.getDistance(

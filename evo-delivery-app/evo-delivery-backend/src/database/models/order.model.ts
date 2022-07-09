@@ -1,14 +1,16 @@
-import mongoose, {Schema} from "mongoose";
-import {MLocation} from "./location.model";
+import mongoose, {Model, Schema} from "mongoose";
+import {Order} from "../../types";
 
-export type MOrder = MLocation & {
-    shippingDate: Date;
-    weight: number;
-    createdAt: Date;
-    updatedAt: Date;
-};
+interface OrderModel extends Model<Order> {
+    getAll(): Promise<Order[]>;
 
-const orderSchema = new Schema<MOrder>({
+    getById(id: string): Promise<Order>;
+
+    getByIds(ids: string[]): Promise<Order[]>;
+}
+
+
+const orderSchema = new Schema<Order, OrderModel>({
         address: {
             type: String,
             required: true
@@ -36,4 +38,4 @@ const orderSchema = new Schema<MOrder>({
     }
 )
 
-export default mongoose.model<MOrder>('Order', orderSchema);
+export default mongoose.model<Order, OrderModel>('Order', orderSchema);

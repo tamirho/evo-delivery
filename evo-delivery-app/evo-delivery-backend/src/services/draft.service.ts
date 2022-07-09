@@ -1,22 +1,46 @@
-import draftModel from '../database/models/draft.model';
-import { Draft } from '../types/draft.type';
+import DraftModel from '../database/models/draft.model';
+import {Draft, DraftData} from '../types/draft.type';
+import {depotService, driverService, orderService} from "./index";
+import {googleMatrixClient} from "../clients";
 
-export const getDrafts = async (filter: Object, page:number, limit:number) => {
-    return draftModel.find({},null,{limit:limit}).lean()
+export const getAll = async () => {
+    return DraftModel.getAll();
 };
 
-export const getDraft = async (draftId: string): Promise<Draft> => {
-    return draftModel.findById({_id:draftId}).lean()
+export const getById = async (draftId: string): Promise<Draft> => {
+    return DraftModel.getById(draftId);
 };
 
-export const createDraft = async (draft: Partial<Draft>) => {
-    return (await draftModel.create(draft)).save()
+export const getByIds = async (draftIds: string[]) => {
+    return DraftModel.getByIds(draftIds);
 };
 
-export const updateDraft = async (draftId: string, draft: Partial<Draft>) => {
-    return await draftModel.findOneAndUpdate({_id:draftId}, draft, {returnOriginal: false})
+export const create = async (draft: Partial<Draft>) => {
+    const draftData = draft.data as DraftData;
+
+    const ordersPromise = orderService.getByIds(draftData.orders);
+    const depotPromise = depotService.getById(draftData.depot);
+    const [orders, depot] = await Promise.all([ordersPromise, depotPromise]);
+
+    console.dir(orders);
+    console.dir(depot);
+
+    const ordersAndRoot = [...orders, depot];
+    const distanceMatrix = await googleMatrixClient.getDistance(
+        ordersAndRoot,
+        ordersAndRoot
+    );
+
+    const data = {...draftData, distances: distanceMatrix} as DraftData;
+    const draftWithDistances = {...draft, data: data} as Partial<Draft>;
+
+    return draftWithDistances;
+};
+
+export const update = async (draftId: string, draft: Partial<Draft>) => {
+    return DraftModel.findOneAndUpdate({_id:draftId}, draft, {returnOriginal: false})
 };
   
-export const deleteDraft = async (id: string) => {
-    return await draftModel.deleteOne({_id:id})
+export const deleteOne = async (id: string) => {
+    return DraftModel.deleteOne({_id:id})
  };
