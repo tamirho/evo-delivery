@@ -4,7 +4,8 @@ import {
     Driver,
     EaComponentDetails,
     EaComponentTypes,
-    EaEvaluateConfig, EaEvaluateResponse, EaHttpRequestDistances, EaHttpRequestDriver, EaHttpRequestOrder,
+    EaEvaluateConfig,
+    EaEvaluateResponse,
     Order,
 } from '../types';
 import {EaHttpClientAdapter} from './EaHttpClientAdapter';
@@ -30,13 +31,8 @@ export class EaHttpClientAdapterImpl implements EaHttpClientAdapter {
         _distanceMatrix: DistanceMatrix,
         _config: EaEvaluateConfig
     ): Promise<EaEvaluateResponse> {
-        const drivers: EaHttpRequestDriver[] = _drivers.map(this.converter.convertDriver);
-        const orders: EaHttpRequestOrder[] = _orders.map(this.converter.convertOrder);
-        const distances: EaHttpRequestDistances = this.converter.convertDistances(_distanceMatrix);
-        const depotId = this.converter.convertDepot(_depot);
-        const config = this.converter.convertConfig(_config);
-
-        return this.eaHttpClient.evaluate(drivers, orders, depotId, distances, config);
+        const requestBody = this.converter.toEaHttpRequestBody(_drivers, _orders, _depot, _distanceMatrix, _config);
+        return this.eaHttpClient.evaluate(requestBody);
     }
 
     getComponentDetails(

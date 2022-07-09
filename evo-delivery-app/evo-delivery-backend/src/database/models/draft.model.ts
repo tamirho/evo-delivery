@@ -1,28 +1,26 @@
-import mongoose, { Schema } from "mongoose";
-import { DistanceMatrix, EaComponentConfig, EaEvaluateConfig } from "../../types";
-import { Depot } from "../../types/depot.type";
-import { Draft } from "../../types/draft.type";
+import mongoose, {Model, Schema} from "mongoose";
+import {DistanceMatrix, EaComponentConfig, EaEvaluateConfig} from "../../types";
+import {Draft, DraftData} from "../../types/draft.type";
 
-const depotSchema = new Schema<Depot>({
+interface DraftModel extends Model<Draft> {
+    getAll(): Promise<Draft[]>;
+
+    getById(id: string): Promise<Draft>;
+
+    getByIds(ids: string[]): Promise<Draft[]>;
+}
+
+
+const eaComponentSchema = new Schema<EaComponentConfig>({
     name: {
         type: String,
         required: true
     },
-    address:{
-        type: String,
-        required: true
-    }
-},{_id:false})
-
-const eaComponenSchema = new Schema <EaComponentConfig>({
-    name: {
-        type: String,
-        required: true
-    },
-    args:{
+    args: {
         type: {}
     }
-},{_id:false})
+}, {_id: false})
+
 
 const eaConfigSchema = new Schema<EaEvaluateConfig>({
     popSize: {
@@ -38,51 +36,76 @@ const eaConfigSchema = new Schema<EaEvaluateConfig>({
         type: Number,
     },
     crossover: {
-        type:eaComponenSchema,
+        type: eaComponentSchema,
     },
     fitness: {
-        type:eaComponenSchema,
+        type: eaComponentSchema,
     },
     selection: {
-        type:eaComponenSchema,
+        type: eaComponentSchema,
     },
     mutate: {
-        type:eaComponenSchema,
+        type: eaComponentSchema,
     }
-},{_id:false})
+}, {_id: false})
 
-const distancesMatrixSchema = new Schema <DistanceMatrix>({
-    distances:{
-        type:{},
+
+const distancesMatrixSchema = new Schema<DistanceMatrix>({
+    distances: {
+        type: {},
         required: true
     }
-},{_id:false})
+}, {_id: false})
 
-const draftSchema = new Schema<Draft>({
+
+const dataSchema = new Schema<DraftData>({
     depot: {
         type: String,
         required: true
     },
-    orders:[{
+    orders: [{
         type: String,
         required: true
     }],
     drivers: [{
-        type : String,
+        type: String,
         required: true
     }],
-    eaConfig: {
-        type: eaConfigSchema,
-        required: true
-    },
     distances: {
-        type: distancesMatrixSchema,
+        type: {},
         required: true
     }
+}, {_id: false})
+
+
+const DraftSchema = new Schema<Draft, DraftModel>({
+        data: {
+            type: dataSchema,
+            required: true
+        },
+        config: {
+            type: eaConfigSchema,
+            required: true
+        },
     },
     {
         timestamps: true,
-        collection: 'Draft'
+        collection: 'Drafts'
     })
 
-export default mongoose.model<Draft>('Draft', draftSchema);
+DraftSchema.statics.getAll = function () {
+    return this.find({});
+}
+
+DraftSchema.statics.getById = function (id: string) {
+    return this.findById({_id: id}).lean()
+}
+
+DraftSchema.statics.getByIds = function (ids: string[]) {
+    return this.findById({
+            '_id': {$in: ids.map(id => new mongoose.Types.ObjectId(id))}
+        }
+    );
+}
+
+export default mongoose.model<Draft, DraftModel>('Draft', DraftSchema);
