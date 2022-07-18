@@ -37,3 +37,8 @@
     transform: translateY(0px);
   }
 }
+
+.leaflet-container {
+  height: 100vw;
+  width: 100vw;
+}
