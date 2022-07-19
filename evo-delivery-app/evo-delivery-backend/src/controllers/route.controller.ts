@@ -1,7 +1,5 @@
 import {Request, Response} from 'express';
-import {routeService} from "../services";
 import {EaEvaluateConfig} from "../types";
-import {INVALID, OK} from "../utils";
 
 export type RouteEvaluateRequestData = {
     drivers: string[],
@@ -14,16 +12,6 @@ export type RouteEvaluateRequest = {
     config: EaEvaluateConfig
 }
 
-export const evaluateRoute = async (req: Request, res: Response) => {
-    const draftId = req.query.id as string;
-
-    try {
-        const routes = await routeService.evaluate(draftId);
-        return res.status(200).json(OK({routes}));
-    } catch (e: any) {
-        return res.status(400).json(INVALID(400, e.message));
-    }
-};
 
 export const getRoutes = async (req: Request, res: Response) => {
     return res.send('get all routes');

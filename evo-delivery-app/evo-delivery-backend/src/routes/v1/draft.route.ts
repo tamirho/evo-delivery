@@ -9,6 +9,8 @@ router.get('/:id', draftController.getDraft);
 
 router.post('/', draftController.createDraft);
 
+router.post('/:id/evaluate', draftController.evaluateDraft);
+
 router.put('/:id', draftController.updateDraft);
 
 router.delete('/:id', draftController.deleteDraft);

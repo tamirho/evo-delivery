@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import {draftService} from '../services';
+import {draftService, routeService} from '../services';
 import {Draft} from "../types/draft.type";
 import {INVALID, OK} from '../utils/response.utils';
 import {EaEvaluateConfig} from "../types";
@@ -36,11 +36,22 @@ export const getDraft = async (req: Request, res: Response) => {
 };
 
 export const createDraft = async (req: Request, res: Response) => {
-    const draftDetails: Partial<Draft> = req.body;
+    const draftDetails: DraftApiRequest = req.body;
 
     try {
         const draft = await draftService.create(draftDetails);
         return res.status(200).json(OK({draft}));
+    } catch (e: any) {
+        return res.status(400).json(INVALID(400, e.message));
+    }
+};
+
+export const evaluateDraft = async (req: Request, res: Response) => {
+    const draftId = req.params.id as string;
+
+    try {
+        const routes = await draftService.evaluate(draftId);
+        return res.status(200).json(OK({routes}));
     } catch (e: any) {
         return res.status(400).json(INVALID(400, e.message));
     }

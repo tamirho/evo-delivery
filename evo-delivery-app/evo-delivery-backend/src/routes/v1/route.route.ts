@@ -9,6 +9,4 @@ router.get('/:id', routeController.getRoute);
 
 router.delete('/:id', routeController.deleteRoute);
 
-router.post('/evaluate', routeController.evaluateRoute);
-
 export { router as routeRouter };
