@@ -6,3 +6,4 @@ export * from './driver.type';
 export * from './distance-matrix.type';
 export * from './ea-engine.type';
 export * from './ea-client.type';
+export * from './evaluateResult.type';

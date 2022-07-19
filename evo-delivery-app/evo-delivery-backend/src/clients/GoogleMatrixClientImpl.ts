@@ -1,98 +1,118 @@
+import 'reflect-metadata';
+import 'dotenv/config';
 import {Client, DistanceMatrixResponse, DistanceMatrixResponseData,} from '@googlemaps/google-maps-services-js';
-import {DistanceMatrix, DistanceMatrixColumnData, DistanceMatrixRowData, Location,} from '../types';
+import {Geocoder, GoogleMapsProvider, Location} from '@goparrot/geocoder';
+import Axios, {AxiosInstance} from 'axios';
+import {DistanceMatrix, DistanceMatrixColumnData, DistanceMatrixRowData, Location as EaLocation} from '../types';
 import {GoogleMatrixClient} from './GoogleMatrixClient';
-import {GeolocateResponse} from "@googlemaps/google-maps-services-js/dist/geolocate";
 
-export type GoogleMapsClient = Client;
+import {LatLng} from "@googlemaps/google-maps-services-js/dist/common";
+
+const axios: AxiosInstance = Axios.create();
+const apikey = process.env.GOOGLE_MAPS_API_KEY as string
+const provider: GoogleMapsProvider = new GoogleMapsProvider(axios, apikey);
+
 export class GoogleMatrixClientImpl implements GoogleMatrixClient {
-  private client;
+    private geocodeClient;
+    private matrixClient;
 
-  constructor(client?: GoogleMapsClient) {
-    this.client = client ?? new Client();
-  }
-
-  async getFullLocation(location: Partial<Location>): Promise<Location> {
-    const address = location.address;
-
-    const response = await this.client.geocode(
-        {
-          params: {
-            address,
-            key: process.env.GOOGLE_MAPS_API_KEY,
-          },
-          timeout: 1000, // milliseconds
-        }
-    );
-
-
-    const realAddress = response.data.results[0].formatted_address;
-    const latAndLng = response.data.results[0].geometry.location;
-
-    return {address: realAddress, latitude: latAndLng.lat, longitude: latAndLng.lng} as Location
-  };
-
-  async getDistance(
-    originsLocations: Location[],
-    destinationsLocations: Location[]
-  ): Promise<DistanceMatrix> {
-    try {
-      const origins = originsLocations.map((order) => [order.latitude, order.longitude] as number[]);
-      const destinations = destinationsLocations.map((order) =>[order.latitude, order.longitude] as number[]);
-      console.log(origins);
-      console.log(destinations);
-
-      const response: DistanceMatrixResponse = await this.client.distancematrix(
-        {
-          params: {
-            origins,
-            destinations,
-            key: process.env.GOOGLE_MAPS_API_KEY,
-          },
-          timeout: 1000, // milliseconds
-        }
-      );
-
-      return this.convertToDistanceMatrix(
-        response.data,
-        originsLocations,
-        destinationsLocations
-      );
-    } catch (e) {
-      console.error('Failed to fetch distance from Google Matrix API');
-      throw e;
+    constructor() {
+        this.geocodeClient = new Geocoder(provider);
+        this.matrixClient = new Client();
     }
-  }
 
-  private convertToDistanceMatrix(
-    response: DistanceMatrixResponseData,
-    originsLocations: Location[],
-    destinationsLocations: Location[]
-  ): DistanceMatrix {
-    if (response.status !== 'OK') throw Error;
+    async getFullLocation(location: Partial<EaLocation>): Promise<EaLocation> {
+        let locations;
+        let response: Location;
 
-    return response.rows.reduce((distanceMatrix, { elements }, i) => {
-      const originId = originsLocations[i]._id;
+        try {
+            if (location.address) {                         // fetch the lat and lng
+                locations = await this.geocodeClient.geocode({
+                        address: location.address
+                    }
+                );
+            } else {                                       // fetch the address
+                locations = await this.geocodeClient.reverse({
+                        lat: location.latitude,
+                        lon: location.longitude,
+                    }
+                );
+            }
 
-      distanceMatrix[originId] = elements.reduce(
-        (distanceObj, { distance, duration, status }, j) => {
-          if (status !== 'OK') throw Error;
-          const destinationId = destinationsLocations[j]._id;
+            response = locations[0]
 
-          distanceObj[destinationId] = {
-            distance: {text: distance.text, value: GoogleMatrixClientImpl.normalizeValue(distance.value)},
-            duration,
-          } as DistanceMatrixColumnData;
-          return distanceObj;
-        },
-        {} as DistanceMatrixRowData
-      );
+            return {
+                _id: location._id as string,
+                address: response.formattedAddress,
+                latitude: response.latitude,
+                longitude: response.longitude
+            } as EaLocation
 
-      return distanceMatrix;
-    }, {} as DistanceMatrix);
-  }
+        } catch (err) {
+            console.error(err);
+            throw err
+
+        }
+    };
+
+    async getDistance(originsLocations: EaLocation[], destinationsLocations: EaLocation[]): Promise<DistanceMatrix> {
+        try {
+            const origins = originsLocations.map((order) =>
+                [order.latitude, order.longitude] as LatLng);
+            const destinations = destinationsLocations.map((order) =>
+                [order.latitude, order.longitude] as LatLng);
+
+            const response: DistanceMatrixResponse = await this.matrixClient.distancematrix({
+                    params: {
+                        origins,
+                        destinations,
+                        key: process.env.GOOGLE_MAPS_API_KEY as string,
+                    },
+                    timeout: 1000, // milliseconds
+                }
+            );
+
+            return this.convertToDistanceMatrix(
+                response.data,
+                originsLocations,
+                destinationsLocations
+            );
+        } catch (e) {
+            console.error('Failed to fetch distance from Google Matrix API');
+            throw e;
+        }
+    }
+
+    private convertToDistanceMatrix(
+        response: DistanceMatrixResponseData,
+        originsLocations: EaLocation[],
+        destinationsLocations: EaLocation[]
+    ): DistanceMatrix {
+        if (response.status !== 'OK') throw Error;
+
+        return response.rows.reduce((distanceMatrix, {elements}, i) => {
+            const originId = originsLocations[i]._id;
+
+            distanceMatrix[originId] = elements.reduce(
+                (distanceObj, {distance, duration, status}, j) => {
+                    if (status !== 'OK') throw Error;
+                    const destinationId = destinationsLocations[j]._id;
+
+                    distanceObj[destinationId] = {
+                        distance: {text: distance.text, value: GoogleMatrixClientImpl.normalizeValue(distance.value)},
+                        duration,
+                    } as DistanceMatrixColumnData;
+                    return distanceObj;
+                },
+                {} as DistanceMatrixRowData
+            );
+
+            return distanceMatrix;
+        }, {} as DistanceMatrix);
+    }
 
     private static normalizeValue(value: number) {
-      const ThousandMeters = 1000;
-      return value / ThousandMeters;
+        const ThousandMeters = 1000;
+        return value / ThousandMeters;
     }
 }

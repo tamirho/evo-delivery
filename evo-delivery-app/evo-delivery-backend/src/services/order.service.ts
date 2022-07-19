@@ -16,7 +16,7 @@ export const getByIds = async (orderIds: string[]) => {
 
 export const create = async (order: Partial<Order>) => {
     const fullLocation: Location = await googleMatrixClient.getFullLocation(order);
-
+    console.dir(fullLocation);
     return OrderModel.create({...order, ...fullLocation});
 };
 

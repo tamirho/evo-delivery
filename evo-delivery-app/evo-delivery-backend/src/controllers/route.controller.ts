@@ -1,17 +1,6 @@
 import {Request, Response} from 'express';
 import {EaEvaluateConfig} from "../types";
 
-export type RouteEvaluateRequestData = {
-    drivers: string[],
-    orders: string[],
-    depot: string
-}
-
-export type RouteEvaluateRequest = {
-    data: RouteEvaluateRequestData,
-    config: EaEvaluateConfig
-}
-
 
 export const getRoutes = async (req: Request, res: Response) => {
     return res.send('get all routes');

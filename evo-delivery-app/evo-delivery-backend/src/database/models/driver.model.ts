@@ -1,6 +1,5 @@
 import mongoose, {Model, Schema} from "mongoose";
 import {Driver} from "../../types/driver.type";
-import {Draft} from "../../types/draft.type";
 
 interface DriverModel extends Model<Driver> {
     getAll(): Promise<Driver[]>;
