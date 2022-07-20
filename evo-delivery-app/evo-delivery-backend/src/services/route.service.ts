@@ -1,4 +1,4 @@
-import {DistanceMatrix, Driver, EaEvaluateConfig, EaEvaluateResponse, Order} from "../types";
+import {Depot, DistanceMatrix, Driver, EaEvaluateConfig, EaEvaluateResponse, Order} from "../types";
 import {driverService, draftService, orderService, depotService} from '../services';
 import {googleMatrixClient, eaHttpClientAdapter} from "../clients";
 import driverModel from "../database/models/driver.model";
@@ -11,7 +11,7 @@ export const store = async (draftId: string, routes: EaEvaluateResponse) => {
   const distances = draft.data.distances!;
   const depotId = draft.data.depot;
   const enricheRoutes: DriverRoute[] = []
-
+  const depot = await depotService.getById(draft.data.depot);
   for (const [driverId, ordersIds] of Object.entries(routes)){
     const driversP = driverModel.getById(driverId)
     const ordersP = orderModel.getByIds(ordersIds)
@@ -19,7 +19,13 @@ export const store = async (draftId: string, routes: EaEvaluateResponse) => {
     enricheRoutes.push(await enrichDriverRoute(depotId, driver, orders, distances));
   }
 
-  const enrichedResponse: EnrichedEvaluateResponse={draftId: draftId, enrichedRoutes:enricheRoutes}
+  const enrichedResponse: EnrichedEvaluateResponse= {draftId: draftId,
+                                                    enrichedRoutes:enricheRoutes,
+                                                    depot:{name:depot.name,
+                                                          address: depot.address,
+                                                          latitude: depot.latitude,
+                                                          longitude: depot.longitude}
+                                                    }
 
   return enrichedResponse;
 };
@@ -68,5 +74,6 @@ export type DriverRoute = {
 
 export type EnrichedEvaluateResponse = {
   draftId: string;
+  depot: Partial<Depot>;
   enrichedRoutes : DriverRoute[];
 }
