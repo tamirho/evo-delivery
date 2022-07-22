@@ -51,7 +51,7 @@ export const evaluate = async (draftId: string) => {
     const [drivers, orders, depot] = await Promise.all([driversP, ordersP, depotP]);
     const routes = await eaHttpClientAdapter.evaluate(drivers, orders, depot, draft.data.distances as DistanceMatrix, draft.config);
 
-    return store(draftId, routes);
+    return store(draft, drivers, orders, depot, routes);
 };
 
 export const update = async (draftId: string, draft: Partial<Draft>) => {
