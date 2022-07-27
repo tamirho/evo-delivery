@@ -6,11 +6,15 @@ from ea_server.engine.components.fitness.fit import Fitness
 from ea_server.engine.components.mutates.mut import Mutate
 from ea_server.engine.components.selection.sel import Selection
 
+import logging
+LOG = logging.getLogger(__name__)
+
 components_blueprint = Blueprint('components_blueprint', import_name=__name__)
 
 
 @components_blueprint.route('/<component>/details', methods=['GET'])
 def get_component_details(component):
+    LOG.info("Get %s details: %s'", component)
     if component == 'selection':
         types = Selection.get_details()
     elif component == 'fitness':

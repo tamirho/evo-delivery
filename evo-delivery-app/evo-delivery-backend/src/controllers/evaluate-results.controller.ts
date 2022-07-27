@@ -1,24 +1,48 @@
-import {evaluateResultsService} from '../services';
-import {EvaluateResult} from "../types";
+import {driverService, evaluateResultsService} from '../services';
+import {Driver, EvaluateResult} from "../types";
+import {Request, Response} from "express";
+import {INVALID, OK} from "../utils";
 
 
-export const createEvaluateResult = async (evaluateResult: EvaluateResult) => {
-    return evaluateResultsService.createResult(evaluateResult);
+export const createEvaluateResult = async (req: Request, res: Response) => {
+    const evaluateResult: EvaluateResult = req.body;
+    try {
+        const response = await evaluateResultsService.createResult(evaluateResult);
+        return res.status(200).json(OK({response}));
+    } catch (e: any) {
+        return res.status(400).json(INVALID(400, e.message));
+    }
 };
 
-export const getResults = async () => {
-    return evaluateResultsService.getResults();
+export const getResults = async (req: Request, res: Response) => {
+    try {
+        const response = await evaluateResultsService.getResults();
+        return res.status(200).json(OK({response}));
+    } catch (e: any) {
+        return res.status(400).json(INVALID(400, e.message));
+    }
 };
 
-export const getById = async (id: string) => {
-    return evaluateResultsService.getById(id);
+export const getById = async (req: Request, res: Response) => {
+    const id: string = req.params.id;
+
+    try {
+        const response = await evaluateResultsService.getById(id);
+        return res.status(200).json(OK({response}));
+    } catch (e: any) {
+        return res.status(400).json(INVALID(400, e.message));
+    }
 };
 
-export const getByIds = async (ids: string[]) => {
-    return evaluateResultsService.getByIds(ids);
-};
 
-export const getByDraftId = async (id: string) => {
-    return evaluateResultsService.getByDraftId(id);
+export const getByDraftId = async (req: Request, res: Response) => {
+    const id: string = req.params.id;
+
+    try {
+        const response = await evaluateResultsService.getByDraftId(id);
+        return res.status(200).json(OK({response}));
+    } catch (e: any) {
+        return res.status(400).json(INVALID(400, e.message));
+    }
 };
 

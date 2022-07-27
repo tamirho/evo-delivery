@@ -11,9 +11,6 @@ export type DriverApiRequest = {
 }
 
 export const getDrivers = async (req: Request, res: Response) => {
-    // const page : number= Number(req.query.page as string) || 1;
-    // const limit : number= Number(req.query.limit as string) || 100;
-    // const filter: Object = req.query.filter as Object|| {}
     try {
         const drivers = await driverService.getDrivers();
         return res.status(200).json(OK(drivers));
@@ -34,7 +31,7 @@ export const getDriver = async (req: Request, res: Response) => {
 };
 
 export const createDriver = async (req: Request, res: Response) => {
-    const driverDetails: DriverApiRequest = req.body.driver;
+    const driverDetails: DriverApiRequest = req.body;
 
     try {
         const driver = await driverService.createDriver(driverDetails);
@@ -46,7 +43,7 @@ export const createDriver = async (req: Request, res: Response) => {
 
 export const updateDriver = async (req: Request, res: Response) => {
     const driverId: string = req.params.id;
-    const driverDetails: Partial<Driver> = req.body.driver;
+    const driverDetails: Partial<DriverApiRequest> = req.body;
 
     try {
         const driver = await driverService.updateDriver(driverId, driverDetails);

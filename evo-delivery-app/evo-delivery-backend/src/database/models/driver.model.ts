@@ -9,7 +9,7 @@ interface DriverModel extends Model<Driver> {
     getByIds(ids: string[]): Promise<Driver[]>;
 }
 
-const DriverSchema = new Schema<Driver, DriverModel>({
+export const DriverSchema = new Schema<Driver, DriverModel>({
         name: {
             type: String,
             required: true

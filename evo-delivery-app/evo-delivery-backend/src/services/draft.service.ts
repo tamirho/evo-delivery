@@ -83,12 +83,7 @@ const prepareEvaluateResult = (
     return {
         draftId: draft._id,
         routes: enrichedRoutes,
-        depot: {
-            name: depot.name,
-            address: depot.address,
-            latitude: depot.latitude,
-            longitude: depot.longitude,
-        },
+        depot: depot
     } as EvaluateResult;
 };
 
@@ -98,20 +93,12 @@ const enrichDriverRoute = (
     orders: Order[],
     distances: DistanceMatrix
 ): DriverRoute => {
-    const ordersRoute: Partial<Order>[] = [];
     let weight: number = 0;
     let distance: number = 0;
     let duration: number = 0;
-    const driverName = driver.name;
 
     orders.forEach(async (order, index) => {
-        ordersRoute.push({
-            address: order.address,
-            latitude: order.latitude,
-            longitude: order.longitude,
-        });
         weight = weight + order.weight;
-
         if (index == 0) {
             distance += distances[depotId][order._id].distance.value;
             duration += distances[depotId][order._id].duration.value;
@@ -125,8 +112,8 @@ const enrichDriverRoute = (
     const PERCENTAGE = 100;
 
     return {
-        driverName: driverName,
-        route: ordersRoute,
+        driver: driver,
+        orders: orders,
         totalDistance: distance,
         totalDuration: duration / MIN,
         load: (weight / driver.maxCapacity) * PERCENTAGE,

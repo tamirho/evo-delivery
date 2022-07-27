@@ -4,7 +4,7 @@ import { apiRouter } from './routes';
 import mongoose from 'mongoose';
 import 'dotenv/config';
 import {googleMatrixClient, eaHttpClientAdapter} from './clients';
-import {DRIVERS, ORDERS} from './models/tmp-data';
+import {DRIVERS, ORDERS} from './tmp/tmp-data';
 
 const app: Express = express();
 

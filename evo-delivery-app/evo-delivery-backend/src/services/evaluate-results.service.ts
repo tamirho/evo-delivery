@@ -16,6 +16,7 @@ export const getByIds = async (ids: string[]) => {
 };
 
 export const getByDraftId = async (id: string) => {
+    console.log(id);
     return EvaluateResultModel.getByDraftId(id);
 };
 
