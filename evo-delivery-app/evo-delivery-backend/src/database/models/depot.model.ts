@@ -3,11 +3,13 @@ import {Depot} from "../../types";
 
 interface DepotModel extends Model<Depot> {
     getAll(): Promise<Depot[]>;
+
     getById(id: string): Promise<Depot>;
+
     getByIds(ids: string[]): Promise<Depot[]>;
 }
 
-const DepotSchema = new Schema<Depot, DepotModel>({
+export const DepotSchema = new Schema<Depot, DepotModel>({
         name: {
             type: String,
             required: true
@@ -30,15 +32,15 @@ const DepotSchema = new Schema<Depot, DepotModel>({
         collection: 'Depots'
     })
 
-DepotSchema.statics.getAll = function() {
+DepotSchema.statics.getAll = function () {
     return this.find({});
 }
 
-DepotSchema.statics.getById = function(id: string) {
+DepotSchema.statics.getById = function (id: string) {
     return this.findById({_id: id}).lean()
 }
 
-DepotSchema.statics.getByIds = function(ids: string[]) {
+DepotSchema.statics.getByIds = function (ids: string[]) {
     return this.find({
             '_id': {$in: ids.map(id => new mongoose.Types.ObjectId(id))}
         }

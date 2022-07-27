@@ -26,7 +26,7 @@ export const getOrder = async (req: Request, res: Response) => {
     const orderId = req.params.id;
 
     try {
-        const order = await orderService.getOrder(orderId);
+        const order = await orderService.getOrderById(orderId);
         return res.status(200).json(OK({order}));
     } catch (e: any) {
         return res.status(400).json(INVALID(400, e.message));
@@ -37,7 +37,7 @@ export const createOrder = async (req: Request, res: Response) => {
     const orderDetails: OrderApiRequest = req.body;
 
     try {
-        const order = await orderService.create(orderDetails);
+        const order = await orderService.createOrder(orderDetails);
         return res.status(200).json(OK({order}));
     } catch (e: any) {
         return res.status(400).json(INVALID(400, e.message));

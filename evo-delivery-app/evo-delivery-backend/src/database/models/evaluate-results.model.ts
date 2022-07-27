@@ -1,9 +1,9 @@
 import mongoose, {Model, Schema} from "mongoose";
 import {EvaluateResult, Order} from "../../types";
-import DepotSchema from "./depot.model";
-import OrderSchema from "./order.model";
+import {DepotSchema} from "./depot.model";
+import {OrderSchema} from "./order.model";
 
-interface EvaluateResultModel extends Model<EvaluateResult> {
+interface EvaluateResultsModel extends Model<EvaluateResult> {
     getAll(): Promise<EvaluateResult[]>;
 
     getById(id: string): Promise<EvaluateResult>;
@@ -49,7 +49,7 @@ const DriverRoute = new Schema<DriverRoute>({
     }
 })
 
-const EvaluateResultSchema = new Schema<EvaluateResult, EvaluateResultModel>({
+const EvaluateResultSchema = new Schema<EvaluateResult, EvaluateResultsModel>({
         draftId: {
             type: String,
             required: true
@@ -91,4 +91,4 @@ EvaluateResultSchema.statics.getByDraftIds = function (draftId: string) {
     );
 }
 
-export default mongoose.model<EvaluateResult, EvaluateResultModel>('EvaluateResult', EvaluateResultSchema);
+export default mongoose.model<EvaluateResult, EvaluateResultsModel>('EvaluateResult', EvaluateResultSchema);

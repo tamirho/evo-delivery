@@ -21,37 +21,21 @@ export class GoogleMatrixClientImpl implements GoogleMatrixClient {
         this.matrixClient = new Client();
     }
 
-    async getFullLocation(location: Partial<EaLocation>): Promise<EaLocation> {
-        let locations;
-        let response: Location;
+    async getFullLocation(partialLocation: Partial<EaLocation>): Promise<EaLocation> {
+        let fullLocation = partialLocation;
 
         try {
-            if (location.address) {                         // fetch the lat and lng
-                locations = await this.geocodeClient.geocode({
-                        address: location.address
-                    }
-                );
-            } else {                                       // fetch the address
-                locations = await this.geocodeClient.reverse({
-                        lat: location.latitude,
-                        lon: location.longitude,
-                    }
-                );
+            if (!partialLocation.latitude && !partialLocation.longitude) {
+                fullLocation = await this.getLocationByAddress(partialLocation);
+            }
+            else if (!partialLocation.address) {
+                fullLocation = await this.getLocationByLatLng(partialLocation);
             }
 
-            response = locations[0]
-
-            return {
-                _id: location._id as string,
-                address: response.formattedAddress,
-                latitude: response.latitude,
-                longitude: response.longitude
-            } as EaLocation
-
+            return fullLocation as EaLocation;
         } catch (err) {
             console.error(err);
             throw err
-
         }
     };
 
@@ -114,5 +98,37 @@ export class GoogleMatrixClientImpl implements GoogleMatrixClient {
     private static normalizeValue(value: number) {
         const ThousandMeters = 1000;
         return value / ThousandMeters;
-    }
+    };
+
+    private getLocationByAddress = async (partialLocation) => {
+        const locations = await this.geocodeClient.geocode({
+                address: partialLocation.address
+            }
+        );
+
+        const response = locations[0]
+
+        return {
+            _id: partialLocation._id as string,
+            address: response.formattedAddress,
+            latitude: response.latitude,
+            longitude: response.longitude
+        } as EaLocation
+    };
+
+    private getLocationByLatLng = async (partialLocation) => {
+        const locations = await this.geocodeClient.reverse({
+                lat: partialLocation.latitude,
+                lon: partialLocation.longitude,
+            }
+        );
+        const response = locations[0]
+
+        return {
+            _id: partialLocation._id as string,
+            address: response.formattedAddress,
+            latitude: partialLocation.latitude,
+            longitude: partialLocation.longitude
+        } as EaLocation
+    };
 }

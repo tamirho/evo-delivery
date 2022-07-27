@@ -10,7 +10,7 @@ interface OrderModel extends Model<Order> {
 }
 
 
-const OrderSchema = new Schema<Order, OrderModel>({
+export const OrderSchema = new Schema<Order, OrderModel>({
         address: {
             type: String,
             required: true
