@@ -18,9 +18,9 @@ export const createDriver = async (driver: Partial<Driver>) => {
 };
 
 export const updateDriver = async (driverId: string, driver: Partial<Driver>) => {
-    return await driverModel.findOneAndUpdate({_id: driverId}, driver, {returnOriginal: false})
+    return driverModel.findOneAndUpdate({_id: driverId}, driver, {returnOriginal: false})
 };
 
 export const deleteDriver = async (id: string) => {
-    return await driverModel.deleteOne({_id: id})
+    return driverModel.deleteOne({_id: id})
 };

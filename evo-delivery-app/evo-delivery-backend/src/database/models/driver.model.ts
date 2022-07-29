@@ -1,6 +1,5 @@
 import mongoose, {Model, Schema} from "mongoose";
 import {Driver} from "../../types/driver.type";
-import {Draft} from "../../types/draft.type";
 
 interface DriverModel extends Model<Driver> {
     getAll(): Promise<Driver[]>;
@@ -10,7 +9,7 @@ interface DriverModel extends Model<Driver> {
     getByIds(ids: string[]): Promise<Driver[]>;
 }
 
-const DriverSchema = new Schema<Driver, DriverModel>({
+export const DriverSchema = new Schema<Driver, DriverModel>({
         name: {
             type: String,
             required: true

@@ -6,17 +6,17 @@ export const getOrders = async () => {
     return OrderModel.getAll();
 };
 
-export const getOrder = async (orderId: string) => {
+export const getOrderById = async (orderId: string) => {
     return OrderModel.getById(orderId);
 };
 
-export const getByIds = async (orderIds: string[]) => {
+export const getOrderByIds = async (orderIds: string[]) => {
     return OrderModel.getByIds(orderIds);
 }
 
-export const create = async (order: Partial<Order>) => {
+export const createOrder = async (order: Partial<Order>) => {
     const fullLocation: Location = await googleMatrixClient.getFullLocation(order);
-
+    console.dir(fullLocation);
     return OrderModel.create({...order, ...fullLocation});
 };
 

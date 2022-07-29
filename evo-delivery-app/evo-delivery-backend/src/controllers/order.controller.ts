@@ -3,6 +3,15 @@ import {orderService} from '../services';
 import {Order} from '../types/order.type';
 import {INVALID, OK} from '../utils/response.utils';
 
+export type OrderApiRequest = {
+    name: string;
+    address?: string;
+    latitude?: number;
+    longitude?: number;
+    shippingDate: Date;
+    weight: number;
+}
+
 export const getOrders = async (req: Request, res: Response) => {
 
     try {
@@ -17,7 +26,7 @@ export const getOrder = async (req: Request, res: Response) => {
     const orderId = req.params.id;
 
     try {
-        const order = await orderService.getOrder(orderId);
+        const order = await orderService.getOrderById(orderId);
         return res.status(200).json(OK({order}));
     } catch (e: any) {
         return res.status(400).json(INVALID(400, e.message));
@@ -25,10 +34,10 @@ export const getOrder = async (req: Request, res: Response) => {
 };
 
 export const createOrder = async (req: Request, res: Response) => {
-    const orderDetails: Partial<Order> = req.body;
+    const orderDetails: OrderApiRequest = req.body;
 
     try {
-        const order = await orderService.create(orderDetails);
+        const order = await orderService.createOrder(orderDetails);
         return res.status(200).json(OK({order}));
     } catch (e: any) {
         return res.status(400).json(INVALID(400, e.message));
