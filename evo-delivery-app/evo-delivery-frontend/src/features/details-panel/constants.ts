@@ -1,0 +1,1 @@
+export const DETAILS_PANEL_WIDTH = 500;
