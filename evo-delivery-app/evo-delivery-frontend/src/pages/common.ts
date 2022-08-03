@@ -3,7 +3,7 @@ export const ENTITIES = {
   drivers: 'drivers',
   drafts: 'drafts',
   depots: 'depots',
-  runs: 'runs',
+  results: 'results',
 };
 
 export const ROUTES = {
@@ -12,7 +12,7 @@ export const ROUTES = {
   drivers: '/drivers',
   drafts: '/drafts',
   depots: '/depots',
-  runs: '/runs',
+  results: '/results',
 };
 
 export const SEARCH_PARAMS = {

@@ -75,7 +75,7 @@ export const navBarTabs = [
     description: undefined,
     icon: <RocketLaunchTwoToneIcon />,
     to: {
-      route: ROUTES.runs,
+      route: ROUTES.results,
       params: { [SEARCH_PARAMS.panel]: PANEL_STATES.open },
     },
   },

@@ -8,7 +8,7 @@ export type OrderApiRequest = {
     address?: string;
     latitude?: number;
     longitude?: number;
-    shippingDate: Date;
+    shippingDate: string;
     weight: number;
 }
 
