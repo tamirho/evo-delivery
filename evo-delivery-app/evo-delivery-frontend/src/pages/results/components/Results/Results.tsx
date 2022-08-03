@@ -102,9 +102,6 @@ export const Results = () => {
     const {dispatch} = useContext(MapContext);
     // const { data, isFetching, isLoading, isError } = useOrders();
 
-    const navigate = useNavigate();
-    const location = useLocation();
-
     useEffect(() => {
         dispatch({type: mapActions.UPDATE_RESULTS, payload: {result: mockResults[0], zoom: 13}});
         return () => dispatch({type: mapActions.CLEAR_STATE, payload: {}});

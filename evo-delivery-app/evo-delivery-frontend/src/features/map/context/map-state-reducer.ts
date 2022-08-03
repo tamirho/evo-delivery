@@ -47,7 +47,7 @@ export const mapReducer = (state: mapState, action: mapAction) => {
     case mapActions.UPDATE_DEPOTS:
       return { ...state, depots: [...(action.payload.depots ?? [])] };
     case mapActions.UPDATE_RESULTS:
-      return { ...state, routes: { ...(action.payload.result ?? {}) } };
+      return { ...state, result: { ...(action.payload.result ?? {}) } };
     case mapActions.UPDATE_ZOOM:
       return { ...state, zoom: action.payload.zoom || DEFAULT_MAP_ZOOM };
     case mapActions.CLEAR_ORDERS:
@@ -55,7 +55,7 @@ export const mapReducer = (state: mapState, action: mapAction) => {
     case mapActions.CLEAR_DEPOTS:
       return { ...state, depots: [] };
     case mapActions.CLEAR_RESULTS:
-      return { ...state, routes: {} };
+      return { ...state, result: {} };
     case mapActions.CLEAR_ZOOM:
       return { ...state, zoom: DEFAULT_MAP_ZOOM };
     case mapActions.CLEAR_STATE:
