@@ -24,6 +24,7 @@ export const DriverSchema = new Schema<Driver, DriverModel>({
         }
     },
     {
+        versionKey: false,
         timestamps: true,
         collection: 'Drivers'
     })

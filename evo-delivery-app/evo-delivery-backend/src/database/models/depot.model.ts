@@ -28,6 +28,7 @@ export const DepotSchema = new Schema<Depot, DepotModel>({
         }
     },
     {
+        versionKey: false,
         timestamps: true,
         collection: 'Depots'
     })

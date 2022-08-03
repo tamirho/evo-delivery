@@ -3,6 +3,6 @@ export type Driver = {
 	name: string;
 	maxCapacity: number;
 	maxDistance: number;
-	createdAt: Date;
-	updatedAt: Date;
+	createdAt: string;
+	updatedAt: string;
 };

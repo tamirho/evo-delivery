@@ -1,8 +1,8 @@
 import {Location} from './location.type';
 
 export type Order = Location & {
-    shippingDate: Date;
+    shippingDate?: string;
     weight: number;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
 };

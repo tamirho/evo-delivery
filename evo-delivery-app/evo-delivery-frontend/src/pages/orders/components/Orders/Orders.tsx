@@ -26,19 +26,19 @@ const depot = {
   address: 'some address 2',
   latitude: [52.489471, -1.898575][0],
   longitude: [52.489471, -1.898575][1],
-  shippingDate: new Date(),
-  createdAt: new Date(),
-  updatedAt: new Date(),
+  shippingDate: "2022-07-27T18:18:20.230Z",
+  createdAt: "2022-07-27T18:18:20.230Z",
+  updatedAt: "2022-07-27T18:18:20.230Z",
 };
 const orders = [1, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5, 6, 7, 8, 9].map((item, index) => ({
   _id: `134523452345${item}${index}`,
   address: `some address ${item}${index}`,
   latitude: [51.505 + 0.01 * index, -0.09 - 0.01 * item][0],
   longitude: [51.505 + 0.001 * index, -0.09 - 0.0001 * item][1],
-  shippingDate: new Date(),
+  shippingDate: "2022-07-27T18:18:20.230Z",
   weight: (9 + index) * item,
-  createdAt: new Date(),
-  updatedAt: new Date(),
+  createdAt: "2022-07-27T18:18:20.230Z",
+  updatedAt: "2022-07-27T18:18:20.230Z",
 }));
 
 export const Orders = () => {
@@ -91,7 +91,7 @@ export const Orders = () => {
                     <Typography sx={{ display: 'inline' }} component='span' variant='body2' color='text.primary'>
                       {`${order.address}`}
                     </Typography>
-                    {` - ${order.shippingDate.toDateString()}`}
+                    {` - ${order.shippingDate}`}
                   </>
                 }
               />

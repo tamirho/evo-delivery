@@ -35,6 +35,8 @@ const DriverRoute = new Schema<DriverRoute>({
         type: Number,
         required: true
     }
+}, {
+    _id: false
 })
 
 const EvaluateResultSchema = new Schema<EvaluateResult, EvaluateResultsModel>({
@@ -52,6 +54,7 @@ const EvaluateResultSchema = new Schema<EvaluateResult, EvaluateResultsModel>({
         }
     },
     {
+        versionKey: false,
         timestamps: true,
         collection: 'EvaluateResults'
     }

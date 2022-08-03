@@ -12,6 +12,6 @@ export type Draft = {
     _id: string;
     data: DraftData,
     config : EaEvaluateConfig;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
 };
