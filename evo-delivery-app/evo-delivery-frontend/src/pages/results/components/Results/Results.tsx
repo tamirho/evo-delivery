@@ -18,6 +18,7 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import {Depot, EvaluateResult} from "../../../../../../evo-delivery-backend/src/types";
+import {LatLngTuple} from "leaflet";
 
 const mockResults = [1, 2, 3, 4, 5].map(item => ({
     "draftId": `62e3f0d9d940ee846c57480${item}`,
@@ -106,7 +107,14 @@ export const Results = () => {
     const location = useLocation();
 
     useEffect(() => {
-        dispatch({type: mapActions.UPDATE_RESULTS, payload: {result: mockResults[0], zoom: 13}});
+        dispatch({
+            type: mapActions.UPDATE_RESULTS,
+            payload: {result: mockResults[0], zoom: 13, }
+        });
+        dispatch({
+            type: mapActions.UPDATE_CENTER,
+            payload: {center: [mockResults[0].depot?.latitude, mockResults[0].depot?.longitude] as LatLngTuple }
+        });
         return () => dispatch({type: mapActions.CLEAR_STATE, payload: {}});
     }, []);
 
