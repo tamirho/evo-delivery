@@ -1,5 +1,16 @@
-import * as React from 'react';
+
+import { DriverForm } from '../DriverForm';
 
 export const CreateDriver = () => {
-    return <div>Create New Driver</div>
+
+    const callback = ()=>{
+        //poseDriver
+    }
+     return (
+       <DriverForm
+         disable={true}
+         callback={callback}
+         buttonText="Create"
+       />
+     );
 }
