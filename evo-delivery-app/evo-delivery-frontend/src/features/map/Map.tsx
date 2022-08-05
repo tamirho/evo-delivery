@@ -13,9 +13,9 @@ export const Map = () => {
 
     return (
         <LeafletMap center={center} zoom={zoom}>
+            <ResultsDrawer/>
             <OrdersDrawer/>
             <DepotsDrawer/>
-            <ResultsDrawer/>
         </LeafletMap>
     );
 };

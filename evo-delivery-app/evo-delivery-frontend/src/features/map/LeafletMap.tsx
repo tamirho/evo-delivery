@@ -1,4 +1,4 @@
-import L from 'leaflet';
+import L, {Polyline} from 'leaflet';
 import { MapContainer, MapContainerProps, TileLayer, ZoomControl } from 'react-leaflet';
 import { DEFAULT_CENTER_POSITION, DEFAULT_MAP_ZOOM, DEFAULT_SCROLL_WITH_ZOOM } from './common/constants';
 import { ChangeView } from './ChangeView';

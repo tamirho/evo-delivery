@@ -17,7 +17,7 @@ export const initialState: mapState = {
   center: DEFAULT_CENTER_POSITION,
   orders: [],
   depots: [],
-  result: {},
+  result: {} as EvaluateResult,
   zoom: DEFAULT_MAP_ZOOM,
 };
 

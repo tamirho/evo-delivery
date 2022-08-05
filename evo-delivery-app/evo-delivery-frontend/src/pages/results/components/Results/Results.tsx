@@ -25,7 +25,7 @@ const mockResults = [1, 2, 3, 4, 5].map(item => ({
         "name": "Base",
         "address": "Tel Aviv-Yafo, Israel",
         "latitude": 32.0852999,
-        "longitude": 34.78176759999999,
+        "longitude": 34.781767,
         "_id": "62c996aeac626da9333d7639",
         "updatedAt": "2022-07-09T14:54:38.144Z",
         "createdAt": "2022-07-09T14:54:38.144Z"
