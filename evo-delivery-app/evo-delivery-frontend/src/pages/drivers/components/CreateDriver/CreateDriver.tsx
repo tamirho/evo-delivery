@@ -1,10 +1,16 @@
-
-import { EvoForm } from '../EvoForm';
+import { EvoForm } from "../EvoForm";
 
 export const CreateDriver = () => {
+  const callback = () => {
+    //poseDriver
+  };
 
-    const callback = ()=>{
-        //poseDriver
-    }
-     return <EvoForm disable={true} callback={callback} initialData={[]} buttonText="Create" />;
-}
+  return (
+    <EvoForm
+      disable={true}
+      callback={callback}
+      initialData={[]}
+      buttonText="Create"
+    />
+  );
+};
