@@ -8,7 +8,7 @@ export const useForm = (callback: any, initialData={}) => {
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
-  
+
   // onSubmit
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
