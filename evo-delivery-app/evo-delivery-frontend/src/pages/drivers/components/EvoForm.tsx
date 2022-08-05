@@ -1,21 +1,14 @@
 import TextField from "@mui/material/TextField";
 import { useForm } from "../../../hooks/use-form";
 
-export type DriverData = {
-  id: string;
-  name: string;
-  maxDistance: number;
-  maxCapacity: number;
-};
-
 export type FormFieldAttr = {
   label: string;
   type: string;
-  value: string | number;
+  value: string;
 };
 type FormProps = {
   disable: boolean;
-  initialData?: FormFieldAttr[];
+  initialData: FormFieldAttr[];
   callback: any;
   buttonText: string;
 };
@@ -26,7 +19,11 @@ export const EvoForm = ({
   callback,
   buttonText,
 }: FormProps) => {
-  const { onChange, onSubmit, values } = useForm(callback, initialData);
+  const data = initialData?.reduce(
+    (a, v) => ({ ...a, [v.label]: v.value }),
+    {}
+  );
+  const { onChange, onSubmit, values } = useForm(callback, data);
 
   return (
     <>
@@ -35,6 +32,7 @@ export const EvoForm = ({
           <div>
             <TextField
               id="filled-number"
+              name={field.label}
               label={field.label}
               type={field.type}
               InputLabelProps={{

@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEntityId } from "../../../../hooks/use-entity-id";
 import { ENTITY_VIEW_STATES } from "../../../common";
 import { useDriver } from "../../hooks/use-driver";
-import { DriverData, EvoForm } from "../DriverForm";
+import { EvoForm } from "../EvoForm";
 
 export const ViewDriver = () => {
   const driverId = useEntityId() as string;
@@ -33,12 +33,12 @@ export const ViewDriver = () => {
         {
           label: "Max Distance",
           type: "number",
-          value: 100,
+          value: "100",
         },
         {
           label: "Max Capacity",
           type: "number",
-          value: 220,
+          value: "220",
         },
       ]}
       callback={handleSubmit}

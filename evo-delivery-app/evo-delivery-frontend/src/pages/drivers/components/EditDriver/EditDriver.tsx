@@ -1,14 +1,14 @@
 import { useEntityId } from "../../../../hooks/use-entity-id";
 import { useDriver } from "../../hooks/use-driver";
-import { DriverData, EvoForm } from "../DriverForm";
+import { EvoForm, FormFieldAttr } from "../EvoForm";
 
 export const EditDriver = () => {
   const driverId = useEntityId() as string;
   const { data } = useDriver(driverId);
 
-  const callback = (data: DriverData) => {
+  const callback = (data ={}) => {
     //updateDriver
-    console.log(data);
+    console.log(data)
   };
 
   return (
@@ -23,12 +23,12 @@ export const EditDriver = () => {
         {
           label: "Max Distance",
           type: "number",
-          value: 100,
+          value: "100",
         },
         {
           label: "Max Capacity",
           type: "number",
-          value: 220,
+          value: "220",
         },
       ]}
       callback={callback}
