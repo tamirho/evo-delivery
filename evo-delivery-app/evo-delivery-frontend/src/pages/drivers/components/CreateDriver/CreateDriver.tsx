@@ -1,5 +1,10 @@
-import * as React from 'react';
+
+import { EvoForm } from '../DriverForm';
 
 export const CreateDriver = () => {
-    return <div>Create New Driver</div>
+
+    const callback = ()=>{
+        //poseDriver
+    }
+     return <EvoForm disable={true} callback={callback} buttonText="Create" />;
 }

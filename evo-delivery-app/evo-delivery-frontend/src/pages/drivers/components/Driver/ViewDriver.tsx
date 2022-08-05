@@ -1,20 +1,30 @@
+import { useMemo } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEntityId } from "../../../../hooks/use-entity-id";
+import { ENTITY_VIEW_STATES } from "../../../common";
 import { useDriver } from "../../hooks/use-driver";
 import { DriverData, EvoForm } from "../DriverForm";
 
-export const EditDriver = () => {
+export const ViewDriver = () => {
   const driverId = useEntityId() as string;
   const { data } = useDriver(driverId);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const goToEntity = useMemo(
+    () => (id: string) =>
+      navigate(`../${id}/${ENTITY_VIEW_STATES.edit}${location.search}`),
+    []
+  );
 
-  const callback = (data: DriverData) => {
-    //updateDriver
-    console.log(data);
+  const handleSubmit = () => {
+    goToEntity(driverId);
   };
 
   return (
     <EvoForm
-      disable={false}
+      disable={true}
       initialData={[
+        { label: "id", type: "text", value: "12" },
         {
           label: "name",
           type: "text",
@@ -31,8 +41,8 @@ export const EditDriver = () => {
           value: 220,
         },
       ]}
-      callback={callback}
-      buttonText="Update"
+      callback={handleSubmit}
+      buttonText="Edit"
     />
   );
 };
