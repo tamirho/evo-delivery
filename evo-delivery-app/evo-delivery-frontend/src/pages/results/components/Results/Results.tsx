@@ -1,32 +1,24 @@
 import * as React from 'react';
-import {useContext, useEffect, useMemo} from "react";
+import {useContext, useMemo, useState} from 'react';
 import {mapActions, MapContext} from "../../../../features/map/context";
 import {useOrders} from "../../../orders/hooks/use-orders";
 import {useLocation, useNavigate} from "react-router-dom";
 import {ENTITY_VIEW_STATES} from "../../../common";
 import {EntityList} from "../../../../features/entity-list/EntityList";
-import {
-    Avatar, Divider,
-    IconButton,
-    ListItem,
-    ListItemAvatar,
-    ListItemButton,
-    ListItemSecondaryAction,
-    ListItemText,
-    Typography
-} from "@mui/material";
+import {Avatar, IconButton, ListItem, ListItemAvatar, ListItemButton, ListItemText, Typography} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import InventoryIcon from "@mui/icons-material/Inventory";
-import {Depot, EvaluateResult} from "../../../../../../evo-delivery-backend/src/types";
+import RouteIcon from '@mui/icons-material/Route';
+import {EvaluateResult} from "../../../../../../evo-delivery-backend/src/types";
 import {LatLngTuple} from "leaflet";
+import {useResults} from "../hooks/use-results";
 
 const mockResults = [1, 2, 3, 4, 5].map(item => ({
     "draftId": `62e3f0d9d940ee846c57480${item}`,
     "depot": {
         "name": "Base",
         "address": "Tel Aviv-Yafo, Israel",
-        "latitude": 32.0852999,
-        "longitude": 34.78176759999999,
+        "latitude": 32.0852999 + item / 4,
+        "longitude": 34.781767 + item / 4,
         "_id": "62c996aeac626da9333d7639",
         "updatedAt": "2022-07-09T14:54:38.144Z",
         "createdAt": "2022-07-09T14:54:38.144Z"
@@ -44,8 +36,8 @@ const mockResults = [1, 2, 3, 4, 5].map(item => ({
             "orders": [
                 {
                     "address": "275X+C6 Ma'alot-Tarshiha, Israel",
-                    "latitude": 33.0085361,
-                    "longitude": 35.2980514,
+                    "latitude": 33.0085361 + item / 2,
+                    "longitude": 35.2980514 + item / 2,
                     "shippingDate": "Tue Jul 19 2022 03:00:00 GMT+0300 (Israel Daylight Time)",
                     "weight": 14,
                     "_id": "62e1815da55e83ab66c591bf",
@@ -93,31 +85,52 @@ const mockResults = [1, 2, 3, 4, 5].map(item => ({
             "load": 140
         }
     ],
-    "_id": "62ea478aff58ac71e10e5e84",
+    "_id": `62ea478aff58ac71e10e5e8${item}`,
     "createdAt": "2022-08-03T10:01:46.336Z",
     "updatedAt": "2022-08-03T10:01:46.336Z"
 } as EvaluateResult))
 
-
 export const Results = () => {
     const {dispatch} = useContext(MapContext);
-    // const { data, isFetching, isLoading, isError } = useOrders();
+    const {data, isFetching, isLoading, isError} = useResults();
 
     const navigate = useNavigate();
     const location = useLocation();
-
-    useEffect(() => {
-        dispatch({
-            type: mapActions.UPDATE_RESULTS,
-            payload: {result: mockResults[0], zoom: 13, }
-        });
-        dispatch({
-            type: mapActions.UPDATE_CENTER,
-            payload: {center: [mockResults[0].depot?.latitude, mockResults[0].depot?.longitude] as LatLngTuple }
-        });
-        return () => dispatch({type: mapActions.CLEAR_STATE, payload: {}});
-    }, []);
+    const goToEntity = useMemo(() => (id: string) => navigate(`${id}/${ENTITY_VIEW_STATES.view}${location.search}`), []);
 
 
-    return (<div>Hello World</div>);
+    return (<EntityList
+        isLoading={false && (isFetching || isLoading)}
+        isError={false && isError}
+        items={mockResults}
+        renderItem={(result: EvaluateResult) => (
+            <ListItem
+                key={result._id}
+                disablePadding
+                alignItems='center'
+            >
+                <ListItemButton onClick={() => {
+                    goToEntity(result._id as string)
+                }}>
+                    <ListItemAvatar>
+                        <Avatar>
+                            <RouteIcon/>
+                        </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary={`Result ID: ${result._id}`}
+                        secondary={
+                            <>
+                                <Typography sx={{display: 'inline'}} component='span' variant='body2'
+                                            color='text.secondary'>
+                                    {`Draft ID: ${result.draftId}`} <br/>
+                                    {`Created At: ${result.createdAt}`} <br/>
+                                </Typography>
+                            </>
+                        }
+                    />
+                </ListItemButton>
+            </ListItem>
+        )}
+    />);
 };

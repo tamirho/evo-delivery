@@ -71,7 +71,7 @@ export const navBarTabs = [
     },
   },
   {
-    name: 'Runs',
+    name: 'Results',
     description: undefined,
     icon: <RocketLaunchTwoToneIcon />,
     to: {

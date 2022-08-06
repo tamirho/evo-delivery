@@ -62,7 +62,7 @@ root.render(
           </Route>
           <Route path={ENTITIES.results}>
             <Route index element={<Results />} />
-            <Route path={`:runId}/${ENTITY_VIEW_STATES.view}`} element={<Result />} />
+            <Route path={`:resultId/${ENTITY_VIEW_STATES.view}`} element={<Result />} />
           </Route>
         </Route>
         <Route path={`*`} element={<NotFound />} />
