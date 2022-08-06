@@ -1,24 +1,20 @@
-import {Dispatch, SetStateAction, useContext, useMemo, useState} from "react";
+import {useContext, useMemo} from "react";
 import {
     Avatar,
     Collapse,
-    IconButton,
     List, ListItem,
     ListItemAvatar,
-    ListItemButton, ListItemIcon,
+    ListItemButton,
     ListItemText,
     Typography
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import {ExpandLess, ExpandMore, StarBorder} from "@mui/icons-material";
 import * as React from "react";
 import {mapActions, MapContext} from "../../../../features/map/context";
-import {Depot, DriverRoute, EvaluateResult, Order} from "../../../../../../evo-delivery-backend/src/types";
+import {DriverRoute, Order} from "../../../../../../evo-delivery-backend/src/types";
 import {LatLngTuple} from "leaflet";
-import {ENTITY_VIEW_STATES} from "../../../common";
-import {useLocation, useNavigate} from "react-router-dom";
-import RouteIcon from '@mui/icons-material/Route';
+
 
 type ResultsListItemProps = {
     route: DriverRoute
@@ -97,7 +93,8 @@ export const DriverRouteListItem = ({
                                                       {`Weight: ${order.weight} kg`} <br/>
                                                   </Typography>
                                               </>
-                                          }/>
+                                          }
+                            />
                         </ListItemButton>
                     ))
                 }
