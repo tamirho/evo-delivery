@@ -32,6 +32,7 @@ export const mapActions = {
   CLEAR_ROUTES: 'CLEAR_ROUTES',
   CLEAR_ZOOM: 'CLEAR_ZOOM',
   CLEAR_STATE: 'CLEAR_STATE',
+  INIT_STATE: 'INIT_STATE',
 };
 
 export const mapReducer = (state: mapState, action: mapAction) => {
@@ -57,6 +58,9 @@ export const mapReducer = (state: mapState, action: mapAction) => {
     case mapActions.CLEAR_ZOOM:
       return { ...state, zoom: DEFAULT_MAP_ZOOM };
     case mapActions.CLEAR_STATE:
+      const { zoom, center } = state;
+      return { ...initialState, zoom, center };
+    case mapActions.INIT_STATE:
       return { ...initialState };
     default:
       return state;

@@ -1,30 +1,42 @@
-import React, { useContext, useEffect, useMemo } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useContext, useEffect } from 'react';
+import { Order as OrderType } from '@backend/types';
+
 import { MapContext, mapActions } from '../../../../features/map/context';
-import { useEntityId } from '../../../../hooks/use-entity-id';
-import { ENTITY_VIEW_STATES } from '../../../common';
-import { useOrder } from '../../hooks/use-order';
-const mockOrder = {
-  _id: `134523452345`,
-  address: `some address 1`,
-  latitude: [51.505, -0.09][0],
-  longitude: [51.505, -0.09][1],
-  shippingDate: new Date(),
-  weight: 9,
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
+import { EntityWrapper } from '../../../../features/entity-wrapper/EntityWrapper';
+import { useEntityId } from '../../../../hooks/router/use-entity-id';
+import { Button } from '@mui/material';
+import { useNavigateToParent } from '../../../../hooks/router/use-navigate-to-parent';
+import { useGetEntity } from '../../../../hooks/entities-api/use-get-entity';
 
 export const Order = () => {
   const { dispatch } = useContext(MapContext);
   const orderId = useEntityId();
-  // const { data: order, isFetching, isLoading, isError } = useOrder(orderId!);
+  const { data: { order } = {}, isFetching, isLoading, isError } = useGetEntity(orderId!);
+
+  const navigateToParent = useNavigateToParent();
 
   useEffect(() => {
-    dispatch({ type: mapActions.UPDATE_STATE, payload: { orders: [mockOrder], zoom: 14 } });
+    if (order) {
+      dispatch({
+        type: mapActions.UPDATE_STATE,
+        payload: { orders: [order], zoom: 14, center: [order.latitude!, order.longitude!] },
+      });
+    }
 
     return () => dispatch({ type: mapActions.CLEAR_STATE, payload: {} });
-  }, []);
+  }, [order]);
 
-  return <div>Hello Order</div>;
+  return (
+    <EntityWrapper
+      isLoading={isFetching || isLoading}
+      isError={isError}
+      item={order}
+      renderItem={(order: OrderType) => (
+        <div>
+          Hello {order?._id}
+          <Button onClick={navigateToParent}>hey</Button>
+        </div>
+      )}
+    />
+  );
 };

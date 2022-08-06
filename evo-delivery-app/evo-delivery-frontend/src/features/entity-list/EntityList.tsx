@@ -12,7 +12,7 @@ type EntityListProps = {
   items: any[];
   isLoading: boolean;
   isError: boolean;
-  renderItem: (item: any) => JSX.Element;
+  renderItem: (item: any) => JSX.Element | null;
 };
 
 export const EntityList = ({ items, isLoading, isError, renderItem: itemComponent }: EntityListProps) => {

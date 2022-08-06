@@ -6,6 +6,7 @@ type ChangeViewProps = { center: LatLngExpression; zoom: number };
 
 export const ChangeView = ({ center, zoom }: ChangeViewProps) => {
   const map = useMap();
-  map.setView(center, zoom);
+  map.flyTo(center, zoom)
+  // map.setView(center, zoom);
   return null;
 };
