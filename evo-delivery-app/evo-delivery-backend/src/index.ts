@@ -8,7 +8,7 @@ import {DRIVERS, ORDERS} from './tmp/tmp-data';
 
 const app: Express = express();
 
-const PORT: string | number = process.env.PORT || 3000;
+const PORT: string | number = process.env.PORT || 4000;
 app.use(json());
 app.use('/api', apiRouter);
 

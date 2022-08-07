@@ -6,6 +6,7 @@ import { MapContext } from '../context';
 export const OrdersDrawer = () => {
   const { state: mapState } = useContext(MapContext);
   const { orders } = mapState;
+
   return (
     <>
       {orders?.map((order: Order) => (

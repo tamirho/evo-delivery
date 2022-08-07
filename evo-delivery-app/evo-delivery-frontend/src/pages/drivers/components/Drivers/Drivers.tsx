@@ -11,6 +11,7 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
+import DriveEtaIcon from "@mui/icons-material/DriveEta";
 import * as React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { EntityList } from "../../../../features/entity-list/EntityList";
@@ -19,6 +20,8 @@ import { useDrivers } from "../../hooks/use-drivers";
 import DeleteIcon from "@mui/icons-material/Delete";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import { useMemo } from "react";
+import { useGetEntities } from "../../../../hooks/entities-api/use-get-entities";
+import { useDeleteEntity } from "../../../../hooks/entities-api/use-delete-entity";
 
 const drivers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5, 6, 7, 8, 9].map(
   (item, index) => ({
@@ -32,7 +35,7 @@ const drivers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5, 6, 7, 8, 9].map(
 );
 
 export const Drivers = () => {
-  const { data, isFetching, isLoading, isError } = useDrivers();
+  const { data, isFetching, isLoading, isError } = useGetEntities();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -41,16 +44,13 @@ export const Drivers = () => {
       navigate(`${id}/${ENTITY_VIEW_STATES.view}${location.search}`),
     []
   );
-
-  React.useEffect(() => {
-    return () => {};
-  }, []);
+  const deleteOrder = useDeleteEntity();
 
   return (
     <EntityList
-      isLoading={false && (isFetching || isLoading)}
-      isError={false && isError}
-      items={drivers}
+      isLoading={isFetching || isLoading}
+      isError={isError}
+      items={data}
       renderItem={(driver: Driver) => (
         <>
           <ListItem
@@ -58,15 +58,20 @@ export const Drivers = () => {
             disablePadding
             alignItems="center"
             secondaryAction={
-              <IconButton edge="end" aria-label="comments">
-                <DeleteIcon />
+              <IconButton
+                edge="end"
+                aria-label="comments"
+                size="small"
+                onClick={() => deleteOrder(driver._id)}
+              >
+                <DeleteIcon fontSize="inherit" />
               </IconButton>
             }
           >
             <ListItemButton onClick={() => goToEntity(driver._id)}>
               <ListItemAvatar>
                 <Avatar>
-                  <InventoryIcon />
+                  <DriveEtaIcon />
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
@@ -86,7 +91,6 @@ export const Drivers = () => {
                   </>
                 }
               />
-              <ListItemSecondaryAction></ListItemSecondaryAction>
             </ListItemButton>
           </ListItem>
           <Divider

@@ -1,106 +1,96 @@
-import { useContext, useEffect, useMemo } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useContext, useEffect } from 'react';
 import {
   Avatar,
   Divider,
   ListItem,
   ListItemAvatar,
   ListItemButton,
-  ListItemSecondaryAction,
   ListItemText,
   Typography,
   IconButton,
+  Tooltip,
 } from '@mui/material';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ZoomInMapIcon from '@mui/icons-material/ZoomInMap';
 
 import { Order } from '@backend/types';
 import { EntityList } from '../../../../features/entity-list/EntityList';
 import { MapContext, mapActions } from '../../../../features/map/context';
-import { useOrders } from '../../hooks/use-orders';
-import { ENTITY_VIEW_STATES } from '../../../';
-
-const depot = {
-  _id: '178988452345',
-  name: 'Nice Depot',
-  address: 'some address 2',
-  latitude: [52.489471, -1.898575][0],
-  longitude: [52.489471, -1.898575][1],
-  shippingDate: new Date(),
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
-const orders = [1, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5, 6, 7, 8, 9].map((item, index) => ({
-  _id: `134523452345${item}${index}`,
-  address: `some address ${item}${index}`,
-  latitude: [51.505 + 0.01 * index, -0.09 - 0.01 * item][0],
-  longitude: [51.505 + 0.001 * index, -0.09 - 0.0001 * item][1],
-  shippingDate: new Date(),
-  weight: (9 + index) * item,
-  createdAt: new Date(),
-  updatedAt: new Date(),
-}));
+import { useFocusLocation } from '../../../../hooks/map/use-focus-location';
+import { useNavigateToChild } from '../../../../hooks/router/use-navigate-to-child';
+import { useGetEntities } from '../../../../hooks/entities-api/use-get-entities';
+import { useDeleteEntity } from '../../../../hooks/entities-api/use-delete-entity';
 
 export const Orders = () => {
   const { dispatch } = useContext(MapContext);
-  const { data, isFetching, isLoading, isError } = useOrders();
-
-  const navigate = useNavigate();
-  const location = useLocation();
-  const goToEntity = useMemo(() => (id: string) => navigate(`${id}/${ENTITY_VIEW_STATES.view}${location.search}`), []);
+  const { data: orders = [], isFetching, isLoading, isError } = useGetEntities();
 
   useEffect(() => {
-    dispatch({ type: mapActions.UPDATE_STATE, payload: { orders: orders, depots: [depot], zoom: 13 } });
+    if (orders) {
+      dispatch({ type: mapActions.UPDATE_STATE, payload: { orders, zoom: 12 } });
+    }
 
     return () => dispatch({ type: mapActions.CLEAR_STATE, payload: {} });
-  }, []);
+  }, [orders]);
 
-  const focusOrder = useMemo(
-    () => (order: Order) =>
-      dispatch({ type: mapActions.UPDATE_STATE, payload: { center: [order.latitude!, order.longitude!], zoom: 17 } }),
-    []
-  );
+  const goToOrder = useNavigateToChild();
+  const deleteOrder = useDeleteEntity();
+  const focusOrder = useFocusLocation();
 
   return (
     <EntityList
-      isLoading={false && (isFetching || isLoading)}
-      isError={false && isError}
+      isLoading={isFetching || isLoading}
+      isError={isError}
       items={orders}
-      renderItem={(order: Order) => (
-        <>
-          <ListItem
-            key={order._id}
-            disablePadding
-            alignItems='center'
-            secondaryAction={
-              <IconButton edge='end' aria-label='comments'>
-                <DeleteIcon />
-              </IconButton>
-            }
-          >
-            <ListItemButton onClick={() => goToEntity(order._id)} onMouseEnter={() => focusOrder(order)}>
-              <ListItemAvatar>
-                <Avatar>
-                  <InventoryIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary={`ID: ${order._id}`}
-                secondary={
-                  <>
-                    <Typography sx={{ display: 'inline' }} component='span' variant='body2' color='text.primary'>
-                      {`${order.address}`}
-                    </Typography>
-                    {` - ${order.shippingDate.toDateString()}`}
-                  </>
-                }
-              />
-              <ListItemSecondaryAction></ListItemSecondaryAction>
-            </ListItemButton>
-          </ListItem>
-          <Divider key={`divider_${order._id}`} variant='middle' component='li' />
-        </>
-      )}
+      renderItem={(order: Order) =>
+        order ? (
+          <div key={`div_${order._id}`}>
+            <ListItem
+              key={order._id}
+              disablePadding
+              alignItems='center'
+              secondaryAction={
+                <>
+                  <Tooltip title='Focus Order'>
+                    <IconButton edge='end' aria-label='comments' size='small' onClick={() => focusOrder(order)}>
+                      <ZoomInMapIcon fontSize='inherit' />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title='Delete'>
+                    <IconButton edge='end' aria-label='comments' size='small' onClick={() => deleteOrder(order._id)}>
+                      <DeleteIcon fontSize='inherit' />
+                    </IconButton>
+                  </Tooltip>
+                </>
+              }
+            >
+              <ListItemButton onClick={() => goToOrder(order._id)}>
+                <ListItemAvatar>
+                  <Avatar>
+                    <InventoryIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={`ID: ${order._id}`}
+                  secondary={
+                    <>
+                      <Typography component='span' variant='body2' color='text.primary'>
+                        {`Address: ${order.address}`}
+                      </Typography>
+                      <br />
+                      <Typography component='span' variant='caption' color='text.muted'>
+                        {`Shipping date: ${new Date(order.shippingDate).toDateString()}`}
+                      </Typography>
+                    </>
+                  }
+                />
+              </ListItemButton>
+            </ListItem>
+            <Divider key={`divider_${order._id}`} variant='middle' component='li' />
+          </div>
+        ) : null
+      }
     />
   );
 };

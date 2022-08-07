@@ -1,13 +1,13 @@
 import { useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEntityId } from "../../../../hooks/use-entity-id";
+import { useGetEntity } from "../../../../hooks/entities-api/use-get-entity";
+import { useEntityId } from "../../../../hooks/router/use-entity-id";
 import { ENTITY_VIEW_STATES } from "../../../common";
-import { useDriver } from "../../hooks/use-driver";
 import { EvoForm } from "../EvoForm";
 
 export const ViewDriver = () => {
-  const driverId = useEntityId() as string;
-  const { data } = useDriver(driverId);
+  const driverId = useEntityId();
+  const { data } = useGetEntity(driverId as string);
   const location = useLocation();
   const navigate = useNavigate();
   const goToEntity = useMemo(
@@ -17,7 +17,7 @@ export const ViewDriver = () => {
   );
 
   const handleSubmit = () => {
-    goToEntity(driverId);
+    goToEntity(driverId as string);
   };
 
   return (

@@ -1,10 +1,10 @@
-import { useEntityId } from "../../../../hooks/use-entity-id";
-import { useDriver } from "../../hooks/use-driver";
+import { useGetEntity } from "../../../../hooks/entities-api/use-get-entity";
+import { useEntityId } from "../../../../hooks/router/use-entity-id";
 import { EvoForm, FormFieldAttr } from "../EvoForm";
 
 export const EditDriver = () => {
   const driverId = useEntityId() as string;
-  const { data } = useDriver(driverId);
+  const { data } = useGetEntity(driverId)
 
 
   const handleSubmit = (data = {}) => {

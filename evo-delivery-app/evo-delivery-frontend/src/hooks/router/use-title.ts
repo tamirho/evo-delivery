@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
-import { ENTITY_VIEW_STATES } from '../pages';
-import { capitalize, toPlural, toSingular } from '../utils/string.utils';
+import { ENTITY_VIEW_STATES } from '../../pages';
+import { capitalize, toPlural, toSingular } from '../../utils/string.utils';
 
 export const useTitle = () => {
   const location = useLocation();

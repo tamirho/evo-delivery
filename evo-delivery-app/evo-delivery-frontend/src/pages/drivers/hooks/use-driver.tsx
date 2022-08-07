@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import { useGetEntity } from "../../../hooks/entities-api/use-get-entity";
 
 export const useDriver = (driverId: string) => {
-  return useQuery(["drivers", driverId], () =>
-    fetch(`api/v1/orders/${driverId}`).then((res) => res.json())
-  );
+
 };
