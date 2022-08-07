@@ -14,6 +14,7 @@ import * as React from "react";
 import {mapActions, MapContext} from "../../../../features/map/context";
 import {DriverRoute, Order} from "../../../../../../evo-delivery-backend/src/types";
 import {LatLngTuple} from "leaflet";
+import {useFocusLocation} from "../../../../hooks/map/use-focus-location";
 
 
 type ResultsListItemProps = {
@@ -30,19 +31,7 @@ export const DriverRouteListItem = ({
                                     }: ResultsListItemProps) => {
     const {dispatch} = useContext(MapContext);
 
-    const focusOrder = useMemo(
-        () => (order: Order) => {
-            dispatch({
-                type: mapActions.UPDATE_CENTER,
-                payload: {center: [order.latitude, order.longitude] as LatLngTuple}
-            });
-            dispatch({
-                type: mapActions.UPDATE_ZOOM,
-                payload: {zoom: 13}
-            });
-        },
-        []
-    );
+    const focusOrder = useFocusLocation();
 
     return (<>
         <ListItem

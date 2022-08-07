@@ -7,7 +7,7 @@ _Table of Contents:_
     - [Creation](#creation)
     - [Activation](#activation)
     - [Package management](#package-management)
-  - [Result](#run)
+  - [Run](#run)
     - [Flask server](#flask-server)
     - [Tests](#tests)
 
@@ -61,7 +61,7 @@ Install new package (using the virtualenv pip):
 $ virtualenv/bin/pip install {package name}
 ```
 
-## Result
+## Run
 
 ### Flask server
 

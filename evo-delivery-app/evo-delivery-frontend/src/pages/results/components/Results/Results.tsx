@@ -1,19 +1,16 @@
 import * as React from 'react';
-import {useMemo} from 'react';
-import {useLocation, useNavigate} from "react-router-dom";
-import {ENTITY_VIEW_STATES} from "../../../common";
+
 import {EntityList} from "../../../../features/entity-list/EntityList";
 import {Avatar, ListItem, ListItemAvatar, ListItemButton, ListItemText, Typography} from "@mui/material";
 import RouteIcon from '@mui/icons-material/Route';
 import {EvaluateResult} from "../../../../../../evo-delivery-backend/src/types";
 import {useGetEntities} from "../../../../hooks/entities-api/use-get-entities";
+import {useNavigateToChild} from "../../../../hooks/router/use-navigate-to-child";
 
 
 export const Results = () => {
     const {data: results = [], isFetching, isLoading, isError} = useGetEntities();
-    const navigate = useNavigate();
-    const location = useLocation();
-    const goToEntity = useMemo(() => (id: string) => navigate(`${id}/${ENTITY_VIEW_STATES.view}${location.search}`), []);
+    const goToChild = useNavigateToChild();
 
 
     return (<EntityList
@@ -27,7 +24,7 @@ export const Results = () => {
                 alignItems='center'
             >
                 <ListItemButton onClick={() => {
-                    goToEntity(result._id as string)
+                    goToChild(result._id as string)
                 }}>
                     <ListItemAvatar>
                         <Avatar>

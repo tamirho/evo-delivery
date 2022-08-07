@@ -18,12 +18,8 @@ export const Result = () => {
     useEffect(() => {
         if (result) {
             dispatch({
-                type: mapActions.UPDATE_RESULTS,
-                payload: {result: result, zoom: 13, }
-            });
-            dispatch({
-                type: mapActions.UPDATE_CENTER,
-                payload: {center: [result.depot?.latitude, result.depot?.longitude] as LatLngTuple }
+                type: mapActions.UPDATE_STATE,
+                payload: {result: result, zoom: 13, center: [result.depot?.latitude, result.depot?.longitude] as LatLngTuple}
             });
         }
 
