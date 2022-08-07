@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FormFieldAttr } from "../pages/drivers/components/EvoForm";
 
-export const useForm = (callback: any, initialData={}) => {
+export const useForm = (handleSubmit: any, initialData = {}) => {
   const [values, setValues] = useState(initialData);
 
   // onChange
@@ -12,7 +12,7 @@ export const useForm = (callback: any, initialData={}) => {
   // onSubmit
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    await callback(values); // triggering the callback
+    await handleSubmit(values); // triggering the callback
   };
 
   // return values

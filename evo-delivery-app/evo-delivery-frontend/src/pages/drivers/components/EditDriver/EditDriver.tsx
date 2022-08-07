@@ -7,9 +7,9 @@ export const EditDriver = () => {
   const { data } = useDriver(driverId);
 
 
-  const callback = (data ={}) => {
+  const handleSubmit = (data = {}) => {
     //updateDriver
-    console.log(data)
+    console.log(data);
   };
 
   return (
@@ -32,7 +32,7 @@ export const EditDriver = () => {
           value: "220",
         },
       ]}
-      callback={callback}
+      handleSubmit={handleSubmit}
       buttonText="Update"
     />
   );

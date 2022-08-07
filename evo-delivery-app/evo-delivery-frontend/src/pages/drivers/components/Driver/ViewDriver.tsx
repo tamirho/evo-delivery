@@ -41,7 +41,7 @@ export const ViewDriver = () => {
           value: "220",
         },
       ]}
-      callback={handleSubmit}
+      handleSubmit={handleSubmit}
       buttonText="Edit"
     />
   );

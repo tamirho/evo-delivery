@@ -9,21 +9,21 @@ export type FormFieldAttr = {
 type FormProps = {
   disable: boolean;
   initialData: FormFieldAttr[];
-  callback: any;
+  handleSubmit: any;
   buttonText: string;
 };
 
 export const EvoForm = ({
   disable,
   initialData,
-  callback,
+  handleSubmit,
   buttonText,
 }: FormProps) => {
   const data = initialData?.reduce(
     (a, v) => ({ ...a, [v.label]: v.value }),
     {}
   );
-  const { onChange, onSubmit, values } = useForm(callback, data);
+  const { onChange, onSubmit, values } = useForm(handleSubmit, data);
 
   return (
     <>

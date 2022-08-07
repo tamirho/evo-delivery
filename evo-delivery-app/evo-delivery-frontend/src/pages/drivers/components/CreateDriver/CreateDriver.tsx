@@ -1,14 +1,14 @@
 import { EvoForm } from "../EvoForm";
 
 export const CreateDriver = () => {
-  const callback = () => {
+  const handleSubmit = () => {
     //poseDriver
   };
 
   return (
     <EvoForm
       disable={true}
-      callback={callback}
+      handleSubmit={handleSubmit}
       initialData={[]}
       buttonText="Create"
     />
