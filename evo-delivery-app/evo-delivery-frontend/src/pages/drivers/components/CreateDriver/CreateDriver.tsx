@@ -1,5 +1,16 @@
-import * as React from 'react';
+import { EvoForm } from "../EvoForm";
 
 export const CreateDriver = () => {
-    return <div>Create New Driver</div>
-}
+  const handleSubmit = () => {
+    //poseDriver
+  };
+
+  return (
+    <EvoForm
+      disable={true}
+      handleSubmit={handleSubmit}
+      initialData={[]}
+      buttonText="Create"
+    />
+  );
+};

@@ -9,7 +9,7 @@ import {
   Depots,
   Depot,
   Draft,
-  Driver,
+  ViewDriver,
   Order,
   EditOrder,
   CreateDepot,
@@ -24,7 +24,7 @@ import {
   Runs,
   ENTITY_VIEW_STATES,
   ENTITIES,
-} from './pages';
+} from "./pages";
 
 import './index.css';
 
@@ -45,7 +45,7 @@ root.render(
           <Route path={ENTITIES.drivers}>
             <Route index element={<Drivers />} />
             <Route path={`${ENTITY_VIEW_STATES.create}`} element={<CreateDriver />} />
-            <Route path={`:driverId/${ENTITY_VIEW_STATES.view}`} element={<Driver />} />
+            <Route path={`:driverId/${ENTITY_VIEW_STATES.view}`} element={<ViewDriver />} />
             <Route path={`:driverId/${ENTITY_VIEW_STATES.edit}`} element={<EditDriver />} />
           </Route>
           <Route path={ENTITIES.depots}>
