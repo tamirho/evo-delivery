@@ -12,7 +12,7 @@ export const OrderMarker = ({ order }: { order: Order }) => {
         <Typography sx={{ fontSize: 14 }} color='text.secondary' gutterBottom>
           {`ID: ${order._id}`} <br />
           {`Address: ${order.address}`} <br />
-          {`Shipping Date: ${new Date(order.shippingDate).toDateString()}`} <br />
+          {`Shipping Date: ${new Date(order.shippingDate as string).toDateString()}`} <br />
           {`Weight: ${order.weight}`}
         </Typography>
       </Popup>

@@ -3,16 +3,18 @@ import {Depot} from "./depot.type";
 import {Driver} from "./driver.type";
 
 export type DriverRoute = {
-    driver: Partial<Driver>
-    orders: Partial<Order>[];
+    driver: Driver;
+    orders: Order[];
     totalDuration: number;
-    totalDistance : number;
-    load : number;
+    totalDistance: number;
+    load: number;
 }
 
 export type EvaluateResult = {
-    _id: string;
-    draftId: string;
-    depot: Partial<Depot>
-    routes : DriverRoute[];
+    _id?: string;
+    draftId?: string;
+    depot?: Depot;
+    routes?: DriverRoute[];
+    createdAt?: string;
+    updatedAt?: string;
 }

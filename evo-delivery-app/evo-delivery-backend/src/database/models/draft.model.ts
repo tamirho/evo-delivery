@@ -89,6 +89,7 @@ const DraftSchema = new Schema<Draft, DraftModel>({
         },
     },
     {
+        versionKey: false,
         timestamps: true,
         collection: 'Drafts'
     })

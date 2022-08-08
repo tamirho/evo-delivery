@@ -100,9 +100,9 @@ export class GoogleMatrixClientImpl implements GoogleMatrixClient {
         return value / ThousandMeters;
     };
 
-    private getLocationByAddress = async (partialLocation) => {
+    private getLocationByAddress = async (partialLocation: Partial<EaLocation>) => {
         const locations = await this.geocodeClient.geocode({
-                address: partialLocation.address
+                address: partialLocation.address as string
             }
         );
 
@@ -116,10 +116,10 @@ export class GoogleMatrixClientImpl implements GoogleMatrixClient {
         } as EaLocation
     };
 
-    private getLocationByLatLng = async (partialLocation) => {
+    private getLocationByLatLng = async (partialLocation: Partial<EaLocation>) => {
         const locations = await this.geocodeClient.reverse({
-                lat: partialLocation.latitude,
-                lon: partialLocation.longitude,
+                lat: partialLocation.latitude as number,
+                lon: partialLocation.longitude as number,
             }
         );
         const response = locations[0]

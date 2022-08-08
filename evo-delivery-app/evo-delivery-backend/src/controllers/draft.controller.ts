@@ -51,7 +51,7 @@ export const evaluateDraft = async (req: Request, res: Response) => {
 
     try {
         const routes = await draftService.evaluateDraft(draftId);
-        return res.status(200).json(OK({routes}));
+        return res.status(200).json(OK(routes));
     } catch (e: any) {
         return res.status(400).json(INVALID(400, e.message));
     }

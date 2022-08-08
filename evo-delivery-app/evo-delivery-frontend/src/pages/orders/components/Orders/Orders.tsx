@@ -80,7 +80,7 @@ export const Orders = () => {
                       </Typography>
                       <br />
                       <Typography component='span' variant='caption' color='text.muted'>
-                        {`Shipping date: ${new Date(order.shippingDate).toDateString()}`}
+                        {`Shipping date: ${new Date(order.shippingDate as string).toDateString()}`}
                       </Typography>
                     </>
                   }

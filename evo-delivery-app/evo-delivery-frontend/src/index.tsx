@@ -20,8 +20,8 @@ import {
   EditDraft,
   EditDriver,
   NotFound,
-  Run,
-  Runs,
+  Result,
+  Results,
   ENTITY_VIEW_STATES,
   ENTITIES,
 } from "./pages";
@@ -60,9 +60,9 @@ root.render(
             <Route path={`:draftId/${ENTITY_VIEW_STATES.view}`} element={<Draft />} />
             <Route path={`:draftId/${ENTITY_VIEW_STATES.edit}`} element={<EditDraft />} />
           </Route>
-          <Route path={ENTITIES.runs}>
-            <Route index element={<Runs />} />
-            <Route path={`:runId/${ENTITY_VIEW_STATES.view}`} element={<Run />} />
+          <Route path={ENTITIES.results}>
+            <Route index element={<Results />} />
+            <Route path={`:resultId/${ENTITY_VIEW_STATES.view}`} element={<Result />} />
           </Route>
         </Route>
         <Route path={`*`} element={<NotFound />} />

@@ -30,7 +30,7 @@ export const DetailsPanelHeader = ({ handleClose }: DetailsPanelHeaderProps) => 
   const location = useLocation();
   const navigate = useNavigate();
   const goToCreateNewEntityPage = () => navigate(`${entityName}/${ENTITY_VIEW_STATES.create}${location.search}`);
-  const showCreateButton = !(location.pathname.includes('runs') || location.pathname.endsWith('create'));
+  const showCreateButton = !(location.pathname.includes('results') || location.pathname.endsWith('create'));
 
   return (
     <DrawerHeader>
