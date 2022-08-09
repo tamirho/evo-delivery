@@ -3,6 +3,7 @@ export * from './location.type';
 export * from './depot.type';
 export * from './order.type';
 export * from './driver.type';
+export * from './draft.type';
 export * from './distance-matrix.type';
 export * from './ea-engine.type';
 export * from './ea-client.type';
