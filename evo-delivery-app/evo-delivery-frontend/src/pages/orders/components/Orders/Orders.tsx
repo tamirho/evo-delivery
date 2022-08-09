@@ -26,6 +26,10 @@ export const Orders = () => {
   const { dispatch } = useContext(MapContext);
   const { data: orders = [], isFetching, isLoading, isError } = useGetEntities();
 
+  const goToOrder = useNavigateToChild();
+  const deleteOrder = useDeleteEntity();
+  const focusOrder = useFocusLocation();
+
   useEffect(() => {
     if (orders) {
       dispatch({ type: mapActions.UPDATE_STATE, payload: { orders, zoom: 12 } });
@@ -33,10 +37,6 @@ export const Orders = () => {
 
     return () => dispatch({ type: mapActions.CLEAR_STATE, payload: {} });
   }, [orders]);
-
-  const goToOrder = useNavigateToChild();
-  const deleteOrder = useDeleteEntity();
-  const focusOrder = useFocusLocation();
 
   return (
     <EntityList
