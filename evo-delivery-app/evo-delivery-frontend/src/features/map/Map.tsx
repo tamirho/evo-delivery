@@ -5,7 +5,7 @@ import {OrdersDrawer} from './drawers/OrdersDrawer';
 import {DepotsDrawer} from './drawers/DepotsDrawer';
 
 import 'leaflet/dist/leaflet.css';
-import {ResultsDrawer} from "./drawers/ResultsDrawer";
+import {RoutesDrawer} from "./drawers/RoutesDrawer";
 
 export const Map = () => {
     const {state: mapState} = useContext(MapContext);
@@ -13,7 +13,7 @@ export const Map = () => {
 
     return (
         <LeafletMap center={center} zoom={zoom}>
-            <ResultsDrawer/>
+            <RoutesDrawer/>
             <OrdersDrawer/>
             <DepotsDrawer/>
         </LeafletMap>

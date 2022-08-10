@@ -1,7 +1,7 @@
 import {useContext, useMemo} from "react";
 import {
     Avatar,
-    Collapse,
+    Collapse, Divider,
     List, ListItem,
     ListItemAvatar,
     ListItemButton,
@@ -29,9 +29,13 @@ export const DriverRouteListItem = ({
                                         setOpenCollapseItemKey,
                                         openCollapseItemKey
                                     }: ResultsListItemProps) => {
-    const {dispatch} = useContext(MapContext);
-
     const focusOrder = useFocusLocation();
+
+    const renderCollapseIcon = () => {
+        if (route.orders.length > 0) {
+            return openCollapseItemKey === route.driver._id ? <ExpandLess/> : <ExpandMore/>
+        }
+    }
 
     return (<>
         <ListItem
@@ -55,14 +59,16 @@ export const DriverRouteListItem = ({
                                         color='text.secondary'>
                                 {`ID: ${route.driver._id}`} <br/>
                                 {`Maximum Capacity: ${route.driver.maxCapacity} kg`} <br/>
-                                {`Maximum Travel Distance: ${route.driver.maxDistance} km`} <br/>
+                                {`Maximum Travel Distance: ${route.driver.maxDistance} kms`} <br/>
                                 {`Travel Load: ${route.load.toFixed(2)}%`} <br/>
                                 {`Travel Distance: ${route.totalDistance} kms`} <br/>
                             </Typography>
                         </>
                     }
                 />
-                {openCollapseItemKey === route.driver._id ? <ExpandLess/> : <ExpandMore/>}
+                {
+                    renderCollapseIcon()
+                }
             </ListItemButton>
         </ListItem>
         <Collapse in={openCollapseItemKey === route.driver._id} timeout="auto" unmountOnExit>
@@ -85,9 +91,11 @@ export const DriverRouteListItem = ({
                                           }
                             />
                         </ListItemButton>
+
                     ))
                 }
             </List>
         </Collapse>
+        <Divider key={`divider_${route.driver._id}`} variant='middle' component='li' />
     </>);
 };
