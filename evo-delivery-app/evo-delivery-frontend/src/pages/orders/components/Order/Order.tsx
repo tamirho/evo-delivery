@@ -7,6 +7,8 @@ import { useEntityId } from '../../../../hooks/router/use-entity-id';
 import { Button } from '@mui/material';
 import { useNavigateToParent } from '../../../../hooks/router/use-navigate-to-parent';
 import { useGetEntity } from '../../../../hooks/entities-api/use-get-entity';
+import { ENTITY_VIEW_STATES } from '../../../common';
+import { OrderForm } from '../OrderForm/OrderForm';
 
 export const Order = () => {
   const { dispatch } = useContext(MapContext);
@@ -26,17 +28,19 @@ export const Order = () => {
     return () => dispatch({ type: mapActions.CLEAR_STATE, payload: {} });
   }, [order]);
 
-  return (
-    <EntityWrapper
-      isLoading={isFetching || isLoading}
-      isError={isError}
-      item={order}
-      renderItem={(order: OrderType) => (
-        <div>
-          Hello {order?._id}
-          <Button onClick={navigateToParent}>hey</Button>
-        </div>
-      )}
-    />
-  );
+  return <OrderForm order={order} state={ENTITY_VIEW_STATES.view} />
+
+  // return (
+  //   <EntityWrapper
+  //     isLoading={isFetching || isLoading}
+  //     isError={isError}
+  //     item={order}
+  //     renderItem={(order: OrderType) => (
+  //       <div>
+  //         Hello {order?._id}
+  //         <Button onClick={navigateToParent}>hey</Button>
+  //       </div>
+  //     )}
+  //   />
+  // );
 };
