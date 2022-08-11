@@ -5,11 +5,11 @@ import {TrackMarker} from "../markers/TrackMarker";
 
 export const RoutesDrawer = () => {
     const {state: mapState} = useContext(MapContext);
-    const {routes, depots} = mapState;
+    const {routes, depots, routesColors} = mapState;
 
     const renderRouteMarkers = () => {
         return depots?.map(depot =>
-            <TrackMarker routes={routes} depot={depot} />
+            <TrackMarker routes={routes} depot={depot} colors={routesColors as string[]}/>
         )
     }
 

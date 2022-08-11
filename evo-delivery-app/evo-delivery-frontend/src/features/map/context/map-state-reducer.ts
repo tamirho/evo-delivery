@@ -8,6 +8,7 @@ export type mapState = {
   orders?: Order[];
   depots?: Depot[];
   routes?: DriverRoute[];
+  routesColors?: string[]
   zoom?: number;
 };
 

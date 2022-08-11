@@ -13,6 +13,7 @@ export const Result = () => {
     const [openCollapseItemKey, setOpenCollapseItemKey] = useState(null);
     const resultId = useEntityId();
     const {data: result, isFetching, isLoading, isError} = useGetEntity(resultId!);
+    const colors = ['deepskyblue', 'crimson', 'seagreen', 'slateblue', 'gold', 'darkorange']; // Add colors and move it to central place
 
     useEffect(() => {
         if (result) {
@@ -25,6 +26,7 @@ export const Result = () => {
                     orders: orders,
                     depots: [result.depot],
                     zoom: 13,
+                    routesColors: colors,
                     center: [result.depot?.latitude, result.depot?.longitude] as LatLngTuple
                 },
             });
@@ -43,11 +45,12 @@ export const Result = () => {
                 isLoading={isFetching || isLoading}
                 isError={isError}
                 items={result.routes}
-                renderItem={(route: DriverRoute) => (
+                renderItem={(route: DriverRoute, index: any) => (
                     <DriverRouteListItem
                         route={route}
                         setOpenCollapseItemKey={setOpenCollapseItemKey}
                         openCollapseItemKey={openCollapseItemKey}
+                        routeColor={colors[index]}
                     />
 
                 )}
