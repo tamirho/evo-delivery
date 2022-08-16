@@ -1,10 +1,12 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ViewStates } from '../../pages';
+import { useEntityId } from './use-entity-id';
 
 export const useNavigateToEntityViewState = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location);
+  const entityId = useEntityId();
   
-  return (state: ViewStates) => navigate(`..${state}${location.search}`);
+  return (state: ViewStates) =>
+    navigate(`../${entityId}/${state}${location.search}`);
 };
