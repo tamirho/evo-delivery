@@ -8,6 +8,7 @@ import { Order } from "@backend/types";
 import { ENTITY_VIEW_STATES, FormStates } from "../../../common";
 import { useGetLocation } from "../../hooks/use-get-location";
 import { Location as LocationType } from "@backend/types";
+
 export type OrderFormProps = {
   state: FormStates;
   onSubmit?: (
@@ -38,9 +39,9 @@ export const OrderForm = ({
       setValue("latitude", res.latitude);
       setValue("longitude", res.longitude)
     });
-
     return true;
   };
+
   return (
     <Stack
       component="form"
