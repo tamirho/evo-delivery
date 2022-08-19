@@ -36,7 +36,8 @@ export const Results = () => {
                                         onClick={() => deleteResult(result._id as string)}>
                                 <DeleteIcon fontSize='inherit'/>
                             </IconButton>
-                        </Tooltip>}>
+                        </Tooltip>
+                    }>
                         <ListItemButton
                             onClick={() => {
                                 goToChild(result._id as string);

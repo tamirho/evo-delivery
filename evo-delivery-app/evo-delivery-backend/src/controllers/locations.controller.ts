@@ -57,7 +57,7 @@ export const getFullRoute = async (req: Request, res: Response) => {
         console.dir(partialDest);
         console.dir(partialOrigin);
 
-        const fullLocation = await locationsService.getFullRoute(partialOrigin, partialDest);
+        const fullLocation = await locationsService.getPolylineRoute(partialOrigin, partialDest);
 
         return res.status(200).json(OK(fullLocation));
     } catch (e: any) {

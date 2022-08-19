@@ -4,6 +4,7 @@
 # fitness types
 BOUNDED_DISTANCE = "bounded_distance"
 POWER = "power"
+DISTANCE = "distance"
 
 #fitness params
 BOUND = "bound"
