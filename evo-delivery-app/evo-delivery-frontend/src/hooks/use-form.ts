@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { FormFieldAttr } from "../pages/drivers/components/EvoForm";
 
 export const useForm = (handleSubmit: any, initialData = {}) => {
   const [values, setValues] = useState(initialData);

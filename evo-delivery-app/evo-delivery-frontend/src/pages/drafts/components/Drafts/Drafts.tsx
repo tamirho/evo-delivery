@@ -14,7 +14,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RocketLaunch from '@mui/icons-material/RocketLaunch';
 
-import { Draft } from '@backend/types';
+import { Draft } from '@backend/types/draft.type';
 import { EntityList } from '../../../../features/entity-list/EntityList';
 import { MapContext } from '../../../../features/map/context';
 import { useFocusLocation } from '../../../../hooks/map/use-focus-location';
