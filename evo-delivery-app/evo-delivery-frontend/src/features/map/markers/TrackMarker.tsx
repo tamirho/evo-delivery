@@ -1,19 +1,13 @@
 import {Marker, Polyline, Popup} from 'react-leaflet';
 import {Typography} from '@mui/material';
-import {Order} from '@backend/types';
 import {Depot, DriverRoute} from "../../../../../evo-delivery-backend/src/types";
-import {LatLngTuple} from "leaflet";
+const decodePolyline = require('decode-google-map-polyline');
 
 export const TrackMarker = ({routes, depot, colors}: { routes?: DriverRoute[], depot?: Depot, colors: string[]}) => {
-
-    return (<>{
+    return ( <>{
         routes?.map((driverRoute, index) => {
-            const ordersCords = driverRoute.orders.map((order) => (
-                [order.latitude, order.longitude] as LatLngTuple))
-            const depotCords = [depot?.latitude, depot?.longitude]
-            const polylineCords = [depotCords, ...ordersCords, depotCords] as LatLngTuple[]
-
-            return <Polyline positions={polylineCords}
+            return driverRoute.polyLines &&
+                <Polyline positions={driverRoute.polyLines.map(de => decodePolyline(de))}
                              color={colors[index % colors.length]}
                              fill={false}
                              smoothFactor={3}

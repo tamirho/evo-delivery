@@ -57,11 +57,6 @@ export const Orders = () => {
                       <ZoomInMapIcon fontSize='inherit' />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title='Delete'>
-                    <IconButton edge='end' aria-label='comments' size='small' onClick={() => deleteOrder(order._id)}>
-                      <DeleteIcon fontSize='inherit' />
-                    </IconButton>
-                  </Tooltip>
                 </>
               }
             >

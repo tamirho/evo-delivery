@@ -8,6 +8,7 @@ export type DriverRoute = {
     totalDuration: number;
     totalDistance: number;
     load: number;
+    polyLines?: string[];
 }
 
 export type EvaluateResult = {

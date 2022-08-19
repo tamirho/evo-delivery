@@ -4,6 +4,7 @@ import {depotService, orderService, driverService, draftService} from "./index";
 import {eaHttpClientAdapter, googleMatrixClient} from "../clients";
 import {Depot, DistanceMatrix, Driver, DriverRoute, EaEvaluateResponse, EvaluateResult, Order} from "../types";
 import {evaluateResultsService} from "../services";
+import {getPolylineRoute} from "./locations.service";
 
 export const getDrafts = async () => {
     return DraftModel.getAll();
@@ -47,7 +48,7 @@ export const evaluateDraft = async (draftId: string) => {
     const [drivers, orders, depot] = await Promise.all([driversP, ordersP, depotP]);
     const evaluatedRoutes = await eaHttpClientAdapter.evaluate(drivers, orders, depot, draft.data.distances as DistanceMatrix, draft.config);
 
-    const evalResult = prepareEvaluateResult(draft, drivers, orders, depot, evaluatedRoutes);
+    const evalResult = await prepareEvaluateResult(draft, drivers, orders, depot, evaluatedRoutes);
     return evaluateResultsService.createResult(evalResult);
 };
 
@@ -60,7 +61,7 @@ export const deleteDraft = async (id: string) => {
 };
 
 
-const prepareEvaluateResult = (
+const prepareEvaluateResult = async (
     draft: Draft,
     drivers: Driver[],
     orders: Order[],
@@ -68,17 +69,18 @@ const prepareEvaluateResult = (
     routes: EaEvaluateResponse
 ) => {
     const distances = draft.data.distances!;
-    const depotId = draft.data.depot;
     const driversMap = new Map<string, Driver>();
     const ordersMap = new Map<string, Order>();
     drivers.forEach((driver) => (driversMap[driver._id] = driver));
     orders.forEach((order) => (ordersMap[order._id] = order));
 
-    const enrichedRoutes = Object.entries(routes).map(([driverId, ordersIds]) => {
-        const driver: Driver = driversMap[driverId];
-        const routeOrders: Order[] = ordersIds.map((orderId) => ordersMap[orderId]);
-        return enrichDriverRoute(depotId, driver, routeOrders, distances);
-    });
+    const enrichedRoutes = await Promise.all(
+        Object.entries(routes).map(async ([driverId, ordersIds]) => {
+            const driver: Driver = driversMap[driverId];
+            const routeOrders: Order[] = ordersIds.map((orderId) => ordersMap[orderId]);
+            return enrichDriverRoute(depot, driver, routeOrders, distances);
+        })
+    ) as DriverRoute[];
 
     return {
         draftId: draft._id,
@@ -87,26 +89,35 @@ const prepareEvaluateResult = (
     } as EvaluateResult;
 };
 
-const enrichDriverRoute = (
-    depotId: string,
+const enrichDriverRoute = async (
+    depot: Depot,
     driver: Driver,
     orders: Order[],
     distances: DistanceMatrix
-): DriverRoute => {
+): Promise<DriverRoute> => {
     let weight: number = 0;
     let distance: number = 0;
     let duration: number = 0;
 
-    orders.forEach(async (order, index) => {
+    orders.forEach((order, index) => {
         weight = weight + order.weight;
         if (index == 0) {
-            distance += distances[depotId][order._id].distance.value;
-            duration += distances[depotId][order._id].duration.value;
+            distance += distances[depot._id][order._id].distance.value;
+            duration += distances[depot._id][order._id].duration.value;
         } else {
             distance += distances[orders[index - 1]._id][order._id].distance.value;
             duration += distances[orders[index - 1]._id][order._id].duration.value;
         }
     });
+
+    const locations = [depot, ...orders, depot];
+    const polyLines = await Promise.all(
+        locations.map((order, index) => {
+            if (index > 0) {
+                return getPolylineRoute(locations[index - 1], order)
+            }
+            return ""
+        }));
 
     const MIN = 60;
     const PERCENTAGE = 100;
@@ -117,5 +128,6 @@ const enrichDriverRoute = (
         totalDistance: distance,
         totalDuration: duration / MIN,
         load: (weight / driver.maxCapacity) * PERCENTAGE,
+        polyLines: polyLines
     } as DriverRoute;
 };

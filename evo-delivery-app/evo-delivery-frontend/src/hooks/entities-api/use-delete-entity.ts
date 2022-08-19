@@ -6,7 +6,7 @@ export const useDeleteEntity = () => {
   const queryClient = useQueryClient();
 
   return (entityId: string) => {
-    queryClient.invalidateQueries([entityName]);
+    queryClient.invalidateQueries();
 
     return fetch(`api/v1/${entityName}/${entityId}`, {
       method: 'DELETE',

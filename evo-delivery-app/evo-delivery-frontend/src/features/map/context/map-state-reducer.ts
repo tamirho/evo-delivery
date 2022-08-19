@@ -8,7 +8,7 @@ export type mapState = {
   orders?: Order[];
   depots?: Depot[];
   routes?: DriverRoute[];
-  routesColors?: string[]
+  routesColors?: string[];
   zoom?: number;
 };
 
@@ -19,6 +19,7 @@ export const initialState: mapState = {
   orders: [],
   depots: [],
   routes: [],
+  routesColors: [],
   zoom: DEFAULT_MAP_ZOOM,
 };
 

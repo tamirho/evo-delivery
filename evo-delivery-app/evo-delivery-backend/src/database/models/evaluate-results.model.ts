@@ -34,6 +34,10 @@ const DriverRoute = new Schema<DriverRoute>({
     load: {
         type: Number,
         required: true
+    },
+    polyLines: {
+        type: [String],
+        required: true
     }
 }, {
     _id: false

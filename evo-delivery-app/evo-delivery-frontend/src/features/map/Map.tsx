@@ -6,6 +6,7 @@ import {DepotsDrawer} from './drawers/DepotsDrawer';
 
 import 'leaflet/dist/leaflet.css';
 import {RoutesDrawer} from "./drawers/RoutesDrawer";
+// import Routing from "./drawers/RoutingMachine";
 
 export const Map = () => {
     const {state: mapState} = useContext(MapContext);
@@ -14,6 +15,7 @@ export const Map = () => {
     return (
         <LeafletMap center={center} zoom={zoom}>
             <RoutesDrawer/>
+            {/*<Routing/>*/}
             <OrdersDrawer/>
             <DepotsDrawer/>
         </LeafletMap>

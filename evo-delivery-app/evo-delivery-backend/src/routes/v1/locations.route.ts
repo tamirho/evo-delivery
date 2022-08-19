@@ -3,6 +3,7 @@ import { locationController } from '../../controllers';
 
 const router = express.Router({ mergeParams: true });
 
-router.get('/', locationController.geFullLocation);
+router.get('/', locationController.getFullLocation);
+router.get('/route', locationController.getFullRoute);
 
 export { router as locationsRouter };
