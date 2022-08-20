@@ -49,12 +49,15 @@ export const Results = () => {
                                 </Avatar>
                             </ListItemAvatar>
                             <ListItemText
-                                primary={`Result ID: ${result._id}`}
+                                primary={`ID: ${result._id}`}
                                 secondary={
                                     <>
                                         <Typography sx={{display: 'inline'}} component='span' variant='body2'
-                                                    color='text.secondary'>
-                                            {`Draft ID: ${result.draftId}`} <br/>
+                                                    color='text.primary'>
+                                            {`Draft ID: ${result.draftId}`}
+                                        </Typography>
+                                        <br/>
+                                        <Typography component='span' variant='caption' color='text.muted'>
                                             {`Created At: ${new Date(result.createdAt as string).toDateString()}`} <br/>
                                         </Typography>
                                     </>

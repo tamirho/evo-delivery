@@ -5,7 +5,7 @@ import { Depot } from '@backend/types';
 export const DepotMarker = ({ depot }: { depot: Depot }) => {
   return (
     <CircleMarker center={[depot.latitude!, depot.longitude!]} pathOptions={{ color: 'red' }} radius={10}>
-      <Popup>
+      <Popup closeButton={false}>
         <Typography sx={{ fontSize: 16, fontWeight: 'bold' }} component='div'>
           Depot Details
         </Typography>
