@@ -30,13 +30,13 @@ export const Drafts = () => {
   const deleteDraft = useDeleteEntity();
   const focusLocation = useFocusLocation();
 
-  //   useEffect(() => {
-  //     if (drafts) {
-  //       dispatch({ type: mapActions.UPDATE_STATE, payload: { orders: drafts, zoom: 12 } });
-  //     }
-
-  //     return () => dispatch({ type: mapActions.CLEAR_STATE, payload: {} });
-  //   }, [drafts]);
+    // useEffect(() => {
+    //   if (drafts) {
+    //     dispatch({ type: mapActions.UPDATE_STATE, payload: { orders: drafts, zoom: 12 } });
+    //   }
+    //
+    //   return () => dispatch({ type: mapActions.CLEAR_STATE, payload: {} });
+    // }, [drafts]);
 
   return (
     <EntityList
@@ -57,11 +57,6 @@ export const Drafts = () => {
                       <RocketLaunch fontSize='inherit' />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title='Delete'>
-                    <IconButton edge='end' aria-label='comments' size='small' onClick={() => deleteDraft(draft._id)}>
-                      <DeleteIcon fontSize='inherit' />
-                    </IconButton>
-                  </Tooltip>
                 </>
               }
             >
@@ -79,7 +74,7 @@ export const Drafts = () => {
                         {Object.entries(draft.config).map(([key, val]) => {
                           return (
                             <>
-                              {key}: {val}
+                              {/*{key}: {val}*/}
                               <br />
                             </>
                           );

@@ -1,13 +1,14 @@
 import { Order, Depot, EaEvaluateResponse } from '@backend/types';
 import { LatLngExpression } from 'leaflet';
 import { DEFAULT_CENTER_POSITION, DEFAULT_MAP_ZOOM } from '../common/constants';
-import {EvaluateResult} from "../../../../../evo-delivery-backend/src/types";
+import {DriverRoute, EvaluateResult} from "../../../../../evo-delivery-backend/src/types";
 
 export type mapState = {
   center?: LatLngExpression;
   orders?: Order[];
   depots?: Depot[];
-  result?: EvaluateResult;
+  routes?: DriverRoute[];
+  routesColors?: string[];
   zoom?: number;
 };
 
@@ -17,7 +18,8 @@ export const initialState: mapState = {
   center: DEFAULT_CENTER_POSITION,
   orders: [],
   depots: [],
-  result: {} as EvaluateResult,
+  routes: [],
+  routesColors: [],
   zoom: DEFAULT_MAP_ZOOM,
 };
 
@@ -47,7 +49,7 @@ export const mapReducer = (state: mapState, action: mapAction) => {
     case mapActions.UPDATE_DEPOTS:
       return { ...state, depots: [...(action.payload.depots ?? [])] };
     case mapActions.UPDATE_RESULTS:
-      return { ...state, result: { ...(action.payload.result ?? {}) } };
+      return { ...state, result: { ...(action.payload.routes ?? {}) } };
     case mapActions.UPDATE_ZOOM:
       return { ...state, zoom: action.payload.zoom || DEFAULT_MAP_ZOOM };
     case mapActions.CLEAR_ORDERS:

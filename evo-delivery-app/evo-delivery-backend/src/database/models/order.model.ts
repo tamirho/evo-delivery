@@ -24,8 +24,8 @@ export const OrderSchema = new Schema<Order, OrderModel>({
             required: true
         },
         shippingDate: {
-            type: String,
-            default: false
+            type: Date,
+            default: new Date()
         },
         weight: {
             type: Number,

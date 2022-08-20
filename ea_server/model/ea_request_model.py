@@ -55,7 +55,7 @@ class EaData:
 @dataclass(frozen=True)
 class ComponentConfig:
     name: str
-    args: Dict
+    args: Dict = field(default_factory=lambda: {})
 
 
 @dataclass(frozen=True)

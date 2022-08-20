@@ -12,10 +12,11 @@ type EntityListProps = {
   items: any[];
   isLoading: boolean;
   isError: boolean;
-  renderItem: (item: any) => JSX.Element | null;
+  renderItem: (item: any, index: number) => JSX.Element | null;
+  optionalComponent?: any
 };
 
-export const EntityList = ({ items, isLoading, isError, renderItem: itemComponent }: EntityListProps) => {
+export const EntityList = ({ items, isLoading, isError, renderItem: itemComponent, optionalComponent}: EntityListProps) => {
   if (isError) {
     return (
       <Alert severity='error' style={{ width: '100%', margin: 10 }}>
@@ -43,5 +44,5 @@ export const EntityList = ({ items, isLoading, isError, renderItem: itemComponen
     );
   }
 
-  return <List style={{ width: '100%', margin: 10 }}>{items.map((item: any) => itemComponent(item))}</List>;
+  return <List style={{ width: '100%', margin: 10 }}>{optionalComponent!}{items.map((item: any, index) => itemComponent(item, index))}</List>;
 };

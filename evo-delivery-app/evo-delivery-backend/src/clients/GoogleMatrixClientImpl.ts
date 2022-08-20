@@ -7,6 +7,7 @@ import {DistanceMatrix, DistanceMatrixColumnData, DistanceMatrixRowData, Locatio
 import {GoogleMatrixClient} from './GoogleMatrixClient';
 
 import {LatLng} from "@googlemaps/google-maps-services-js/dist/common";
+import {getPolylineRoute} from "../services/locations.service";
 
 const axios: AxiosInstance = Axios.create();
 const apikey = process.env.GOOGLE_MAPS_API_KEY as string
@@ -20,6 +21,25 @@ export class GoogleMatrixClientImpl implements GoogleMatrixClient {
         this.geocodeClient = new Geocoder(provider);
         this.matrixClient = new Client();
     }
+
+    async getPolylineRoute(origin: Partial<EaLocation>, dest: Partial<EaLocation>): Promise<string> {
+        try {
+            console.info(`Get polyline from ${origin._id} to ${dest._id}`);
+            const response = await this.matrixClient.directions({
+                params: {
+                    origin: [origin.latitude, origin.longitude],
+                    destination: [dest.latitude, dest.longitude],
+                    key: process.env.GOOGLE_MAPS_API_KEY as string,
+                },
+                timeout: 1000, // milliseconds
+            })
+
+            return response.data.routes[0].overview_polyline.points;
+        } catch (e) {
+            console.error('Failed to fetch directions from Google Matrix API');
+            throw e;
+        }
+    };
 
     async getFullLocation(partialLocation: Partial<EaLocation>): Promise<EaLocation> {
         let fullLocation = partialLocation;
