@@ -14,7 +14,7 @@ export const TrackMarker = ({routes, depot, colors}: { routes?: DriverRoute[], d
                              weight={5}
                              opacity={0.666}
                              key={driverRoute.driver._id}>
-                <Popup>
+                <Popup closeButton={false}>
                     <Typography sx={{fontSize: 16, fontWeight: 'bold'}} component='div'>
                         Route Details
                     </Typography>
