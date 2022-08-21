@@ -3,7 +3,7 @@ from typing import List, Dict
 
 from dacite import MissingValueError
 
-from ea_server.api.utils.constans import DEFAULT_TOUR_SIZE, TOUR_SIZE, DEFAULT_INDPB, INDPB, DEFAULT_BOUNDED_DISTANCE, \
+from ea_server.api.utils.constans import DEFAULT_GENERATIONS_BOUND, DEFAULT_TOUR_SIZE, GENERATIONS, TOUR_SIZE, DEFAULT_INDPB, INDPB, DEFAULT_BOUNDED_DISTANCE, \
     BOUND, SINGLE_POINT, BOUNDED_DISTANCE, TOURNAMENT, SHUFFLE
 
 
@@ -69,8 +69,10 @@ class EaConfigModel:
         default_factory=lambda: ComponentConfig(name=BOUNDED_DISTANCE, args={BOUND: DEFAULT_BOUNDED_DISTANCE}))
     selection: ComponentConfig = field(
         default_factory=lambda: ComponentConfig(name=TOURNAMENT, args={TOUR_SIZE: DEFAULT_TOUR_SIZE}))
-    mutate: ComponentConfig = field(default_factory=lambda: ComponentConfig(name=SHUFFLE, args={INDPB: DEFAULT_INDPB}))
-
+    mutate: ComponentConfig = field(
+        default_factory=lambda: ComponentConfig(name=SHUFFLE, args={INDPB: DEFAULT_INDPB}))
+    stop_condition: ComponentConfig = field(
+        default_factory=lambda: ComponentConfig(name=GENERATIONS, args={BOUND: DEFAULT_GENERATIONS_BOUND}) )
     def __post_init__(self):
         if self.num_generations < 1:
             raise ValueError("num_generations should be greater then 1")
