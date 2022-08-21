@@ -6,11 +6,13 @@ import {
     DistanceMatrix,
     EaHttpRequestDistances,
     EaEvaluateConfig,
-    Depot,
+    Depot, EaEvaluateHttpRequestBody,
 } from '../../types';
 import {convertObjCamelToSnakeCase} from '../../utils';
 
 export interface EaHttpConverter {
+    toEaHttpRequestBody(drivers, orders, depot, distanceMatrix, config): EaEvaluateHttpRequestBody;
+
     convertDepot(depot: Depot): string;
 
     convertDriver(driver: Driver): EaHttpRequestDriver;
@@ -23,23 +25,37 @@ export interface EaHttpConverter {
 }
 
 export class EaHttpConverterImpl implements EaHttpConverter {
-    convertDepot(depot: Depot): string {
-        return depot.id;
+    toEaHttpRequestBody(_drivers, _orders, _depot, _distanceMatrix, _config): EaEvaluateHttpRequestBody {
+        const drivers: EaHttpRequestDriver[] = _drivers.map(this.convertDriver);
+        const orders: EaHttpRequestOrder[] = _orders.map(this.convertOrder);
+        const distances: EaHttpRequestDistances = this.convertDistances(_distanceMatrix);
+        const depotId = this.convertDepot(_depot);
+        const config = this.convertConfig(_config);
+
+        return {
+            data: {drivers, orders, distances, root_id: depotId},
+            config,
+        } as EaEvaluateHttpRequestBody;
+
     }
 
-    convertDriver({id, maxCapacity, maxDistance}: Driver) {
-        return convertObjCamelToSnakeCase({
-            id,
+    convertDepot(depot: Depot): string {
+        return depot._id;
+    }
+
+    convertDriver({_id, maxCapacity, maxDistance}: Driver) {
+        const afterCovert = convertObjCamelToSnakeCase({
             maxCapacity,
             maxDistance,
-        }) as EaHttpRequestDriver;
+        });
+        return {...afterCovert, id: _id} as EaHttpRequestDriver
     }
 
-    convertOrder({id, weight}: Order) {
-        return convertObjCamelToSnakeCase({
-            id,
+    convertOrder({_id, weight}: Order) {
+        const afterCovert = convertObjCamelToSnakeCase({
             weight,
-        }) as EaHttpRequestOrder;
+        });
+        return {...afterCovert, id: _id} as EaHttpRequestOrder
     }
 
     convertDistances(distanceMatrix: DistanceMatrix) {

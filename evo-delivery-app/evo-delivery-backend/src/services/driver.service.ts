@@ -1,29 +1,26 @@
-import { Driver } from '../types';
-import { DRIVERS } from '../models/tmp-data';
+import {Driver} from '../types';
+import driverModel from '../database/models/driver.model';
 
-
-export const getByIds = async (driversIds: string[]) => {
-  return DRIVERS.filter(({id}) => driversIds.find(_id => id === _id)) as Driver[];
+export const getDrivers = async () => {
+    return driverModel.getAll();
 };
 
-export const getById = async (driverId: string) => {
-  return DRIVERS.find(id => id === driverId) as Driver;
+export const getDriver = async (driverId: string): Promise<Driver> => {
+    return driverModel.getById(driverId);
 };
 
-export const get = async (query, page, limit) => {
-  return DRIVERS.map(query) as Driver[];
+export const getByIds = async (driverIds: string[]) => {
+    return driverModel.getByIds(driverIds);
+}
+
+export const createDriver = async (driver: Partial<Driver>) => {
+    return driverModel.create(driver)
 };
 
-// export const createDriver = async (driver: Partial<Driver>) => {
-//   return DRIVERS.push(driver);
-// };
-//
-// export const updateDriver = async (id: string, driver: Partial<Driver>) => {
-//   const prevDriver = DRIVERS[parseInt(id) % 2];
-//   DRIVERS[parseInt(id) % 2] = { ...prevDriver, ...driver };
-//   return {};
-// };
-//
-// export const deleteDriver = async (id: string) => {
-//   return {};
-// };
+export const updateDriver = async (driverId: string, driver: Partial<Driver>) => {
+    return driverModel.findOneAndUpdate({_id: driverId}, driver, {returnOriginal: false})
+};
+
+export const deleteDriver = async (id: string) => {
+    return driverModel.deleteOne({_id: id})
+};

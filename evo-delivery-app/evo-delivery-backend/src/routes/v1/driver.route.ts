@@ -7,4 +7,10 @@ router.get('/', driverController.getDrivers);
 
 router.get('/:id', driverController.getDriver);
 
+router.post('/', driverController.createDriver);
+
+router.put('/:id', driverController.updateDriver);
+
+router.delete('/:id', driverController.deleteDriver);
+
 export { router as driverRouter };

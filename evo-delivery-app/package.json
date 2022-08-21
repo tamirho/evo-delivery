@@ -1,0 +1,27 @@
+{
+  "name": "evo-delivery-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
+    "start:build": "concurrently \"npm run start:build:frontend\" \"npm run start:build:backend\"",
+    "start:debug": "concurrently \"npm run start:frontend\" \"npm run start:backend:debug\"",
+    "build": "concurrently \"npm run build:frontend\" \"npm run build:backend\"",
+    "test": "concurrently \"npm run test:frontend\" \"npm run test:backend\"",
+    "start:backend": "cd evo-delivery-backend && npm run start",
+    "start:backend:debug": "cd evo-delivery-backend && npm run start:nodemon",
+    "start:build:backend": "cd evo-delivery-backend && npm run start:build",
+    "build:backend": "cd evo-delivery-backend && npm run build",
+    "test:backend": "cd evo-delivery-backend && npm run test",
+    "start:frontend": "cd evo-delivery-frontend && npm run start",
+    "start:build:frontend": "cd evo-delivery-frontend && npm run start:build",
+    "build:frontend": "cd evo-delivery-frontend && npm run build",
+    "test:frontend": "cd evo-delivery-frontend && npm run test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^7.3.0"
+  }
+}

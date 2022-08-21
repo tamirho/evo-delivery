@@ -1,5 +1,5 @@
 import json
-
+import logging
 import werkzeug
 from flask import Flask
 from werkzeug.exceptions import HTTPException
@@ -19,6 +19,8 @@ def create_app():
 
     app.config['MONGO_URI'] = config['TEST']['DB_URI']
     app.config['SECRET_KEY'] = config['TEST']['SECRET_KEY']
+
+    logging.basicConfig(level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s : %(message)s')
 
     # Import Blueprints
     from ea_server.api.routes import evaluate_blueprint, components_blueprint

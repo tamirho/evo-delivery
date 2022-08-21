@@ -23,20 +23,12 @@ export class EaHttpClientImpl implements EaHttpClient {
   }
 
   evaluate(
-    drivers: EaHttpRequestDriver[],
-    orders: EaHttpRequestOrder[],
-    depotId: string,
-    distanceMatrix: EaHttpRequestDistances,
-    config: EaEvaluateHttpRequestConfig
+    requestBody: EaEvaluateHttpRequestBody
   ): Promise<EaEvaluateResponse> {
 
-    const body: EaEvaluateHttpRequestBody = {
-      data: { drivers, orders, distances: distanceMatrix, root_id: depotId },
-      config,
-    };
     const headers = {'Content-Type': 'application/json'};
     const url = `${this.baseUrl}/${this.apiUrlPrefix}/evaluate`;
-    const data = JSON.stringify(body);
+    const data = JSON.stringify(requestBody);
     const options = { headers };
 
     return this.httpClient.post({ url, data, options });

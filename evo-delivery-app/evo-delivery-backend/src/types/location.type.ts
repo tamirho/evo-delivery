@@ -1,6 +1,6 @@
-export type Address = string | [number, number];
-
-export type Location = {
-  id: string;
-  address: Address;
+export interface Location {
+  _id: string;
+  address?: string;
+  latitude?: number;
+  longitude?: number;
 }

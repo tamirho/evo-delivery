@@ -4,6 +4,7 @@
 # fitness types
 BOUNDED_DISTANCE = "bounded_distance"
 POWER = "power"
+DISTANCE = "distance"
 
 #fitness params
 BOUND = "bound"
@@ -53,3 +54,14 @@ DEFAULT_TOUR_SIZE = 2
 
 # ----------------------------------------------
 
+#stop cindition types
+TIME = "time"
+GENERATIONS = "generations"
+FITNESS = "fitness"
+
+#stop cindition params
+DEFAULT_TIME_BOUND = 60
+DEFAULT_GENERATIONS_BOUND = 500
+DEFAULT_FITNESS_BOUND = 750
+
+# ----------------------------------------------
