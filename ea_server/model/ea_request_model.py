@@ -82,5 +82,7 @@ class EaConfigModel:
 
 @dataclass(frozen=True)
 class EaDraftModel:
+    draft_id: str
+    run_id: str
     data: EaData
     config: EaConfigModel

@@ -1,6 +1,6 @@
 import {EvaluateResult} from "../types";
 import EvaluateResultModel from "../database/models/evaluate-results.model";
-import driverModel from "../database/models/driver.model";
+import { eaHttpClientAdapter } from "../clients";
 
 
 export const getResults = async () => {
@@ -21,9 +21,14 @@ export const getByDraftId = async (id: string) => {
 };
 
 export const createResult = async (evaluateResult: EvaluateResult) => {
+    console.log(evaluateResult)
     return EvaluateResultModel.create(evaluateResult);
 };
 
 export const deleteResult = async (id: string) => {
     return EvaluateResultModel.deleteOne({_id: id})
+};
+
+export const terminateResult = async (id: string) => {
+  return eaHttpClientAdapter.terminate(id)
 };

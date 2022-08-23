@@ -28,10 +28,12 @@ export class EaHttpClientAdapterImpl implements EaHttpClientAdapter {
         _drivers: Driver[],
         _orders: Order[],
         _depot: Depot,
+        _draftId: string,
+        _runId: string,
         _distanceMatrix: DistanceMatrix,
         _config: EaEvaluateConfig
     ): Promise<EaEvaluateResponse> {
-        const requestBody = this.converter.toEaHttpRequestBody(_drivers, _orders, _depot, _distanceMatrix, _config);
+        const requestBody = this.converter.toEaHttpRequestBody(_drivers, _orders, _depot, _draftId,_runId, _distanceMatrix, _config);
         return this.eaHttpClient.evaluate(requestBody);
     }
 
@@ -39,5 +41,11 @@ export class EaHttpClientAdapterImpl implements EaHttpClientAdapter {
         componentType: EaComponentTypes
     ): Promise<EaComponentDetails[]> {
         return this.eaHttpClient.getComponentDetails(componentType);
+    }
+
+    terminate(
+    run_id: string
+    ): Promise<void> {
+    return this.eaHttpClient.terminate(run_id)
     }
 }

@@ -7,10 +7,12 @@ class EABuilder:
     def __init__(self):
         self.data = None
         self.conf = None
+        self.run_id = None
         pass
 
-    def with_conf(self, conf: EaConfigModel):
+    def with_conf(self, conf: EaConfigModel, run_id:str):
         self.conf = conf
+        self.run_id = run_id
         return self
 
     def with_data(self, data):
@@ -19,7 +21,7 @@ class EABuilder:
 
     def build(self):
         try:
-            return EA(self.data, self.conf)
+            return EA(self.data, self.conf, self.run_id)
         except ValueError as err:
             print(f"Invalid parameter entered")
             raise EaBuilderError(err.args)

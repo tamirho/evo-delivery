@@ -14,6 +14,8 @@ export type DriverRoute = {
 export type EvaluateResult = {
     _id?: string;
     draftId?: string;
+    isDone: boolean;
+    eaResult: number[];
     depot?: Depot;
     routes?: DriverRoute[];
     createdAt?: string;

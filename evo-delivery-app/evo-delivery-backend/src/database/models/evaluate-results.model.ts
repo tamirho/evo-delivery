@@ -48,13 +48,18 @@ const EvaluateResultSchema = new Schema<EvaluateResult, EvaluateResultsModel>({
             type: String,
             required: true,
         },
+        isDone: {
+            type: Boolean,
+            default: false
+        },
+        eaResult:{
+            type:[Number]
+        },
         depot: {
             type: DepotSchema,
-            required: true
         },
         routes: {
             type: [DriverRoute],
-            required: true
         }
     },
     {
@@ -80,7 +85,6 @@ EvaluateResultSchema.statics.getByIds = function (ids: string[]) {
 }
 
 EvaluateResultSchema.statics.getByDraftId = function (draftId: string) {
-    console.log(draftId)
     return this.find({
             draftId: draftId
         }

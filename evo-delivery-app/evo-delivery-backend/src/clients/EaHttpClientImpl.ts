@@ -41,4 +41,14 @@ export class EaHttpClientImpl implements EaHttpClient {
 
     return this.httpClient.get({ url });
   }
+
+  terminate(
+    run_id: string
+  ): Promise<void> {
+    const headers = { "Content-Type": "application/json" };
+    const url = `${this.baseUrl}/${this.apiUrlPrefix}/terminate/:${run_id}`;
+    const options = { headers };
+
+    return this.httpClient.post({ url, options });
+  }
 }

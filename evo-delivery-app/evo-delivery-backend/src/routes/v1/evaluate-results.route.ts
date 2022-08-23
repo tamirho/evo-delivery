@@ -13,5 +13,7 @@ router.get('/draft/:id', evaluateResultsController.getByDraftId);
 
 router.post('/', evaluateResultsController.createEvaluateResult);
 
+router.post("/terminate/:id", evaluateResultsController.terminateById);
+
 
 export { router as evaluateResultRouter };
