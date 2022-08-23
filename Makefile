@@ -1,4 +1,4 @@
-target: start-engine start-backend
+target: start-engine start-app
 
 start-engine:
 	cd ea_server && \
@@ -18,3 +18,6 @@ start-frontend:
 	npm install && \
 	npm start
 
+start-app:
+	cd evo-delivery-app && \
+	npm run start:debug
