@@ -46,7 +46,7 @@ export class EaHttpClientImpl implements EaHttpClient {
     run_id: string
   ): Promise<void> {
     const headers = { "Content-Type": "application/json" };
-    const url = `${this.baseUrl}/${this.apiUrlPrefix}/terminate/:${run_id}`;
+    const url = `${this.baseUrl}/${this.apiUrlPrefix}/terminate/${run_id}`;
     const options = { headers };
 
     return this.httpClient.post({ url, options });

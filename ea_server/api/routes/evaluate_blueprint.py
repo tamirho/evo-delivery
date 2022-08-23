@@ -45,9 +45,11 @@ def evaluate():
 @evaluate_blueprint.route('/terminate/<run_id>', methods=['POST'])
 def terminate(run_id):
     try:
-        EaDict[run_id].terminate()
-
-        return "Ea run id= %d terminated"(run_id)
+        print("equest.args")
+        eaInstance : EA = EaDict.get(run_id, None)
+        eaInstance.terminate() if eaInstance else {}
+    
+        return "Ea run id = %d terminated" (run_id)
     except (MissingValueError, EaBuilderError, MissingParameter) as e:
         LOG.error("Error in evaluate: %s", e.__str__())
         traceback.print_exc()
