@@ -5,7 +5,7 @@ import { useGetEntity } from "../../../../hooks/entities-api/use-get-entity";
 import { useEntityId } from "../../../../hooks/router/use-entity-id";
 import { useNavigateToEntityViewState } from "../../../../hooks/router/use-navigate-to-edit";
 import { ENTITY_VIEW_STATES } from "../../../common";
-import { DriverForm } from "../DriverForm";
+import { DriverForm } from "../DriverForm/DriverForm";
 
 export const ViewDriver = () => {
   const driverId = useEntityId();
