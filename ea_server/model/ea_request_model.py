@@ -3,8 +3,9 @@ from typing import List, Dict
 
 from dacite import MissingValueError
 
-from ea_server.api.utils.constans import DEFAULT_GENERATIONS_BOUND, DEFAULT_TOUR_SIZE, GENERATIONS, TOUR_SIZE, DEFAULT_INDPB, INDPB, DEFAULT_BOUNDED_DISTANCE, \
-    BOUND, SINGLE_POINT, BOUNDED_DISTANCE, TOURNAMENT, SHUFFLE
+from ea_server.api.utils.constants import DEFAULT_GENERATIONS_BOUND, DEFAULT_TOUR_SIZE, \
+    GENERATIONS, GENERATIONS_BOUND, TOUR_SIZE, DEFAULT_INDPB, INDPB, \
+    DEFAULT_BOUNDED_DISTANCE, BOUND, SINGLE_POINT, BOUNDED_DISTANCE, TOURNAMENT, SHUFFLE
 
 
 @dataclass(frozen=True)
@@ -37,7 +38,8 @@ class EaData:
         orders_ids.add(self.root_id)
 
         if orders_ids != self.distances.keys():
-            raise MissingValueError(f"distances, from order ids: {orders_ids.difference(self.distances.keys())}")
+            raise MissingValueError(
+                f"distances, from order ids: {orders_ids.difference(self.distances.keys())}")
 
         orders_distance: Dict
         for order_id, orders_distance in self.distances.items():
@@ -63,8 +65,8 @@ class EaConfigModel:
     pop_size: int = field(default=100)
     crossover_prob: float = field(default=0.5)
     mutate_prob: float = field(default=0.5)
-    num_generations: int = field(default=1000)
-    crossover: ComponentConfig = field(default_factory=lambda: ComponentConfig(name=SINGLE_POINT, args={}))
+    crossover: ComponentConfig = field(
+        default_factory=lambda: ComponentConfig(name=SINGLE_POINT, args={}))
     fitness: ComponentConfig = field(
         default_factory=lambda: ComponentConfig(name=BOUNDED_DISTANCE, args={BOUND: DEFAULT_BOUNDED_DISTANCE}))
     selection: ComponentConfig = field(
@@ -72,10 +74,9 @@ class EaConfigModel:
     mutate: ComponentConfig = field(
         default_factory=lambda: ComponentConfig(name=SHUFFLE, args={INDPB: DEFAULT_INDPB}))
     stop_condition: ComponentConfig = field(
-        default_factory=lambda: ComponentConfig(name=GENERATIONS, args={BOUND: DEFAULT_GENERATIONS_BOUND}) )
+        default_factory=lambda: ComponentConfig(name=GENERATIONS, args={GENERATIONS_BOUND: DEFAULT_GENERATIONS_BOUND}))
+
     def __post_init__(self):
-        if self.num_generations < 1:
-            raise ValueError("num_generations should be greater then 1")
         if self.pop_size < 1:
             raise ValueError("pop_size should be greater then 1")
 

@@ -5,6 +5,7 @@ from ea_server.engine.components.crossover.cx import Crossover
 from ea_server.engine.components.fitness.fit import Fitness
 from ea_server.engine.components.mutates.mut import Mutate
 from ea_server.engine.components.selection.sel import Selection
+from ea_server.engine.components.stop_condition.stop_condition import StopCondition
 
 import logging
 LOG = logging.getLogger(__name__)
@@ -23,6 +24,8 @@ def get_component_details(component):
         types = Mutate.get_details()
     elif component == 'crossover':
         types = Crossover.get_details()
+    elif component == 'stop_condition':
+        types = StopCondition.get_details()
     else:
         raise BadRequest("Invalid component name")
 

@@ -32,9 +32,6 @@ const eaConfigSchema = new Schema<EaEvaluateConfig>({
     mutateProb: {
         type: Number,
     },
-    numGenerations: {
-        type: Number,
-    },
     crossover: {
         type: eaComponentSchema,
     },
@@ -45,6 +42,9 @@ const eaConfigSchema = new Schema<EaEvaluateConfig>({
         type: eaComponentSchema,
     },
     mutate: {
+        type: eaComponentSchema,
+    },
+    stopCondition: {
         type: eaComponentSchema,
     }
 }, {_id: false})
