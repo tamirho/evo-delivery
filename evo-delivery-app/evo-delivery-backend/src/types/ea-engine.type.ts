@@ -1,23 +1,3 @@
-// export type EaEvaluateData = {
-//   drivers: string[];
-//   orders: string[];
-//   rootId: string;
-//   configParamsArgs: EaConfigParamsArgs;
-// };
-
-// export type EaConfigParams = {
-//   crossover?: string;
-//   mutate?: string;
-//   selection?: string;
-//   fitness?: string;
-//   popSize?: number;
-//   cxpb?: number;
-//   mutpd?: number;
-//   numGenerations?: number;
-// };
-
-import {Depot} from "./depot.type";
-
 export enum EaComponentTypes {
   SELECTION = 'selection',
   FITNESS = 'fitness',

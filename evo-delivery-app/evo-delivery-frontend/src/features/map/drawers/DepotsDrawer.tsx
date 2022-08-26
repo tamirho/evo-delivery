@@ -7,11 +7,5 @@ export const DepotsDrawer = () => {
   const { state: mapState } = useContext(MapContext);
   const { depots } = mapState;
 
-  return (
-    <>
-      {depots?.map((depot: Depot) => (
-        <DepotMarker key={depot._id} depot={depot} />
-      ))}
-    </>
-  );
+  return <>{depots?.map((depot: Depot) => depot && <DepotMarker key={depot._id} depot={depot} />)}</>;
 };

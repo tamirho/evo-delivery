@@ -5,7 +5,7 @@ import {LatLngTuple} from 'leaflet';
 import {Depot, DriverRoute, EvaluateResult, Order} from '../../../../../../evo-delivery-backend/src/types';
 import {EntityList} from '../../../../features/entity-list/EntityList';
 import {DriverRouteListItem} from './DriverRouteListItem';
-import {useGetEntity} from '../../../../hooks/entities-api/use-get-entity';
+import {useGetEntity} from '../../../../hooks/entities/use-get-entity';
 import {useEntityId} from '../../../../hooks/router/use-entity-id';
 import {
     Avatar,
@@ -29,7 +29,7 @@ export const Result = () => {
     const {data: result, isFetching, isLoading, isError} = useGetEntity(resultId!);
     const colors = ['deepskyblue', 'crimson', 'seagreen', 'slateblue', 'gold', 'darkorange']; // Add colors and move it to central place
 
-    const focusOrder = useFocusLocation();
+    const focusDepot = useFocusLocation();
 
     useEffect(() => {
         if (result) {
@@ -64,9 +64,9 @@ export const Result = () => {
                 alignItems='center'
                 secondaryAction={
                     <>
-                        <Tooltip title='Focus Order'>
+                        <Tooltip title='Focus Depot'>
                             <IconButton edge='end' aria-label='comments' size='small'
-                                        onClick={() => focusOrder(result.depot)}>
+                                        onClick={() => focusDepot(result.depot)}>
                                 <ZoomInMapIcon fontSize='inherit'/>
                             </IconButton>
                         </Tooltip>

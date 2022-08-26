@@ -11,11 +11,11 @@ import {
 } from '@mui/material';
 import DriveEtaIcon from '@mui/icons-material/DriveEta';
 import {EntityList} from '../../../../features/entity-list/EntityList';
-import {useGetEntities} from '../../../../hooks/entities-api/use-get-entities';
+import {useGetEntities} from '../../../../hooks/entities/use-get-entities';
 import {useNavigateToChild} from '../../../../hooks/router/use-navigate-to-child';
 import DeleteIcon from "@mui/icons-material/Delete";
 import * as React from "react";
-import {useDeleteEntity} from "../../../../hooks/entities-api/use-delete-entity";
+import {useDeleteEntity} from "../../../../hooks/entities/use-delete-entity";
 
 export const Drivers = () => {
     const {data: drivers, isFetching, isLoading, isError} = useGetEntities();
