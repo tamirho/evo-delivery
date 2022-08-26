@@ -1,4 +1,4 @@
-from ea_server.api.utils.constans import UNIFORM, ALPHA, INDPB
+from ea_server.api.utils.constants import UNIFORM, ALPHA, INDPB
 from ea_server.model.ea_function_model import EaFunctionModel, KwargModel
 from deap import tools
 

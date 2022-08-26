@@ -1,6 +1,6 @@
 from enum import Enum
 
-from ea_server.api.utils.constans import DEFAULT_BOUNDED_DISTANCE, BOUND, BOUNDED_DISTANCE, POWER
+from ea_server.api.utils.constants import DEFAULT_BOUNDED_DISTANCE, BOUND, BOUNDED_DISTANCE, POWER
 from ea_server.engine.components.ea_component import EaComponent
 from ea_server.engine.components.fitness.functions import bound, power
 

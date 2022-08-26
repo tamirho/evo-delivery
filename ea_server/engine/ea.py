@@ -1,21 +1,18 @@
-from pickle import TRUE
 import random
-import sys
 import time
 from deap import algorithms, base, creator, tools
-from ..api.utils.constans import BOUND, DEFAULT_FITNESS_BOUND, DEFAULT_GENERATIONS_BOUND, DEFAULT_TIME_BOUND, FITNESS, GENERATIONS, TIME
 
 from ea_server.model.ea_request_model import EaData
 from ea_server.engine.components.crossover.cx import Crossover
 from ea_server.engine.components.fitness.fit import Fitness
 from ea_server.engine.components.mutates.mut import Mutate
 from ea_server.engine.components.selection.sel import Selection
-
+from ea_server.engine.components.stop_condition.stop_condition import StopCondition, StopConditionType
 from ea_server.model.ea_request_model import EaConfigModel, ComponentConfig
-from ea_server.model.ea_stop_condition import StopCondition
 
 creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
 creator.create("Individual", list, fitness=creator.FitnessMin)
+
 
 class EA:
     @staticmethod
@@ -32,7 +29,6 @@ class EA:
         self.result = None
         self.pop_size = None
         self.cxpb = None
-        self.num_generations = None
         self.mutpd = None
 
         self.mutate_func = None
@@ -43,25 +39,20 @@ class EA:
         self.fitness_func = None
         self.crossover_kwargs = None
         self.crossover_func = None
-
-        self.stop_conditions_configuration = {
-            GENERATIONS: StopCondition(applied=False, bound=DEFAULT_TIME_BOUND),
-            FITNESS: StopCondition(applied=False, bound=DEFAULT_FITNESS_BOUND),
-            TIME: StopCondition(applied=False, bound=DEFAULT_GENERATIONS_BOUND)
-        }
-
+        self.stop_condition_func = None
+        self.stop_condition_kwargs = None
+        self.stop_condition_type = None
 
     def prepare(self):
         self.set_selection(self.conf.selection)
         self.set_fitness(self.conf.fitness)
         self.set_mutate(self.conf.mutate)
         self.set_crossover(self.conf.crossover)
+        self.set_stop_condition(self.conf.stop_condition)
 
         self.set_cxpb(self.conf.crossover_prob)
         self.set_pop_size(self.conf.pop_size)
-        self.set_num_generations(self.conf.num_generations)
         self.set_mutpd(self.conf.mutate_prob)
-        self.set_stop_condition(self.conf.stop_condition)
 
         self.__toolbox = base.Toolbox()
         self.__toolbox.register("indices", random.uniform, 0, self.num_drivers)
@@ -102,6 +93,12 @@ class EA:
         self.fitness_kwargs = conf.args
         return self
 
+    def set_stop_condition(self, conf: ComponentConfig):
+        self.stop_condition_func = StopCondition.get(conf.name).function
+        self.stop_condition_kwargs = conf.args
+        self.stop_condition_type = conf.name
+        return self
+
     def set_pop_size(self, pop_size: int):
         self.pop_size = pop_size
         return self
@@ -113,28 +110,6 @@ class EA:
     def set_mutpd(self, mutpd: float):
         self.mutpd = mutpd
         return self
-
-    def set_num_generations(self, num_generations: int):
-        self.num_generations = num_generations
-        return self
-
-    def set_stop_condition(self, conf: ComponentConfig):
-        self.stop_conditions_configuration.get(conf.name).applied = True
-        self.stop_conditions_configuration.get(conf.name).bound= int(conf.args[BOUND])
-        return self
-
-    def should_finish(self, generation:int, fitness: float, time: float):
-        should_stop = False
-        time_cond = self.stop_conditions_configuration.get(TIME)
-        fitness_cond = self.stop_conditions_configuration.get(FITNESS)
-        generations_cond = self.stop_conditions_configuration.get(GENERATIONS)
-
-        should_stop = should_stop or (
-                        time_cond.bound < time and time_cond.applied) or (
-                        fitness_cond.bound > fitness and fitness_cond.applied) or (
-                        generations_cond.bound < generation and generations_cond.applied)
-
-        return should_stop
 
     def evoEvaluate(self, population, toolbox, cxpb, mutpb, stats=None,
              halloffame=None, verbose=__debug__):
@@ -203,3 +178,14 @@ class EA:
     def _evaluation(self, individual):
         fitness = self.fitness_func(self.data, individual, **self.fitness_kwargs)
         return (fitness,)
+ 
+    def should_finish(self, generation: int, fitness: float, time: float):
+        if self.stop_condition_type == StopConditionType.Generations:
+            bound = generation
+        elif self.stop_condition_type == StopConditionType.Fitness:
+            bound = fitness
+        elif self.stop_condition_type == StopConditionType.Time:
+            bound = time
+        
+        should_finish = self.stop_condition_func(bound, **self.stop_condition_kwargs)
+        return should_finish
