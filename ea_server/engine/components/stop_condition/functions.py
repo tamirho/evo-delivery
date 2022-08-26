@@ -3,15 +3,15 @@ from ea_server.model.ea_function_model import EaFunctionModel, KwargModel
 
 
 def time_stop_cond_strategy(cur_time, time_bound):
-    return time_bound < cur_time
+    return time_bound <= cur_time
 
 
 def fitness_stop_cond_strategy(cur_fitness, fitness_bound):
-    return fitness_bound > cur_fitness
+    return fitness_bound >= cur_fitness
 
 
-def num_generations_stop_cond_strategy(cur_num_generations, num_generations_bound):
-    return num_generations_bound > cur_num_generations
+def generations_stop_cond_strategy(cur_generations, generations_bound):
+    return generations_bound <= cur_generations
 
 
 time = EaFunctionModel(function=time_stop_cond_strategy,
@@ -26,7 +26,7 @@ fitness = EaFunctionModel(function=fitness_stop_cond_strategy,
                                              description="The minimum fitness that the algorithm will seek for (less is better)",
                                              type="float")])
 
-generations = EaFunctionModel(function=num_generations_stop_cond_strategy,
+generations = EaFunctionModel(function=generations_stop_cond_strategy,
                           description="When the algorithm reaches x generations, it will be stopped and return the last generation",
                           kwargs=[KwargModel(name=GENERATIONS_BOUND,
                                              description="The minimum fitness that the algorithm will seek for (less is better)",

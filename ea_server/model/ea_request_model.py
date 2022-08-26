@@ -3,8 +3,9 @@ from typing import List, Dict
 
 from dacite import MissingValueError
 
-from ea_server.api.utils.constants import DEFAULT_GENERATIONS_BOUND, DEFAULT_TOUR_SIZE, GENERATIONS, TOUR_SIZE, DEFAULT_INDPB, INDPB, DEFAULT_BOUNDED_DISTANCE, \
-    BOUND, SINGLE_POINT, BOUNDED_DISTANCE, TOURNAMENT, SHUFFLE
+from ea_server.api.utils.constants import DEFAULT_GENERATIONS_BOUND, DEFAULT_TOUR_SIZE, \
+    GENERATIONS, GENERATIONS_BOUND, TOUR_SIZE, DEFAULT_INDPB, INDPB, \
+    DEFAULT_BOUNDED_DISTANCE, BOUND, SINGLE_POINT, BOUNDED_DISTANCE, TOURNAMENT, SHUFFLE
 
 
 @dataclass(frozen=True)
@@ -73,7 +74,7 @@ class EaConfigModel:
     mutate: ComponentConfig = field(
         default_factory=lambda: ComponentConfig(name=SHUFFLE, args={INDPB: DEFAULT_INDPB}))
     stop_condition: ComponentConfig = field(
-        default_factory=lambda: ComponentConfig(name=GENERATIONS, args={BOUND: DEFAULT_GENERATIONS_BOUND}))
+        default_factory=lambda: ComponentConfig(name=GENERATIONS, args={GENERATIONS_BOUND: DEFAULT_GENERATIONS_BOUND}))
 
     def __post_init__(self):
         if self.pop_size < 1:

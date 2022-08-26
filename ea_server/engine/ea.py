@@ -58,11 +58,15 @@ class EA:
         self.__toolbox.register("indices", random.uniform, 0, self.num_drivers)
         self.__toolbox.register("individual", tools.initRepeat,
                                 creator.Individual, self.__toolbox.indices, n=self.num_orders)
-        self.__toolbox.register("population", tools.initRepeat, list, self.__toolbox.individual)
+        self.__toolbox.register(
+            "population", tools.initRepeat, list, self.__toolbox.individual)
         self.__toolbox.register("evaluate", self._evaluation)
-        self.__toolbox.register("mate", self.crossover_func, **self.crossover_kwargs)
-        self.__toolbox.register("mutate", self.mutate_func, **self.mutate_kwargs)
-        self.__toolbox.register("select", self.selection_func, **self.selection_kwargs)
+        self.__toolbox.register(
+            "mate", self.crossover_func, **self.crossover_kwargs)
+        self.__toolbox.register(
+            "mutate", self.mutate_func, **self.mutate_kwargs)
+        self.__toolbox.register(
+            "select", self.selection_func, **self.selection_kwargs)
         self.__pop = self.__toolbox.population(n=self.pop_size)
 
     def set_num_orders(self, num_orders: int):
@@ -112,10 +116,11 @@ class EA:
         return self
 
     def evoEvaluate(self, population, toolbox, cxpb, mutpb, stats=None,
-             halloffame=None, verbose=__debug__):
+                    halloffame=None, verbose=__debug__):
 
         logbook = tools.Logbook()
-        logbook.header = ['gen', 'nevals','best'] + (stats.fields if stats else [])
+        logbook.header = ['gen', 'nevals', 'best'] + \
+            (stats.fields if stats else [])
 
         # Evaluate the individuals with an invalid fitness
         invalid_ind = [ind for ind in population if not ind.fitness.valid]
@@ -132,7 +137,7 @@ class EA:
             print(logbook.stream)
 
         start_time = time.time()
-        generation:int = 1
+        generation: int = 1
         cur_fitness = 1000000
 
         # Begin the generational process
@@ -158,7 +163,8 @@ class EA:
 
             # Append the current generation statistics to the logbook
             record = stats.compile(population) if stats else {}
-            logbook.record(gen=generation, nevals=len(invalid_ind), best = self.get_best_individual(population))
+            logbook.record(gen=generation, nevals=len(invalid_ind),
+                           best=self.get_best_individual(population))
             if verbose:
                 print(logbook.stream)
 
@@ -171,21 +177,21 @@ class EA:
     def evaluate(self):
         self.prepare()
         self.result = self.evoEvaluate(self.__pop, self.__toolbox,
-                                          cxpb=self.cxpb, mutpb=self.mutpd,
-                                          verbose=False)
+                                       cxpb=self.cxpb, mutpb=self.mutpd,
+                                       verbose=False)
         return self.result
 
     def _evaluation(self, individual):
-        fitness = self.fitness_func(self.data, individual, **self.fitness_kwargs)
+        fitness = self.fitness_func(
+            self.data, individual, **self.fitness_kwargs)
         return (fitness,)
- 
+
     def should_finish(self, generation: int, fitness: float, time: float):
-        if self.stop_condition_type == StopConditionType.Generations:
+        if self.stop_condition_type == StopConditionType.Generations.value:
             bound = generation
-        elif self.stop_condition_type == StopConditionType.Fitness:
+        elif self.stop_condition_type == StopConditionType.Fitness.value:
             bound = fitness
-        elif self.stop_condition_type == StopConditionType.Time:
+        elif self.stop_condition_type == StopConditionType.Time.value:
             bound = time
-        
-        should_finish = self.stop_condition_func(bound, **self.stop_condition_kwargs)
-        return should_finish
+
+        return self.stop_condition_func(bound, **self.stop_condition_kwargs)
