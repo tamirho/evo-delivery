@@ -76,8 +76,6 @@ class EaConfigModel:
         default_factory=lambda: ComponentConfig(name=GENERATIONS, args={BOUND: DEFAULT_GENERATIONS_BOUND}))
 
     def __post_init__(self):
-        if self.num_generations < 1:
-            raise ValueError("num_generations should be greater then 1")
         if self.pop_size < 1:
             raise ValueError("pop_size should be greater then 1")
 

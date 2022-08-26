@@ -52,9 +52,9 @@ export type EaEvaluateConfig = {
   popSize?: number;
   crossoverProb?: number;
   mutateProb?: number;
-  numGenerations?: number;
   crossover?: EaComponentConfig;
   fitness?: EaComponentConfig;
   selection?: EaComponentConfig;
   mutate?: EaComponentConfig;
+  stopCondition?: EaComponentConfig;
 };
