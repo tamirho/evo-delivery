@@ -138,10 +138,10 @@ class EA:
 
         start_time = time.time()
         generation: int = 1
-        cur_fitness = 1000000
+        min_fitness = 1000000
 
         # Begin the generational process
-        while not self.should_finish(generation, cur_fitness, time.time() - start_time):
+        while not self.should_finish(generation, min_fitness, time.time() - start_time):
             # Select the next generation individuals
             offspring = toolbox.select(population, len(population))
 
@@ -153,6 +153,8 @@ class EA:
             fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
             for ind, fit in zip(invalid_ind, fitnesses):
                 ind.fitness.values = fit
+                if fit[0] < min_fitness:
+                    min_fitness = fit[0]
 
             # Update the hall of fame with the generated individuals
             if halloffame is not None:
@@ -168,8 +170,6 @@ class EA:
             if verbose:
                 print(logbook.stream)
 
-            cur_fitness = invalid_ind[0].fitness.values[0]
-            print(cur_fitness)
             generation += 1
 
         return population, logbook

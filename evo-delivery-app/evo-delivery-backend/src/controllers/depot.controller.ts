@@ -37,8 +37,8 @@ export const createDepot = async (req: Request, res: Response) => {
 
 export const updateDepot = async (req: Request, res: Response) => {
     const depotId: string = req.params.id;
-    const depotDetails: Partial<Depot> = req.body.depot;
-
+    const depotDetails: Partial<Depot> = req.body;
+    console.log(depotDetails)
     try {
         const depot = await depotService.updateDepot(depotId, depotDetails);
         return res.status(200).json(OK({depot}));

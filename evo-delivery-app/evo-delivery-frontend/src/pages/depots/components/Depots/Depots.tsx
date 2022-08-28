@@ -11,7 +11,6 @@ import {
   Tooltip,
 } from '@mui/material';
 import WarehouseIcon from '@mui/icons-material/Warehouse';
-import DeleteIcon from '@mui/icons-material/Delete';
 import ZoomInMapIcon from '@mui/icons-material/ZoomInMap';
 
 import { Depot } from '@backend/types';
@@ -19,8 +18,7 @@ import { EntityList } from '../../../../features/entity-list/EntityList';
 import { MapContext, mapActions } from '../../../../features/map/context';
 import { useFocusLocation } from '../../../../hooks/map/use-focus-location';
 import { useNavigateToChild } from '../../../../hooks/router/use-navigate-to-child';
-import { useGetEntities } from '../../../../hooks/entities/use-get-entities';
-import { useDeleteEntity } from '../../../../hooks/entities/use-delete-entity';
+import { useGetEntities } from '../../../../hooks/entities-api/use-get-entities';
 
 export const Depots = () => {
   const { dispatch } = useContext(MapContext);
@@ -35,7 +33,6 @@ export const Depots = () => {
   }, [depots]);
 
   const goToDepot = useNavigateToChild();
-  const deleteDepot = useDeleteEntity();
   const focusDepot = useFocusLocation();
 
   return (
