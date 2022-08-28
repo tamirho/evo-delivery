@@ -16,10 +16,9 @@ export interface EaHttpConverter {
     drivers,
     orders,
     depot,
-    draftId,
-    runId,
     distanceMatrix,
-    config
+    config,
+    runId?
   ): EaEvaluateHttpRequestBody;
 
   convertDepot(depot: Depot): string;
@@ -38,10 +37,9 @@ export class EaHttpConverterImpl implements EaHttpConverter {
     _drivers,
     _orders,
     _depot,
-    draftId,
-    runId,
     _distanceMatrix,
-    _config
+    _config,
+    _runId?
   ): EaEvaluateHttpRequestBody {
     const drivers: EaHttpRequestDriver[] = _drivers.map(this.convertDriver);
     const orders: EaHttpRequestOrder[] = _orders.map(this.convertOrder);
@@ -51,8 +49,7 @@ export class EaHttpConverterImpl implements EaHttpConverter {
     const config = this.convertConfig(_config);
 
     return {
-      draft_id: draftId,
-      run_id: runId,
+      run_id: _runId,
       data: { drivers, orders, distances, root_id: depotId },
       config,
     } as EaEvaluateHttpRequestBody;

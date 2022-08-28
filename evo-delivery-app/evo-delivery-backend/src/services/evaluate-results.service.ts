@@ -21,7 +21,6 @@ export const getByDraftId = async (id: string) => {
 };
 
 export const createResult = async (evaluateResult: EvaluateResult) => {
-    console.log(evaluateResult)
     return EvaluateResultModel.create(evaluateResult);
 };
 

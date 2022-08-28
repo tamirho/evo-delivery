@@ -51,7 +51,7 @@ export const createDraft = async (partialDraft: Partial<Draft>) => {
   return DraftModel.create(draft);
 };
 
-export const evaluateDraft = async (draftId: string) => {
+export const evaluateDraftWithUpdate = async (draftId: string) => {
   const draft = await draftService.getDraftById(draftId);
 
   const driversP = driverService.getByIds(draft.data.drivers);
@@ -69,17 +69,48 @@ export const evaluateDraft = async (draftId: string) => {
     depot: depot,
   } as EvaluateResult);
 
-  const eaResponse = await eaHttpClientAdapter.evaluate(
+  const evaluatedRoutes = await eaHttpClientAdapter.evaluateWithUpdate(
     drivers,
     orders,
     depot,
-    draftId,
     evalResult._id,
     draft.data.distances as DistanceMatrix,
     draft.config
   );
 
-  return eaResponse;
+  return evaluatedRoutes;
+};
+
+export const evaluateDraftWithReturn = async (draftId: string) => {
+  const draft = await draftService.getDraftById(draftId);
+
+  const driversP = driverService.getByIds(draft.data.drivers);
+  const ordersP = orderService.getOrderByIds(draft.data.orders);
+  const depotP = depotService.getDepotById(draft.data.depot);
+
+  const [drivers, orders, depot] = await Promise.all([
+    driversP,
+    ordersP,
+    depotP,
+  ]);
+
+  const evaluatedRoutes = await eaHttpClientAdapter.evaluateWithReturn(
+    drivers,
+    orders,
+    depot,
+    draft.data.distances as DistanceMatrix,
+    draft.config
+  );
+  
+  const evalResult = await prepareEvaluateResult(
+    draft,
+    drivers,
+    orders,
+    depot,
+    evaluatedRoutes
+  );
+
+  return evaluateResultsService.createResult(evalResult);
 };
 
 export const updateDraft = async (draftId: string, draft: Partial<Draft>) => {

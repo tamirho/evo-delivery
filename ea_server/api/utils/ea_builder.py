@@ -10,7 +10,7 @@ class EABuilder:
         self.run_id = None
         pass
 
-    def with_conf(self, conf: EaConfigModel, run_id:str):
+    def with_conf(self, conf: EaConfigModel, run_id:str="0"):
         self.conf = conf
         self.run_id = run_id
         return self

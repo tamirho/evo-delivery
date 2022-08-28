@@ -6,9 +6,13 @@ import {
 } from "../types";
 
 export interface EaHttpClient {
-  evaluate: (
+  evaluateWithReturn: (
     requestBody: EaEvaluateHttpRequestBody
   ) => Promise<EaEvaluateResponse>;
+
+  evaluateWithUpdate: (
+    requestBody: EaEvaluateHttpRequestBody
+  ) => Promise<void>;
 
   getComponentDetails: (
     componentType: EaComponentTypes

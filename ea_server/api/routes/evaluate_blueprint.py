@@ -3,7 +3,6 @@ from click import MissingParameter
 from dacite import MissingValueError
 from flask import Blueprint
 from werkzeug.exceptions import BadRequest, InternalServerError
-from ea_server.api import create_app
 from flask import request
 from ea_server.api.utils.ea_builder import EABuilder, EaBuilderError
 from ea_server.api.utils.http import get_json_body_from_request, to_draft_model
@@ -19,12 +18,12 @@ evaluate_blueprint = Blueprint('evaluate_blueprint', import_name=__name__)
 LOG = logging.getLogger(__name__)
 EaDict = {}
 
-@evaluate_blueprint.route('/evaluate', methods=['POST'])
-def evaluate():
+@evaluate_blueprint.route('/evaluate_update', methods=['POST'])
+def evaluate_update():
     try:
-        json_body=get_json_body_from_request(request)
-        draftModel: EaDraftModel = to_draft_model(json_body)
-        print(draftModel)
+        json_request_body=get_json_body_from_request(request)
+        LOG.info("Call evaluate with request: %s'", json_request_body)
+        draftModel: EaDraftModel = to_draft_model(json_request_body)
         ea = EABuilder() \
             .with_data(draftModel.data) \
             .with_conf(draftModel.config, draftModel.run_id) \
@@ -32,7 +31,7 @@ def evaluate():
         ea.run()
         EaDict[draftModel.run_id] = ea
 
-        return "Ea algorithm is running"
+        return "Ea algorithm is running , run_id= %d",(draftModel.run_id)
     except (MissingValueError, EaBuilderError, MissingParameter) as e:
         LOG.error("Error in evaluate: %s", e.__str__())
         traceback.print_exc()
@@ -42,6 +41,41 @@ def evaluate():
         traceback.print_exc()
         raise InternalServerError(e.__str__())
     
+@evaluate_blueprint.route('/evaluate_return', methods=['POST'])
+def evaluate_return():
+    try:
+        json_request_body = get_json_body_from_request(request)
+        json_request_body['run_id']="0"
+        LOG.info("Call evaluate with request: %s'", json_request_body)
+        ea_request_model: EaDraftModel = to_draft_model(json_request_body)
+        ea = EABuilder() \
+            .with_data(ea_request_model.data) \
+            .with_conf(ea_request_model.config) \
+            .build()
+    except (MissingValueError, EaBuilderError, MissingParameter) as e:
+        LOG.error("Error in evaluate: %s", e.__str__())
+        traceback.print_exc()
+        raise BadRequest(e.__str__())
+    except Exception as e:
+        LOG.error("Error in evaluate: %s", e.__str__())
+        traceback.print_exc()
+        raise InternalServerError(e.__str__())
+
+    try:
+        result, log = ea.evaluate()
+        object_result = parse_result(result, ea_request_model.data)
+        LOG.info('Best individual: %s', object_result)
+        return object_result
+    except ValueError as e:
+        LOG.error("Error in evaluate: %s", e.__str__())
+        traceback.print_exc()
+        raise BadRequest(e.__str__())
+    except Exception as e:
+        LOG.error("Error in evaluate: %s", e.__str__())
+        traceback.print_exc()
+        raise InternalServerError(e.__str__())
+        
+
 @evaluate_blueprint.route('/terminate/<run_id>', methods=['POST'])
 def terminate(run_id):
     try:
@@ -49,7 +83,7 @@ def terminate(run_id):
         eaInstance : EA = EaDict.get(run_id, None)
         eaInstance.terminate() if eaInstance else {}
     
-        return "Ea run id = %d terminated" (run_id)
+        return "Ea run id = %d terminated", (run_id)
     except (MissingValueError, EaBuilderError, MissingParameter) as e:
         LOG.error("Error in evaluate: %s", e.__str__())
         traceback.print_exc()

@@ -1,5 +1,5 @@
 import mongoose, {Model, Schema} from "mongoose";
-import {EvaluateResult, DriverRoute} from "../../types";
+import {EvaluateResult, DriverRoute, EaResult} from "../../types";
 import {DepotSchema} from "./depot.model";
 import {OrderSchema} from "./order.model";
 import {DriverSchema} from "./driver.model";
@@ -43,31 +43,45 @@ const DriverRoute = new Schema<DriverRoute>({
     _id: false
 })
 
-const EvaluateResultSchema = new Schema<EvaluateResult, EvaluateResultsModel>({
-        draftId: {
-            type: String,
-            required: true,
-        },
-        isDone: {
-            type: Boolean,
-            default: false
-        },
-        eaResult:{
-            type:[Number]
-        },
-        depot: {
-            type: DepotSchema,
-        },
-        routes: {
-            type: [DriverRoute],
-        }
+const EaResultSchema = new Schema<EaResult>(
+  {
+    result: {
+      type: Map,
+      required: true,
     },
-    {
-        versionKey: false,
-        timestamps: true,
-        collection: 'EvaluateResults'
-    }
-)
+    
+  },
+  {
+    _id: false,
+  }
+);
+
+const EvaluateResultSchema = new Schema<EvaluateResult, EvaluateResultsModel>(
+  {
+    draftId: {
+      type: String,
+      required: true,
+    },
+    isDone: {
+      type: Boolean,
+      default: false,
+    },
+    eaResult: {
+      type: EaResultSchema,
+    },
+    depot: {
+      type: DepotSchema,
+    },
+    routes: {
+      type: [DriverRoute],
+    },
+  },
+  {
+    versionKey: false,
+    timestamps: true,
+    collection: "EvaluateResults",
+  }
+);
 
 EvaluateResultSchema.statics.getAll = function () {
     return this.find({});

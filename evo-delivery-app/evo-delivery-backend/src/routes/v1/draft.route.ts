@@ -9,7 +9,9 @@ router.get('/:id', draftController.getDraft);
 
 router.post('/', draftController.createDraft);
 
-router.post('/:id/evaluate', draftController.evaluateDraft);
+router.post('/:id/evaluate_return', draftController.evaluateDraftWithReturn);
+
+router.post('/:id/evaluate_update', draftController.evaluateDraftWithUpdate);
 
 router.put('/:id', draftController.updateDraft);
 

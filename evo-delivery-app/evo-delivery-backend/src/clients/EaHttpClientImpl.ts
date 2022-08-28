@@ -22,12 +22,22 @@ export class EaHttpClientImpl implements EaHttpClient {
     this.baseUrl = baseUrl;
   }
 
-  evaluate(
+  evaluateWithReturn(
     requestBody: EaEvaluateHttpRequestBody
   ): Promise<EaEvaluateResponse> {
+    const headers = { "Content-Type": "application/json" };
+    const url = `${this.baseUrl}/${this.apiUrlPrefix}/evaluate_return`;
+    const data = JSON.stringify(requestBody);
+    const options = { headers };
 
-    const headers = {'Content-Type': 'application/json'};
-    const url = `${this.baseUrl}/${this.apiUrlPrefix}/evaluate`;
+    return this.httpClient.post({ url, data, options });
+  }
+
+  evaluateWithUpdate(
+    requestBody: EaEvaluateHttpRequestBody
+  ): Promise<void> {
+    const headers = { "Content-Type": "application/json" };
+    const url = `${this.baseUrl}/${this.apiUrlPrefix}/evaluate_update`;
     const data = JSON.stringify(requestBody);
     const options = { headers };
 
@@ -42,9 +52,7 @@ export class EaHttpClientImpl implements EaHttpClient {
     return this.httpClient.get({ url });
   }
 
-  terminate(
-    run_id: string
-  ): Promise<void> {
+  terminate(run_id: string): Promise<void> {
     const headers = { "Content-Type": "application/json" };
     const url = `${this.baseUrl}/${this.apiUrlPrefix}/terminate/${run_id}`;
     const options = { headers };

@@ -15,7 +15,7 @@ from ea_server.engine.components.selection.sel import Selection
 
 from ea_server.model.ea_request_model import EaConfigModel, ComponentConfig
 from ea_server.model.ea_stop_condition import StopCondition
-
+from ea_server.api.utils.parser import parse_result
 from flask_pymongo import PyMongo, ObjectId
 from flask import current_app
 
@@ -203,11 +203,17 @@ class EA:
 
             cur_fitness = invalid_ind[0].fitness.values[0]
             best = self.get_best_individual(population)
-            self.mongo.db.EvaluateResults.update_one({'_id':ObjectId(self.run_id)},{'$set':{'eaResult':best}})
+            if self.run_id!="0":
+                result = parse_result(best, self.data)
+                self.mongo.db.EvaluateResults.update_one({'_id':ObjectId(self.run_id)},{'$set':{'eaResult':result}})
             generation += 1
 
-        best = self.get_best_individual(population)   
-        self.mongo.db.EvaluateResults.update_one({'_id':ObjectId(self.run_id)},{'$set':{'eaResult':best, 'isDone': True}})
+        best = self.get_best_individual(population) 
+        if self.run_id!="0":  
+            result = parse_result(best, self.data)
+            self.mongo.db.EvaluateResults.update_one({'_id':ObjectId(self.run_id)},{'$set':{'eaResult':result, 'isDone': True}})
+
+        return best,logbook
 
     def evaluate(self):
         self.prepare()

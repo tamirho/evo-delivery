@@ -1,51 +1,71 @@
 import {
-    Depot,
-    DistanceMatrix,
-    Driver,
-    EaComponentDetails,
-    EaComponentTypes,
-    EaEvaluateConfig,
-    EaEvaluateResponse,
-    Order,
-} from '../types';
-import {EaHttpClientAdapter} from './EaHttpClientAdapter';
-import {EaHttpConverter} from './utils/EaHttpConverter';
-import {EaHttpClient} from "./EaHttpClient";
+  Depot,
+  DistanceMatrix,
+  Driver,
+  EaComponentDetails,
+  EaComponentTypes,
+  EaEvaluateConfig,
+  EaEvaluateResponse,
+  Order,
+} from "../types";
+import { EaHttpClientAdapter } from "./EaHttpClientAdapter";
+import { EaHttpConverter } from "./utils/EaHttpConverter";
+import { EaHttpClient } from "./EaHttpClient";
+import { runInContext } from "vm";
 
 export class EaHttpClientAdapterImpl implements EaHttpClientAdapter {
-    private readonly eaHttpClient: EaHttpClient;
-    private readonly converter: EaHttpConverter;
+  private readonly eaHttpClient: EaHttpClient;
+  private readonly converter: EaHttpConverter;
 
-    constructor(
-        httpClient: EaHttpClient,
-        converter: EaHttpConverter,
-    ) {
-        this.eaHttpClient = httpClient;
-        this.converter = converter;
-    }
+  constructor(httpClient: EaHttpClient, converter: EaHttpConverter) {
+    this.eaHttpClient = httpClient;
+    this.converter = converter;
+  }
 
-    evaluate(
-        _drivers: Driver[],
-        _orders: Order[],
-        _depot: Depot,
-        _draftId: string,
-        _runId: string,
-        _distanceMatrix: DistanceMatrix,
-        _config: EaEvaluateConfig
-    ): Promise<EaEvaluateResponse> {
-        const requestBody = this.converter.toEaHttpRequestBody(_drivers, _orders, _depot, _draftId,_runId, _distanceMatrix, _config);
-        return this.eaHttpClient.evaluate(requestBody);
-    }
+  evaluateWithReturn(
+    drivers: Driver[],
+    orders: Order[],
+    depot: Depot,
+    distanceMatrix: DistanceMatrix,
+    config: EaEvaluateConfig
+  ): Promise<EaEvaluateResponse> {
+    const requestBody = this.converter.toEaHttpRequestBody(
+      drivers,
+      orders,
+      depot,
+      distanceMatrix,
+      config,
+    );
+    return this.eaHttpClient.evaluateWithReturn(requestBody);
+  }
 
-    getComponentDetails(
-        componentType: EaComponentTypes
-    ): Promise<EaComponentDetails[]> {
-        return this.eaHttpClient.getComponentDetails(componentType);
-    }
+  evaluateWithUpdate(
+    drivers: Driver[],
+    orders: Order[],
+    depot: Depot,
+    runId: string,
+    distanceMatrix: DistanceMatrix,
+    config: EaEvaluateConfig
+  ): Promise<void> {
+    const requestBody = this.converter.toEaHttpRequestBody(
+      drivers,
+      orders,
+      depot,
+      distanceMatrix,
+      config,
+      runId
+    );
+    const body = {...requestBody,run_id:runId}
+    return this.eaHttpClient.evaluateWithUpdate(body);
+  }
 
-    terminate(
-    run_id: string
-    ): Promise<void> {
-    return this.eaHttpClient.terminate(run_id)
-    }
+  getComponentDetails(
+    componentType: EaComponentTypes
+  ): Promise<EaComponentDetails[]> {
+    return this.eaHttpClient.getComponentDetails(componentType);
+  }
+
+  terminate(run_id: string): Promise<void> {
+    return this.eaHttpClient.terminate(run_id);
+  }
 }

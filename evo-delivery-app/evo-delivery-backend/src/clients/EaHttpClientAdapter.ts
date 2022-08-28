@@ -10,15 +10,22 @@ import {
 } from "../types";
 
 export interface EaHttpClientAdapter {
-  evaluate: (
+  evaluateWithReturn: (
     drivers: Driver[],
     orders: Order[],
     depot: Depot,
-    draftId: string,
-    runId: string,
     distanceMatrix: DistanceMatrix,
     config: EaEvaluateConfig
   ) => Promise<EaEvaluateResponse>;
+
+  evaluateWithUpdate: (
+    drivers: Driver[],
+    orders: Order[],
+    depot: Depot,
+    runId: string,
+    distanceMatrix: DistanceMatrix,
+    config: EaEvaluateConfig
+  ) => Promise<void>;
 
   getComponentDetails: (
     componentType: EaComponentTypes

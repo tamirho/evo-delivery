@@ -29,8 +29,7 @@ export type EaEvaluateHttpRequestData = {
 };
 
 export type EaEvaluateHttpRequestBody = {
-  draft_id: string;
-  run_id: string,
+  run_id?: string,
   data: EaEvaluateHttpRequestData;
   config: EaEvaluateHttpRequestConfig;
 };
