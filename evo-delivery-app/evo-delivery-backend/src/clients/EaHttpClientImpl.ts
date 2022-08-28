@@ -2,13 +2,10 @@ import { EA_ENGINE_API_V1_URL } from '../configs';
 import {
   EaComponentDetails,
   EaComponentTypes,
-  EaEvaluateHttpRequestConfig,
   EaEvaluateResponse,
   EaEvaluateHttpRequestBody,
-  EaHttpRequestDistances,
-  EaHttpRequestDriver,
-  EaHttpRequestOrder,
 } from '../types';
+import { camelToSnakeCase } from '../utils';
 import { EaHttpClient } from './EaHttpClient';
 import { HttpClient } from './HttpClient';
 
@@ -39,7 +36,7 @@ export class EaHttpClientImpl implements EaHttpClient {
   getComponentDetails(
     componentType: EaComponentTypes
   ): Promise<EaComponentDetails[]> {
-    const url = `${this.baseUrl}/${this.apiUrlPrefix}/${componentType}/details`;
+    const url = `${this.baseUrl}/${this.apiUrlPrefix}/${camelToSnakeCase(componentType)}/details`;
 
     console.log(`GET ${url}`);
 

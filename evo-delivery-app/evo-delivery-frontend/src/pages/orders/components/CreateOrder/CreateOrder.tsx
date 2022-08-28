@@ -2,7 +2,7 @@ import * as React from 'react';
 import { OrderForm } from '../OrderForm/OrderForm';
 import { ENTITY_VIEW_STATES } from '../../../common';
 import { useNavigateToParent } from '../../../../hooks/router/use-navigate-to-parent';
-import { useCreateEntity } from '../../../../hooks/entities-api/use-create-entity';
+import { useCreateEntity } from '../../../../hooks/entities/use-create-entity';
 
 
 export const CreateOrder = () => {

@@ -49,7 +49,7 @@ export const Depots = () => {
               alignItems='center'
               secondaryAction={
                 <>
-                  <Tooltip title='Focus'>
+                  <Tooltip title='Focus Depot'>
                     <IconButton edge='end' aria-label='comments' size='small' onClick={() => focusDepot(depot)}>
                       <ZoomInMapIcon fontSize='inherit' />
                     </IconButton>

@@ -1,4 +1,3 @@
-import {useContext, useMemo} from "react";
 import {
     Avatar,
     Collapse, Divider, IconButton,
@@ -9,9 +8,8 @@ import {
     Typography
 } from "@mui/material";
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import {ExpandLess, ExpandMore, StarBorder} from "@mui/icons-material";
-import * as React from "react";
-import {DriverRoute, Order} from "../../../../../../evo-delivery-backend/src/types";
+import {ExpandLess, ExpandMore} from "@mui/icons-material";
+import {DriverRoute} from "../../../../../../evo-delivery-backend/src/types";
 import {useFocusLocation} from "../../../../hooks/map/use-focus-location";
 import ZoomInMapIcon from "@mui/icons-material/ZoomInMap";
 
@@ -45,7 +43,10 @@ export const DriverRouteListItem = ({
             alignItems='center'
         >
             <ListItemButton onClick={() => {
-                setOpenCollapseItemKey(route.driver._id as string)
+                if(openCollapseItemKey !== route.driver._id)
+                    setOpenCollapseItemKey(route.driver._id as string)
+                else
+                    setOpenCollapseItemKey(null)
             }}>
                 <ListItemAvatar>
                     <Avatar sx={{ bgcolor: routeColor }}>
