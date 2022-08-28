@@ -1,8 +1,25 @@
 import { TextField, Stack } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
+import { convertObjToNiceText } from './common';
 
-export const GeneralConfigTab = () => {
-  const { register } = useFormContext();
+export const GeneralConfigLabel = () => {
+  const { watch } = useFormContext();
+  const watchedConfig = watch(['config.popSize', 'config.crossoverProb', 'config.mutateProb']);
+
+  const text = () => {
+    const [popSize, crossoverProb, mutateProb] = watchedConfig;
+
+    return convertObjToNiceText({ popSize, crossoverProb, mutateProb });
+  };
+
+  return watchedConfig ? <span>{text()}</span> : null;
+};
+
+export const GeneralConfigStep = () => {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
 
   return (
     <Stack spacing={3} style={{ width: '100%' }}>
@@ -13,10 +30,11 @@ export const GeneralConfigTab = () => {
         type='number'
         inputProps={{
           step: 5,
-          max: 100000,
+          max: 10000000,
           min: 0,
         }}
-        {...register('config.popSize', { valueAsNumber: true })}
+        {...register('config.popSize', { valueAsNumber: true, required: true })}
+        error={!!errors?.['config']?.['popSize']}
       />
       <TextField
         id='input-crossoverProb'
@@ -30,7 +48,9 @@ export const GeneralConfigTab = () => {
         }}
         {...register('config.crossoverProb', {
           valueAsNumber: true,
+          required: true,
         })}
+        error={!!errors?.['config']?.['crossoverProb']}
       />
       <TextField
         id='input-mutateProb'
@@ -42,7 +62,8 @@ export const GeneralConfigTab = () => {
           max: 1,
           min: 0,
         }}
-        {...register('config.mutateProb', { valueAsNumber: true })}
+        {...register('config.mutateProb', { valueAsNumber: true, required: true })}
+        error={!!errors?.['config']?.['mutateProb']}
       />
     </Stack>
   );

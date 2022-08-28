@@ -9,7 +9,25 @@ import ZoomInMapIcon from '@mui/icons-material/ZoomInMap';
 import { mapActions, MapContext } from '../../../../../features/map/context';
 import { ENTITIES } from '../../../../common';
 
-export const SelectOrdersTab = () => {
+export const SelectOrdersLabel = () => {
+  const { watch } = useFormContext();
+  const watchedOrders = watch('data.orders');
+
+  const text = () => {
+    switch (watchedOrders.length) {
+      case 0:
+        return null;
+      case 1:
+        return '1 order selected (Easy as pie)';
+      default:
+        return `${watchedOrders.length} orders selected`;
+    }
+  };
+
+  return watchedOrders ? <span>{text()}</span> : null;
+}
+
+export const SelectOrdersStep = () => {
   const { control, getValues } = useFormContext();
   const { dispatch } = useContext(MapContext);
   const { data: orders, isLoading, isFetching } = useGetEntitiesByName(ENTITIES.orders);
@@ -22,7 +40,7 @@ export const SelectOrdersTab = () => {
 
     return () => {
       const selectedOrders = getValues('data.orders');
-      dispatch({ type: mapActions.UPDATE_STATE, payload: { orders: selectedOrders || [] } });
+      dispatch({ type: mapActions.UPDATE_STATE, payload: { orders: selectedOrders || [], zoom: 15 } });
     };
   }, [orders]);
 

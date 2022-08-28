@@ -1,42 +1,74 @@
-import { Box, Divider, Tab, Tabs } from '@mui/material';
-import { useForm } from 'react-hook-form';
-import { useState } from 'react';
-import { TabPanel } from './TabPanel';
-import { SelectDepotTab } from '../nested-tabs/SelectDepotTab';
-import { a11yProps } from '../common';
-import { SelectDriversTab } from '../nested-tabs/SelectDriversTab';
-import { SelectOrdersTab } from '../nested-tabs/SelectOrdersTab';
+import { useFormContext } from 'react-hook-form';
+import { Box, Button, Step, StepContent, StepLabel, Stepper } from '@mui/material';
+import { SelectDepotStep, SelectDepotLabel } from '../nested-tabs/SelectDepotStep';
+import { SelectDriversStep, SelectDriversLabel } from '../nested-tabs/SelectDriversStep';
+import { SelectOrdersStep, SelectOrdersLabel } from '../nested-tabs/SelectOrdersStep';
 
-export type DataTabProps = {};
+import { createStepperHandlers } from './common';
+import { countErrors } from '../common';
+import { LetsCustomizeAlert, GoDefaultAlert, ErrorAlert } from './alerts';
 
-export const DataTab = ({}: DataTabProps) => {
-  const [nestedTabIndex, setNestedTabIndex] = useState(0);
+const steps = [
+  {
+    label: 'Select Depot',
+    optionalLabel: <SelectDepotLabel />,
+    component: <SelectDepotStep />,
+  },
+  {
+    label: 'Select Drivers',
+    optionalLabel: <SelectDriversLabel />,
+    component: <SelectDriversStep />,
+  },
+  {
+    label: 'Select Orders',
+    optionalLabel: <SelectOrdersLabel />,
+    component: <SelectOrdersStep />,
+  },
+];
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setNestedTabIndex(newValue);
-  };
+export type DataTabProps = {
+  activeStep: number;
+  setActiveStep: React.Dispatch<React.SetStateAction<number>>;
+  letsCustomizeOnClickHandler: () => void;
+};
+
+export const DataTab = ({ activeStep, setActiveStep, letsCustomizeOnClickHandler }: DataTabProps) => {
+  const { formState } = useFormContext();
+  const { handleNext, handleBack } = createStepperHandlers(setActiveStep);
+
+  const errorCount = countErrors(formState.errors);
 
   return (
     <>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={nestedTabIndex} onChange={handleTabChange} variant='scrollable' scrollButtons={true}>
-          <Tab label='Depot' {...a11yProps(1, 0)} />
-          <Tab label='Drivers' {...a11yProps(1, 1)} />
-          <Tab label='Orders' {...a11yProps(1, 2)} />
-        </Tabs>
-      </Box>
-
-      <Box sx={{ p: 3 }}>
-        <TabPanel value={nestedTabIndex} index={0}>
-          <SelectDepotTab />
-        </TabPanel>
-        <TabPanel value={nestedTabIndex} index={1}>
-          <SelectDriversTab />
-        </TabPanel>
-        <TabPanel value={nestedTabIndex} index={2}>
-          <SelectOrdersTab />
-        </TabPanel>
-      </Box>
+      <Stepper activeStep={activeStep} orientation='vertical'>
+        {steps.map((step, index) => (
+          <Step key={step.label}>
+            <StepLabel onClick={() => setActiveStep(index)} optional={activeStep !== index ? step.optionalLabel : null}>
+              {step.label}
+            </StepLabel>
+            <StepContent>
+              <Box sx={{ marginY: 3 }}>{step.component}</Box>
+              <Box sx={{ marginY: 3 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <Button disabled={index === 0} onClick={handleBack} sx={{ mt: 1, mr: 1 }}>
+                    Back
+                  </Button>
+                  <Button variant='contained' onClick={handleNext} sx={{ mt: 1, mr: 1, borderRadius: 50 }}>
+                    {index === steps.length - 1 ? 'Finish' : 'Continue'}
+                  </Button>
+                </Box>
+              </Box>
+            </StepContent>
+          </Step>
+        ))}
+      </Stepper>
+      {activeStep === steps.length && !errorCount.all && (
+        <>
+          <LetsCustomizeAlert onButtonClicked={letsCustomizeOnClickHandler} />
+          <GoDefaultAlert disabled={!!errorCount.all} />
+        </>
+      )}
+      {activeStep === steps.length && !!errorCount.all && <ErrorAlert />}
     </>
   );
 };

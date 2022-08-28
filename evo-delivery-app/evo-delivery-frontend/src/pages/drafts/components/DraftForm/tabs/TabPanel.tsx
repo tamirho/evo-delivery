@@ -12,13 +12,7 @@ export const TabPanel = (props: TabPanelProps) => {
 
   return (
     <div role='tabpanel' hidden={value !== index} id={`tabpanel-${index}`} aria-labelledby={`tab-${index}`} {...other}>
-      {value === index && (
-        <Box
-        //   sx={{ padding: 3 }}
-        >
-          {children}
-        </Box>
-      )}
+      {value === index && <Box sx={{ padding: 2 }}>{children}</Box>}
     </div>
   );
 };

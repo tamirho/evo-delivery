@@ -46,6 +46,7 @@ export type EaEvaluateHttpRequestConfig = {
   fitness?: EaHttpRequestComponentConfig;
   selection?: EaHttpRequestComponentConfig;
   mutate?: EaHttpRequestComponentConfig;
+  stop_condition?: EaHttpRequestComponentConfig;
 };
 
 export type EaEvaluateHttpResponse = {

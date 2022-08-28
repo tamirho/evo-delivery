@@ -1,27 +1,18 @@
-import { Box, Button, Tab, Tabs } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import { Draft, EaComponentConfig, EaEvaluateConfig } from '@backend/types/';
-import { FormProvider, useForm } from 'react-hook-form';
-import { FormStates } from '../../../common';
 import { useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { Badge, Box, Button, Tab, Tabs } from '@mui/material';
+
+import AddIcon from '@mui/icons-material/Add';
+import NewspaperIcon from '@mui/icons-material/Newspaper';
+import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
+import ClearIcon from '@mui/icons-material/Clear';
+
+import { Draft } from '@backend/types/';
 import { DataTab } from './tabs/DataTab';
 import { TabPanel } from './tabs/TabPanel';
 import { ConfigTab } from './tabs/ConfigTab';
-import { a11yProps } from './common';
-
-const createDefaultDraft = () => ({
-  data: { drivers: [], orders: [], depot: null },
-  config: {
-    popSize: 100,
-    crossoverProb: 0.5,
-    mutateProb: 0.5,
-    numGenerations: 1000,
-    crossover: { name: '', args: {} },
-    fitness: { name: '', args: {} },
-    selection: { name: '', args: {} },
-    mutate: { name: '', args: {} },
-  },
-});
+import { a11yProps, countErrors, createDefaultDraft, transformToDraft } from './common';
+import { FormStates } from '../../../common';
 
 export type DraftFormProps = {
   state: FormStates;
@@ -29,75 +20,91 @@ export type DraftFormProps = {
   draft?: Draft;
 };
 
-const toIdsList = (list: { _id: string }[]) => {
-  console.log(list);
-  return list?.map((item) => item?._id);
-};
-const isComponentEmpty = (componentConfig: EaComponentConfig | undefined) =>
-  !componentConfig || componentConfig.name === '';
-const removeEmptyComponents = ({
-  popSize,
-  crossoverProb,
-  mutateProb,
-  numGenerations,
-  ...config
-}: EaEvaluateConfig) => ({
-  popSize,
-  crossoverProb,
-  mutateProb,
-  numGenerations,
-  ...(isComponentEmpty(config.crossover) ? {} : { crossover: config.crossover }),
-  ...(isComponentEmpty(config.fitness) ? {} : { fitness: config.fitness }),
-  ...(isComponentEmpty(config.selection) ? {} : { selection: config.selection }),
-  ...(isComponentEmpty(config.mutate) ? {} : { mutate: config.mutate }),
-});
-
-const transformToDraft = (formData: any) => ({
-  data: {
-    drivers: toIdsList(formData.drivers),
-    orders: toIdsList(formData.orders),
-    depot: formData.depot._id,
-  },
-  config: removeEmptyComponents(formData.config),
-});
-
 export const DraftForm = ({ state, onSubmit = (data) => console.log(data), draft }: DraftFormProps) => {
   const defaultDraft = createDefaultDraft();
-  const methods = useForm({ defaultValues: defaultDraft });
+  const methods = useForm({ defaultValues: defaultDraft, mode: 'onBlur' });
 
   const [tabIndex, setTabIndex] = useState(0);
+  const [dataTabActiveStep, setDataTabActiveStep] = useState(0);
+  const [configTabActiveStep, setConfigTabActiveStep] = useState(0);
+  console.log('data', methods.formState.errors);
+  console.log('config', methods.formState.errors);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabIndex(newValue);
   };
 
   const transformAndSubmit = (data: any) => {
-    console.log(data);
     const t = transformToDraft(data);
     onSubmit(t);
   };
 
+  const errorCount = countErrors(methods.formState.errors);
+
   return (
     <FormProvider {...methods}>
-      <Box sx={{ width: '100%' }}>
+      <Box sx={{ width: '100vw', height: '100vh' }}>
         <form onSubmit={methods.handleSubmit(transformAndSubmit)}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tabs value={tabIndex} onChange={handleTabChange}>
-              <Tab label='Data' {...a11yProps(0, 0)} />
-              <Tab label='Configuration' {...a11yProps(0, 1)} />
+            <Tabs value={tabIndex} onChange={handleTabChange} centered>
+              <Tab
+                label='Plan Data'
+                icon={
+                  <Badge color='error' badgeContent={errorCount.data}>
+                    <NewspaperIcon />
+                  </Badge>
+                }
+                iconPosition='start'
+                {...a11yProps(0, 0)}
+              />
+
+              <Tab
+                label='Configuration'
+                icon={
+                  <Badge color='error' badgeContent={errorCount.config}>
+                    <SettingsSuggestIcon />
+                  </Badge>
+                }
+                iconPosition='start'
+                {...a11yProps(0, 1)}
+              />
             </Tabs>
           </Box>
 
           <TabPanel value={tabIndex} index={0}>
-            <DataTab />
+            <DataTab
+              activeStep={dataTabActiveStep}
+              setActiveStep={setDataTabActiveStep}
+              letsCustomizeOnClickHandler={() => setTabIndex(1)}
+            />
           </TabPanel>
           <TabPanel value={tabIndex} index={1}>
-            <ConfigTab />
+            <ConfigTab activeStep={configTabActiveStep} setActiveStep={setConfigTabActiveStep} />
           </TabPanel>
 
-          <Button type='submit' variant='contained' color='info' style={{ borderRadius: 50 }} startIcon={<AddIcon />}>
-            Create
-          </Button>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginRight: '20px' }}>
+            <Box sx={{ position: 'absolute', bottom: '20px' }}>
+              <Button
+                variant='contained'
+                color='error'
+                style={{ borderRadius: 50, marginRight: 4 }}
+                startIcon={<ClearIcon />}
+                onClick={() => methods.reset()}
+              >
+                Reset
+              </Button>
+              <Button
+                type='submit'
+                disabled={!!errorCount.all}
+                variant='contained'
+                color='info'
+                style={{ borderRadius: 50 }}
+                startIcon={<AddIcon />}
+              >
+                Create Draft
+              </Button>
+            </Box>
+          </Box>
         </form>
       </Box>
     </FormProvider>

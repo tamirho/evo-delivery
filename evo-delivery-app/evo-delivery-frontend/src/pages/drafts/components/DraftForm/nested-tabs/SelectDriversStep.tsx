@@ -5,7 +5,25 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { useGetEntitiesByName } from '../../../../../hooks/entities/use-get-entities-by-name';
 import { ENTITIES } from '../../../../common';
 
-export const SelectDriversTab = () => {
+export const SelectDriversLabel = () => {
+  const { watch } = useFormContext();
+  const watchedDrivers = watch('data.drivers');
+
+  const text = () => {
+    switch (watchedDrivers.length) {
+      case 0:
+        return null;
+      case 1:
+        return '1 driver selected (A lonely day awaits him)';
+      default:
+        return `${watchedDrivers.length} drivers selected`;
+    }
+  };
+
+  return watchedDrivers ? <span>{text()}</span> : null;
+};
+
+export const SelectDriversStep = () => {
   const { control } = useFormContext();
 
   const { data: drivers, isLoading, isFetching } = useGetEntitiesByName(ENTITIES.drivers);

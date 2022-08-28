@@ -29,5 +29,5 @@ fitness = EaFunctionModel(function=fitness_stop_cond_strategy,
 generations = EaFunctionModel(function=generations_stop_cond_strategy,
                           description="When the algorithm reaches x generations, it will be stopped and return the last generation",
                           kwargs=[KwargModel(name=GENERATIONS_BOUND,
-                                             description="The minimum fitness that the algorithm will seek for (less is better)",
-                                             type="float")])
+                                             description="The number of generations that the algorithm will generate",
+                                             type="int")])

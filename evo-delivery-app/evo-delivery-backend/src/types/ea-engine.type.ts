@@ -3,6 +3,7 @@ export enum EaComponentTypes {
   FITNESS = 'fitness',
   MUTATE = 'mutate',
   CROSSOVER = 'crossover',
+  STOP_CONDITION = 'stop_condition',
 }
 
 export type EaComponentKwargs = {

@@ -7,7 +7,14 @@ import ZoomInMapIcon from '@mui/icons-material/ZoomInMap';
 import { mapActions, MapContext } from '../../../../../features/map/context';
 import { ENTITIES } from '../../../../common';
 
-export const SelectDepotTab = () => {
+export const SelectDepotLabel = () => {
+  const { watch } = useFormContext();
+  const watchedDepot = watch('data.depot');
+
+  return watchedDepot ? <span>{watchedDepot.name}</span> : null
+}
+
+export const SelectDepotStep = () => {
   const { control, getValues } = useFormContext();
   const { dispatch } = useContext(MapContext);
   const { data: depots, isLoading, isFetching } = useGetEntitiesByName(ENTITIES.depots);
