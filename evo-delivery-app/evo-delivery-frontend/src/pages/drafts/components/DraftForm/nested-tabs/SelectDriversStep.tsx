@@ -24,7 +24,10 @@ export const SelectDriversLabel = () => {
 };
 
 export const SelectDriversStep = () => {
-  const { control } = useFormContext();
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
 
   const { data: drivers, isLoading, isFetching } = useGetEntitiesByName(ENTITIES.drivers);
 
@@ -32,6 +35,9 @@ export const SelectDriversStep = () => {
     <Controller
       name='data.drivers'
       control={control}
+      rules={{
+        required: { value: true, message: 'Required' },
+      }}
       render={({ field, fieldState, formState }) => (
         <Autocomplete
           {...field}
@@ -69,7 +75,13 @@ export const SelectDriversStep = () => {
           loading={isLoading || isFetching}
           id='select-drivers-autocomplete'
           sx={{ width: '100%' }}
-          renderInput={(params) => <TextField {...params} label='Select Drivers' />}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label='Select Drivers'
+              // error={!!errors?.data?.drivers}
+            />
+          )}
         />
       )}
     />

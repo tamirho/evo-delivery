@@ -36,7 +36,7 @@ export const ConfigTab = ({ activeStep, setActiveStep }: ConfigTabProps) => {
           <StepLabel
             onClick={() => setActiveStep(0)}
             optional={activeStep !== 0 ? <GeneralConfigLabel /> : null}
-            error={!!(configErrors?.popSize || configErrors?.crossoverProb || configErrors?.mutateProb)}
+            // error={!!(configErrors?.popSize || configErrors?.crossoverProb || configErrors?.mutateProb)}
           >
             General
           </StepLabel>
@@ -59,7 +59,7 @@ export const ConfigTab = ({ activeStep, setActiveStep }: ConfigTabProps) => {
             <StepLabel
               onClick={() => setActiveStep(index + 1)}
               optional={activeStep !== index + 1 ? <ComponentConfigLabel componentType={componentType} /> : null}
-              error={!!configErrors?.[componentType]}
+              // error={!!configErrors?.[componentType]}
             >
               {capitalize(toHumanReadableStr(componentType))}
             </StepLabel>
