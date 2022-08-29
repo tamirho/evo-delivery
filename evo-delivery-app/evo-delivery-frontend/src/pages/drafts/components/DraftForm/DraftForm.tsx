@@ -27,8 +27,7 @@ export const DraftForm = ({ state, onSubmit = (data) => console.log(data), draft
   const [tabIndex, setTabIndex] = useState(0);
   const [dataTabActiveStep, setDataTabActiveStep] = useState(0);
   const [configTabActiveStep, setConfigTabActiveStep] = useState(0);
-  console.log('data', methods.formState.errors);
-  console.log('config', methods.formState.errors);
+  console.log('errors', methods.formState.errors);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabIndex(newValue);

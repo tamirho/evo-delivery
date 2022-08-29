@@ -1,6 +1,8 @@
 import { EaEvaluateConfig } from '@backend/types';
+import { DraftFormValues } from './types';
 
-export const createDefaultDraft = () => ({
+
+export const createDefaultDraft = (): DraftFormValues => ({
   data: { drivers: [], orders: [], depot: null },
   config: {
     popSize: 100,

@@ -34,7 +34,7 @@ export const GeneralConfigStep = () => {
           min: 0,
         }}
         {...register('config.popSize', { valueAsNumber: true, required: true })}
-        error={!!errors?.['config']?.['popSize']}
+        // error={!!errors?.config?.['popSize']}
       />
       <TextField
         id='input-crossoverProb'
@@ -50,7 +50,7 @@ export const GeneralConfigStep = () => {
           valueAsNumber: true,
           required: true,
         })}
-        error={!!errors?.['config']?.['crossoverProb']}
+        // error={!!errors?.config?.['crossoverProb']}
       />
       <TextField
         id='input-mutateProb'
@@ -63,7 +63,7 @@ export const GeneralConfigStep = () => {
           min: 0,
         }}
         {...register('config.mutateProb', { valueAsNumber: true, required: true })}
-        error={!!errors?.['config']?.['mutateProb']}
+        // error={!!errors?.config?.['mutateProb']}
       />
     </Stack>
   );

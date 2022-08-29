@@ -25,10 +25,14 @@ export const SelectOrdersLabel = () => {
   };
 
   return watchedOrders ? <span>{text()}</span> : null;
-}
+};
 
 export const SelectOrdersStep = () => {
-  const { control, getValues } = useFormContext();
+  const {
+    control,
+    getValues,
+    formState: { errors },
+  } = useFormContext();
   const { dispatch } = useContext(MapContext);
   const { data: orders, isLoading, isFetching } = useGetEntitiesByName(ENTITIES.orders);
   const focusOrder = useFocusLocation();
@@ -48,6 +52,9 @@ export const SelectOrdersStep = () => {
     <Controller
       name='data.orders'
       control={control}
+      rules={{
+        required: { value: true, message: 'Required' },
+      }}
       render={({ field, fieldState, formState }) => (
         <Autocomplete
           {...field}
@@ -98,7 +105,13 @@ export const SelectOrdersStep = () => {
           loading={isLoading || isFetching}
           id='select-orders-autocomplete'
           sx={{ width: '100%' }}
-          renderInput={(params) => <TextField {...params} label='Select Orders' />}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label='Select Orders'
+              // error={!!errors?.data?.orders}
+            />
+          )}
         />
       )}
     />

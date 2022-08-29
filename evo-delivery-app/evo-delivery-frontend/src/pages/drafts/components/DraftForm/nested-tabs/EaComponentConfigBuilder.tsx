@@ -94,7 +94,7 @@ export const EaComponentConfigBuilder = ({
                 {...params}
                 id={`select-component-${componentType}-textfield`}
                 label={`Select ${capitalize(toHumanReadableStr(componentType))} Type`}
-                error={!!errors?.['config']?.[componentType]?.['name']}
+                // error={!!errors?.config?.[componentType]?.['name']}
               />
             )}
           />
@@ -107,7 +107,7 @@ export const EaComponentConfigBuilder = ({
           ?.kwargs?.map(({ name, description, type }, i) => (
             <TextField
               id={`input-${watchComponentName}-${name}-${i}`}
-              error={!!errors?.['config']?.[componentType]?.['args']?.[name]}
+              // error={!!errors?.config?.[componentType]?.['args']?.[name]}
               disabled={disabled}
               label={capitalize(toHumanReadableStr(name))}
               variant='outlined'

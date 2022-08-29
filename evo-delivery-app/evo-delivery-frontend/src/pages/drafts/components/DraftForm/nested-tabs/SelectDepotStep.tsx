@@ -11,11 +11,15 @@ export const SelectDepotLabel = () => {
   const { watch } = useFormContext();
   const watchedDepot = watch('data.depot');
 
-  return watchedDepot ? <span>{watchedDepot.name}</span> : null
-}
+  return watchedDepot ? <span>{watchedDepot.name}</span> : null;
+};
 
 export const SelectDepotStep = () => {
-  const { control, getValues } = useFormContext();
+  const {
+    control,
+    getValues,
+    formState: { errors },
+  } = useFormContext();
   const { dispatch } = useContext(MapContext);
   const { data: depots, isLoading, isFetching } = useGetEntitiesByName(ENTITIES.depots);
   const focusDepot = useFocusLocation();
@@ -35,6 +39,10 @@ export const SelectDepotStep = () => {
     <Controller
       name='data.depot'
       control={control}
+      rules={{
+        required: { value: true, message: 'Required' },
+        validate: (option) => option?._id,
+      }}
       render={({ field, fieldState, formState }) => (
         <Autocomplete
           {...field}
@@ -80,7 +88,13 @@ export const SelectDepotStep = () => {
           loading={isLoading || isFetching}
           id='select-depot-autocomplete'
           sx={{ width: '100%' }}
-          renderInput={(params) => <TextField {...params} label='Select Depot' />}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label='Select Depot'
+              // error={!!errors?.data?.depot}
+            />
+          )}
         />
       )}
     />

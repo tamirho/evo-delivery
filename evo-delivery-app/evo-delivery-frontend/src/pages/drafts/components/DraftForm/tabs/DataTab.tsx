@@ -7,20 +7,24 @@ import { SelectOrdersStep, SelectOrdersLabel } from '../nested-tabs/SelectOrders
 import { createStepperHandlers } from './common';
 import { countErrors } from '../common';
 import { LetsCustomizeAlert, GoDefaultAlert, ErrorAlert } from './alerts';
+import { StringObj } from '../types';
 
 const steps = [
   {
     label: 'Select Depot',
+    name: 'depot',
     optionalLabel: <SelectDepotLabel />,
     component: <SelectDepotStep />,
   },
   {
     label: 'Select Drivers',
+    name: 'drivers',
     optionalLabel: <SelectDriversLabel />,
     component: <SelectDriversStep />,
   },
   {
     label: 'Select Orders',
+    name: 'orders',
     optionalLabel: <SelectOrdersLabel />,
     component: <SelectOrdersStep />,
   },
@@ -35,15 +39,19 @@ export type DataTabProps = {
 export const DataTab = ({ activeStep, setActiveStep, letsCustomizeOnClickHandler }: DataTabProps) => {
   const { formState } = useFormContext();
   const { handleNext, handleBack } = createStepperHandlers(setActiveStep);
-
-  const errorCount = countErrors(formState.errors);
+  const errors = formState.errors as StringObj
+  const errorCount = countErrors(errors);
 
   return (
     <>
       <Stepper activeStep={activeStep} orientation='vertical'>
         {steps.map((step, index) => (
           <Step key={step.label}>
-            <StepLabel onClick={() => setActiveStep(index)} optional={activeStep !== index ? step.optionalLabel : null}>
+            <StepLabel
+              onClick={() => setActiveStep(index)}
+              optional={activeStep !== index ? step.optionalLabel : null}
+              error={!!errors?.data?.[step.name]}
+            >
               {step.label}
             </StepLabel>
             <StepContent>
@@ -62,13 +70,13 @@ export const DataTab = ({ activeStep, setActiveStep, letsCustomizeOnClickHandler
           </Step>
         ))}
       </Stepper>
-      {activeStep === steps.length && !errorCount.all && (
+      {activeStep === steps.length && !errorCount.data && (
         <>
           <LetsCustomizeAlert onButtonClicked={letsCustomizeOnClickHandler} />
           <GoDefaultAlert disabled={!!errorCount.all} />
         </>
       )}
-      {activeStep === steps.length && !!errorCount.all && <ErrorAlert />}
+      {activeStep === steps.length && !!errorCount.data && <ErrorAlert />}
     </>
   );
 };
