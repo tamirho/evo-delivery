@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { useForm } from "react-hook-form";
-import { useGetLocation } from "../../../../hooks/locations-api/use-get-location";
+import { useGetLocation } from "../../../../hooks/locations/use-get-location";
 import { useFocusLocation } from "../../../../hooks/map/use-focus-location";
 import { ENTITY_VIEW_STATES, FormStates } from "../../../common";
 import AddIcon from "@mui/icons-material/Add";

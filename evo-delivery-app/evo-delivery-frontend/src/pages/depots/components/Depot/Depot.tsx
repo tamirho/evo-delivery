@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack';
 import * as React from 'react';
 import { useContext, useEffect } from 'react';
 import { mapActions, MapContext } from '../../../../features/map/context';
-import { useGetEntity } from '../../../../hooks/entities-api/use-get-entity';
+import { useGetEntity } from '../../../../hooks/entities/use-get-entity';
 import { useEntityId } from '../../../../hooks/router/use-entity-id';
 import { useNavigateToEntityViewState } from '../../../../hooks/router/use-navigate-to-edit';
 import { ENTITY_VIEW_STATES } from '../../../common';

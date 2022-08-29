@@ -18,7 +18,7 @@ import { EntityList } from '../../../../features/entity-list/EntityList';
 import { MapContext, mapActions } from '../../../../features/map/context';
 import { useFocusLocation } from '../../../../hooks/map/use-focus-location';
 import { useNavigateToChild } from '../../../../hooks/router/use-navigate-to-child';
-import { useGetEntities } from '../../../../hooks/entities-api/use-get-entities';
+import { useGetEntities } from '../../../../hooks/entities/use-get-entities';
 
 export const Depots = () => {
   const { dispatch } = useContext(MapContext);

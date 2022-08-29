@@ -1,4 +1,4 @@
-import { useCreateEntity } from '../../../../hooks/entities-api/use-create-entity';
+import { useCreateEntity } from '../../../../hooks/entities/use-create-entity';
 import { useNavigateToParent } from '../../../../hooks/router/use-navigate-to-parent';
 import { ENTITY_VIEW_STATES } from '../../../common';
 import { DepotForm } from '../DepotForm/DepotForm';
