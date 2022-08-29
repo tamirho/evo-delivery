@@ -16,12 +16,12 @@ export type DraftApiRequest = {
 };
 
 export const getDrafts = async (req: Request, res: Response) => {
-  try {
-    const drivers = await draftService.getDrafts();
-    return res.status(200).json(OK(drivers));
-  } catch (e: any) {
-    return res.status(400).json(INVALID(400, e.message));
-  }
+    try {
+        const drafts = await draftService.getDrafts();
+        return res.status(200).json(OK(drafts));
+    } catch (e: any) {
+        return res.status(400).json(INVALID(400, e.message));
+    }
 };
 
 export const getDraft = async (req: Request, res: Response) => {

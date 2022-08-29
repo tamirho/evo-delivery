@@ -1,11 +1,9 @@
-import { Alert, AlertTitle, Button, Skeleton, Stack, TextField } from "@mui/material";
-import { useMemo } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useGetEntity } from "../../../../hooks/entities-api/use-get-entity";
+import { Alert, AlertTitle, Skeleton, Stack } from "@mui/material";
+import { useGetEntity } from "../../../../hooks/entities/use-get-entity";
 import { useEntityId } from "../../../../hooks/router/use-entity-id";
 import { useNavigateToEntityViewState } from "../../../../hooks/router/use-navigate-to-edit";
 import { ENTITY_VIEW_STATES } from "../../../common";
-import { DriverForm } from "../DriverForm";
+import { DriverForm } from "../DriverForm/DriverForm";
 
 export const ViewDriver = () => {
   const driverId = useEntityId();

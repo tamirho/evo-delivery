@@ -1,6 +1,6 @@
 from enum import Enum
 
-from ea_server.api.utils.constans import TOURNAMENT, DEFAULT_TOUR_SIZE, ROULETTE, RANDOM, BEST, WORST
+from ea_server.api.utils.constants import TOURNAMENT, DEFAULT_TOUR_SIZE, ROULETTE, RANDOM, BEST, WORST
 from ea_server.engine.components.ea_component import EaComponent
 
 from ea_server.engine.components.selection.functions import *

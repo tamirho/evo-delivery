@@ -6,7 +6,7 @@ import { EntityWrapper } from "../../../../features/entity-wrapper/EntityWrapper
 import { useEntityId } from "../../../../hooks/router/use-entity-id";
 import { Alert, AlertTitle, Button, Skeleton, Stack } from "@mui/material";
 import { useNavigateToParent } from "../../../../hooks/router/use-navigate-to-parent";
-import { useGetEntity } from "../../../../hooks/entities-api/use-get-entity";
+import { useGetEntity } from "../../../../hooks/entities/use-get-entity";
 import { ENTITY_VIEW_STATES } from "../../../common";
 import { OrderForm } from "../OrderForm/OrderForm";
 import { useNavigateToEntityViewState } from "../../../../hooks/router/use-navigate-to-edit";

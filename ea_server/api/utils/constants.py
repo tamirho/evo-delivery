@@ -54,12 +54,16 @@ DEFAULT_TOUR_SIZE = 2
 
 # ----------------------------------------------
 
-#stop cindition types
+#stop condition types
 TIME = "time"
 GENERATIONS = "generations"
 FITNESS = "fitness"
 
-#stop cindition params
+#stop condition params
+TIME_BOUND = "time_bound"
+GENERATIONS_BOUND = "generations_bound"
+FITNESS_BOUND = "fitness_bound"
+
 DEFAULT_TIME_BOUND = 60
 DEFAULT_GENERATIONS_BOUND = 500
 DEFAULT_FITNESS_BOUND = 750

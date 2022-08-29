@@ -1,16 +1,14 @@
-import * as React from "react";
 import { useContext, useEffect, useState } from "react";
 import { mapActions, MapContext } from "../../../../features/map/context";
 import { LatLngTuple } from "leaflet";
 import {
-  Depot,
   DriverRoute,
   EvaluateResult,
   Order,
 } from "../../../../../../evo-delivery-backend/src/types";
 import { EntityList } from "../../../../features/entity-list/EntityList";
 import { DriverRouteListItem } from "./DriverRouteListItem";
-import { useGetEntity } from "../../../../hooks/entities-api/use-get-entity";
+import { useGetEntity } from "../../../../hooks/entities/use-get-entity";
 import { useEntityId } from "../../../../hooks/router/use-entity-id";
 import {
   Avatar,
@@ -20,8 +18,6 @@ import {
   ListItemAvatar,
   ListItemButton,
   ListItemText,
-  Skeleton,
-  Stack,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -50,35 +46,7 @@ export const Result = () => {
     "darkorange",
   ]; // Add colors and move it to central place
 
-  const focusOrder = useFocusLocation();
-  const interval = setInterval(() => {
-    UpdateMap();
-  }, 1000);
-  
-  const UpdateMap = async () => {
-    const response = await fetch(`api/v1/results/${resultId}`);
-    const tempResult = await response.json();
-    console.log("interval");
-    if (tempResult) {
-      const orders = getOrdersFromResult(tempResult.data);
-
-      dispatch({
-        type: mapActions.UPDATE_STATE,
-        payload: {
-          // geoCodedRoutes: planGeoCodedRoutesPerDriver,
-          routes: tempResult.data.routes as DriverRoute[],
-          orders: orders,
-          depots: [tempResult.data.depot],
-          zoom: 13,
-          routesColors: colors,
-          center: [
-            tempResult.data.depot?.latitude,
-            tempResult.data.depot?.longitude,
-          ] as LatLngTuple,
-        },
-      });
-    }
-  };
+    const focusOrder = useFocusLocation();
 
   useEffect(() => {
     
@@ -102,69 +70,52 @@ export const Result = () => {
       });
     }
 
-    return () => {
-      dispatch({ type: mapActions.CLEAR_STATE, payload: {} });
-      clearInterval(interval);
-    };
-  }, [result]);
+        return () => dispatch({type: mapActions.CLEAR_STATE, payload: {}});
+    }, [result]);
 
-  const getOrdersFromResult = (result: EvaluateResult) => {
-    return result.routes?.flatMap(
-      (driverRoute: DriverRoute) => driverRoute.orders
-    ) as Order[];
-  };
+    const getOrdersFromResult = (result: EvaluateResult) => {
+        return result.routes?.flatMap((driverRoute: DriverRoute) => (driverRoute.orders)) as Order[]
+    }
 
-  const renderDepotListItem = () => (
-    <>
-      <ListItem
-        key={result.depot?._id}
-        disablePadding
-        alignItems="center"
-        secondaryAction={
-          <>
-            <Tooltip title="Focus Order">
-              <IconButton
-                edge="end"
-                aria-label="comments"
-                size="small"
-                onClick={() => focusOrder(result.depot)}
-              >
-                <ZoomInMapIcon fontSize="inherit" />
-              </IconButton>
-            </Tooltip>
-          </>
-        }
-      >
-        <ListItemButton>
-          <ListItemAvatar>
-            <Avatar>
-              <WarehouseIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText
-            primary={`Depot Name: ${result.depot?.name}`}
-            secondary={
-              <>
-                <Typography
-                  sx={{ display: "inline" }}
-                  component="span"
-                  variant="body2"
-                  color="text.secondary"
-                >
-                  {`ID: ${result.depot?._id}`} <br />
-                </Typography>
-              </>
-            }
-          />
-        </ListItemButton>
-      </ListItem>
-      <Divider
-        key={`divider_${result.depot?._id}`}
-        variant="middle"
-        component="li"
-      />
-    </>
-  );
+    const renderDepotListItem = () => (
+        <>
+            <ListItem
+                key={result.depot?._id}
+                disablePadding
+                alignItems='center'
+                secondaryAction={
+                    <>
+                        <Tooltip title='Focus Order'>
+                            <IconButton edge='end' aria-label='comments' size='small'
+                                        onClick={() => focusOrder(result.depot)}>
+                                <ZoomInMapIcon fontSize='inherit'/>
+                            </IconButton>
+                        </Tooltip>
+                    </>
+                }
+            >
+                <ListItemButton>
+                    <ListItemAvatar>
+                        <Avatar>
+                            <WarehouseIcon/>
+                        </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary={`Depot Name: ${result.depot?.name}`}
+                        secondary={
+                            <>
+                                <Typography sx={{display: 'inline'}} component='span' variant='body2'
+                                            color='text.secondary'>
+                                    {`ID: ${result.depot?._id}`} <br/>
+                                </Typography>
+                            </>
+                        }
+                    />
+                </ListItemButton>
+            </ListItem>
+            <Divider key={`divider_${result.depot?._id}`} variant='middle' component='li'/>
+        </>
+    )
 
   return (
     result && (

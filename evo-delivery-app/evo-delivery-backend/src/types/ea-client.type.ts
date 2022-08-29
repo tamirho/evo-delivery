@@ -43,11 +43,11 @@ export type EaEvaluateHttpRequestConfig = {
   pop_size?: number;
   crossover_prob?: number;
   mutate_prob?: number;
-  num_generations?: number;
   crossover?: EaHttpRequestComponentConfig;
   fitness?: EaHttpRequestComponentConfig;
   selection?: EaHttpRequestComponentConfig;
   mutate?: EaHttpRequestComponentConfig;
+  stop_condition?: EaHttpRequestComponentConfig;
 };
 
 export type EaEvaluateHttpResponse = {

@@ -1,6 +1,6 @@
 from deap import tools
 
-from ea_server.api.utils.constans import INDPB
+from ea_server.api.utils.constants import INDPB
 from ea_server.model.ea_function_model import EaFunctionModel, KwargModel
 
 shuffle = EaFunctionModel(function=tools.mutShuffleIndexes,
