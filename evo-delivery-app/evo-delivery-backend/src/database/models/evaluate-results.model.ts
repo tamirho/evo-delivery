@@ -1,5 +1,5 @@
 import mongoose, {Model, Schema} from "mongoose";
-import {EvaluateResult, DriverRoute, EaResult} from "../../types";
+import {EvaluateResult, DriverRoute, EaResult, EaEvaluateResponse} from "../../types";
 import {DepotSchema} from "./depot.model";
 import {OrderSchema} from "./order.model";
 import {DriverSchema} from "./driver.model";
@@ -43,16 +43,11 @@ const DriverRoute = new Schema<DriverRoute>({
     _id: false
 })
 
-const EaResultSchema = new Schema<EaResult>(
-  {
-    result: {
-      type: Map,
-      required: true,
-    },
-    
-  },
+const EaResultSchema = new Schema<EaEvaluateResponse>(
+  {},
   {
     _id: false,
+    timestamps: true,
   }
 );
 

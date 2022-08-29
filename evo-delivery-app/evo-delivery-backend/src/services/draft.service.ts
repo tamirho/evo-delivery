@@ -123,7 +123,7 @@ export const deleteDraft = async (id: string) => {
   return DraftModel.deleteOne({ _id: id });
 };
 
-const prepareEvaluateResult = async (
+export const prepareEvaluateResult = async (
   draft: Draft,
   drivers: Driver[],
   orders: Order[],

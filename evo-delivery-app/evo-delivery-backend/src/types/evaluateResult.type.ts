@@ -1,6 +1,7 @@
 import { Order } from "./order.type";
 import { Depot } from "./depot.type";
 import { Driver } from "./driver.type";
+import { EaEvaluateResponse } from "./ea-engine.type";
 
 export type DriverRoute = {
   driver: Driver;
@@ -15,7 +16,7 @@ export type EvaluateResult = {
   _id?: string;
   draftId?: string;
   isDone?: boolean;
-  eaResult?: number[];
+  eaResult?: EaEvaluateResponse;
   depot?: Depot;
   routes?: DriverRoute[];
   createdAt?: string;
@@ -24,9 +25,7 @@ export type EvaluateResult = {
 
 export type EaResult = {
   _id?: string;
-  result: {
-    type:Map<string,number[]>
-  }
+  EaResult: {}
   createdAt?: string;
   updatedAt?: string;
 };
