@@ -6,7 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
 import { Order } from '@backend/types';
 import { ENTITY_VIEW_STATES, FormStates } from '../../../common';
-import { useGetLocation } from '../../../../hooks/locations-api/use-get-location';
+import { useGetLocation } from '../../../../hooks/locations/use-get-location';
 import { useFocusLocation } from '../../../../hooks/map/use-focus-location';
 
 export type OrderFormProps = {

@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { ViewStates } from "../../pages";
-import { useGetEntity } from "../entities-api/use-get-entity";
+import { useGetEntity } from "../entities/use-get-entity";
 import { useEntityId } from "./use-entity-id";
 import { useEntityName } from "./use-entity-name";
 

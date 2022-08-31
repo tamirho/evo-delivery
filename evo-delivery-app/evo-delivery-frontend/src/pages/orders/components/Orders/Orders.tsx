@@ -19,8 +19,8 @@ import { EntityList } from '../../../../features/entity-list/EntityList';
 import { MapContext, mapActions } from '../../../../features/map/context';
 import { useFocusLocation } from '../../../../hooks/map/use-focus-location';
 import { useNavigateToChild } from '../../../../hooks/router/use-navigate-to-child';
-import { useGetEntities } from '../../../../hooks/entities-api/use-get-entities';
-import { useDeleteEntity } from '../../../../hooks/entities-api/use-delete-entity';
+import { useGetEntities } from '../../../../hooks/entities/use-get-entities';
+import { useDeleteEntity } from '../../../../hooks/entities/use-delete-entity';
 
 export const Orders = () => {
   const { dispatch } = useContext(MapContext);

@@ -13,10 +13,10 @@ import {
 } from '@mui/material';
 import RouteIcon from '@mui/icons-material/Route';
 import {EvaluateResult} from '../../../../../../evo-delivery-backend/src/types';
-import {useGetEntities} from '../../../../hooks/entities-api/use-get-entities';
+import {useGetEntities} from '../../../../hooks/entities/use-get-entities';
 import {useNavigateToChild} from '../../../../hooks/router/use-navigate-to-child';
 import DeleteIcon from "@mui/icons-material/Delete";
-import {useDeleteEntity} from "../../../../hooks/entities-api/use-delete-entity";
+import {useDeleteEntity} from "../../../../hooks/entities/use-delete-entity";
 
 export const Results = () => {
     const {data: results = [], isFetching, isLoading, isError} = useGetEntities();
