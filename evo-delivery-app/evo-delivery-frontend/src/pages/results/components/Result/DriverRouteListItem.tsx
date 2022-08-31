@@ -12,7 +12,7 @@ import {ExpandLess, ExpandMore} from "@mui/icons-material";
 import {DriverRoute} from "../../../../../../evo-delivery-backend/src/types";
 import {useFocusLocation} from "../../../../hooks/map/use-focus-location";
 import ZoomInMapIcon from "@mui/icons-material/ZoomInMap";
-
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 
 type ResultsListItemProps = {
     route: DriverRoute
@@ -36,12 +36,19 @@ export const DriverRouteListItem = ({
         }
     }
 
+    const hasLoadConstraintViolated = route.load > 100;
+
+    const hasTravelDistanceConstraintViolated = route.totalDistance > route.driver.maxDistance;
+
     return (<>
         <ListItem
             key={route.driver._id}
             disablePadding
             alignItems='center'
         >
+            {
+                hasLoadConstraintViolated || hasTravelDistanceConstraintViolated ? <PriorityHighIcon color={'error'}/> : <></>
+            }
             <ListItemButton onClick={() => {
                 if(openCollapseItemKey !== route.driver._id)
                     setOpenCollapseItemKey(route.driver._id as string)
@@ -49,7 +56,7 @@ export const DriverRouteListItem = ({
                     setOpenCollapseItemKey(null)
             }}>
                 <ListItemAvatar>
-                    <Avatar sx={{ bgcolor: routeColor }}>
+                    <Avatar sx={{bgcolor: routeColor}}>
                         <LocalShippingIcon/>
                     </Avatar>
                 </ListItemAvatar>
@@ -57,14 +64,26 @@ export const DriverRouteListItem = ({
                     primary={`Driver Name: ${route.driver.name}`}
                     secondary={
                         <>
+                            <Typography color='text.primary'> {`ID: ${route.driver._id}`} </Typography>
+
                             <Typography sx={{display: 'inline'}} component='span' variant='body2'
                                         color='text.secondary'>
-                                {`ID: ${route.driver._id}`} <br/>
-                                {`Maximum Capacity: ${route.driver.maxCapacity} kg`} <br/>
-                                {`Maximum Travel Distance: ${route.driver.maxDistance} kms`} <br/>
-                                {`Travel Load: ${route.load.toFixed(2)}%`} <br/>
-                                {`Travel Distance: ${route.totalDistance.toFixed(2)} kms`} <br/>
+                                {`Driver's maximum travel distance: ${route.driver.maxDistance} kms`}
                             </Typography>
+                            <br/>
+                            <Typography sx={{display: 'inline'}} component='span' variant='body2' color={
+                                hasTravelDistanceConstraintViolated ? 'error' : 'text.secondary'
+                            }> {`Planned travel distance: ${route.totalDistance.toFixed(2)} kms`}  </Typography>
+                            <br/>
+
+                            <Typography sx={{display: 'inline'}} component='span' variant='body2'
+                                        color='text.secondary'>
+                                {`Driver's maximum load: ${route.driver.maxCapacity} kgs`}
+                            </Typography>
+                            <br/>
+                            <Typography sx={{display: 'inline'}} component='span' variant='body2' color={
+                                hasLoadConstraintViolated ? 'error' : 'text.secondary'
+                            }> {`Planned travel load: ${route.load.toFixed(2)}%`}  </Typography>
                         </>
                     }
                 />
