@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
 export const usePollingEffect = (
   asyncCallback: () => any,
@@ -8,8 +8,12 @@ export const usePollingEffect = (
     onCleanUp = () => {},
   } = {}
 ) => {
+  const [dead,kill] = useState(false);
   const timeoutIdRef = useRef<any>(null);
   useEffect(() => {
+    if(dead)
+      return;
+
     let _stopped = false;
     // Side note: preceding semicolon needed for IIFEs.
     ;(async function pollingCallback() {
@@ -27,4 +31,6 @@ export const usePollingEffect = (
       onCleanUp();
     };
   }, [...dependencies, interval]);
+
+  return [()=>kill(true), ()=>kill(false)]
 };

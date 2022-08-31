@@ -77,8 +77,8 @@ export const evaluateDraftWithUpdate = async (draftId: string) => {
     draft.data.distances as DistanceMatrix,
     draft.config
   );
-
-  return evaluatedRoutes;
+    console.log(evalResult);
+  return evalResult;
 };
 
 export const evaluateDraftWithReturn = async (draftId: string) => {
