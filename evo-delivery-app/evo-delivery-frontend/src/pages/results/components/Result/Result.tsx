@@ -33,7 +33,6 @@ import { fetchEntity } from "../../../../api/entities/fetch-entity";
 
 export const Result = () => {
   const [result, setResult] = useState<EvaluateResult>({});
-  const [stopPolling, setStopPolling] = useState(false);
   const { dispatch } = useContext(MapContext);
   const [openCollapseItemKey, setOpenCollapseItemKey] = useState(null);
   const resultId = useEntityId();
@@ -47,10 +46,13 @@ export const Result = () => {
   ]; // Add colors and move it to central place
 
   const focusLocation = useFocusLocation();
-  const stopThePolling = () => setStopPolling(true);
-  const [killPoll, respawnPoll] = usePollingEffect(async () => setResult(await fetchEntity(ENTITIES.results, resultId!)), [], {
-    interval: 3000,
-  });
+  const [killPoll, respawnPoll] = usePollingEffect(
+    async () => setResult(await fetchEntity(ENTITIES.results, resultId!)),
+    [],
+    {
+      interval: 3000,
+    }
+  );
 
   useEffect(() => {
     if (result) {
@@ -76,12 +78,11 @@ export const Result = () => {
 
     return () => {
       dispatch({ type: mapActions.CLEAR_STATE, payload: {} });
-      stopThePolling();
     };
   }, [result]);
 
   const getOrdersFromResult = (result: EvaluateResult) => {
-    return result.routes?.flatMap(
+    return result?.routes?.flatMap(
       (driverRoute: DriverRoute) => driverRoute.orders
     ) as Order[];
   };
@@ -89,7 +90,7 @@ export const Result = () => {
   const renderDepotListItem = () => (
     <>
       <ListItem
-        key={result.depot?._id}
+        key={result?.depot?._id}
         disablePadding
         alignItems="center"
         secondaryAction={
@@ -99,7 +100,7 @@ export const Result = () => {
                 edge="end"
                 aria-label="comments"
                 size="small"
-                onClick={() => result.depot && focusLocation(result.depot)}
+                onClick={() => result?.depot && focusLocation(result?.depot)}
               >
                 <ZoomInMapIcon fontSize="inherit" />
               </IconButton>
@@ -114,7 +115,7 @@ export const Result = () => {
             </Avatar>
           </ListItemAvatar>
           <ListItemText
-            primary={`Depot Name: ${result.depot?.name}`}
+            primary={`Depot Name: ${result?.depot?.name}`}
             secondary={
               <>
                 <Typography
@@ -123,8 +124,8 @@ export const Result = () => {
                   variant="body2"
                   color="text.secondary"
                 >
-                  {`ID: ${result.depot?._id}`} <br />
-                  {`Is Done: ${result.isDone}`} <br />
+                  {`ID: ${result?.depot?._id}`} <br />
+                  {`Is Done: ${result?.isDone}`} <br />
                 </Typography>
               </>
             }
@@ -132,7 +133,7 @@ export const Result = () => {
         </ListItemButton>
       </ListItem>
       <Divider
-        key={`divider_${result.depot?._id}`}
+        key={`divider_${result?.depot?._id}`}
         variant="middle"
         component="li"
       />
@@ -144,9 +145,9 @@ export const Result = () => {
       <>
         <EntityList
           key={"result-entity-list"}
-          isLoading={!stopPolling && !result}
-          isError={stopPolling && !result}
-          items={result.routes || []}
+          isLoading={!result}
+          isError={false}
+          items={result?.routes || []}
           renderItem={(route: DriverRoute, index: any) => (
             <DriverRouteListItem
               route={route}
@@ -157,27 +158,25 @@ export const Result = () => {
           )}
           optionalComponent={renderDepotListItem()}
         />
-        {!stopPolling && (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "flex-end",
-              marginRight: "20px",
-            }}
-          >
-            <Box sx={{ position: "absolute", bottom: "20px" }}>
-              <Button
-                variant="contained"
-                color="error"
-                style={{ borderRadius: 50 }}
-                startIcon={<StopIcon />}
-                onClick={stopThePolling}
-              >
-                Stop Polling
-              </Button>
-            </Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginRight: "20px",
+          }}
+        >
+          <Box sx={{ position: "absolute", bottom: "20px" }}>
+            <Button
+              variant="contained"
+              color="error"
+              style={{ borderRadius: 50 }}
+              startIcon={<StopIcon />}
+              onClick={killPoll}
+            >
+              Stop EA Run
+            </Button>
           </Box>
-        )}
+        </Box>
       </>
     )
   );
