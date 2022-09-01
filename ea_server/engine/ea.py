@@ -2,10 +2,7 @@ import random
 import threading
 import time
 from deap import algorithms, base, creator, tools
-
-
 from ..api.utils.constants import BOUND, DEFAULT_FITNESS_BOUND, DEFAULT_GENERATIONS_BOUND, DEFAULT_TIME_BOUND, FITNESS, GENERATIONS, TIME
-
 from ea_server.model.ea_request_model import EaData
 from ea_server.engine.components.crossover.cx import Crossover
 from ea_server.engine.components.fitness.fit import Fitness

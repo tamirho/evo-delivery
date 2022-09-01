@@ -77,7 +77,7 @@ export const evaluateDraftWithUpdate = async (draftId: string) => {
     draft.data.distances as DistanceMatrix,
     draft.config
   );
-    console.log(evalResult);
+
   return evalResult;
 };
 

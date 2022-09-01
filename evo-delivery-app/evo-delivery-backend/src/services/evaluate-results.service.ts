@@ -1,4 +1,4 @@
-import { EvaluateResult } from "../types";
+import { DriverRoute, EaEvaluateResponse, EvaluateResult } from "../types";
 import EvaluateResultModel from "../database/models/evaluate-results.model";
 import { eaHttpClientAdapter } from "../clients";
 import {
@@ -15,8 +15,8 @@ export const getResults = async () => {
 };
 
 export const getById = async (id: string) => {
-  const res = await EvaluateResultModel.getById(id);
-  const draft = await draftService.getDraftById(res.draftId!);
+  const evaluateResult = await EvaluateResultModel.getById(id);
+  const draft = await draftService.getDraftById(evaluateResult.draftId!);
 
   const driversP = driverService.getByIds(draft.data.drivers);
   const ordersP = orderService.getOrderByIds(draft.data.orders);
@@ -27,19 +27,23 @@ export const getById = async (id: string) => {
     ordersP,
     depotP,
   ]);
-  
-  const evalResult = await prepareEvaluateResult(
-      draft,
-      drivers,
-      orders,
-      depot,
-      res.eaResult!
-      );
-      
-  if (evalResult.isDone) {
-    evaluateResultsService.createResult(evalResult);
+
+  const enrichedResult = await prepareEvaluateResult(
+    draft,
+    drivers,
+    orders,
+    depot,
+    evaluateResult.eaResult!
+  );
+
+  if (evaluateResult.isDone) {
+    evaluateResultsService.updateResultRoutes(
+      id,
+      enrichedResult.routes,
+      evaluateResult.eaResult!
+    );
   }
-  return {...evalResult,isDone: res.isDone};
+  return { ...enrichedResult, isDone: evaluateResult.isDone };
 };
 
 export const getByIds = async (ids: string[]) => {
@@ -47,12 +51,22 @@ export const getByIds = async (ids: string[]) => {
 };
 
 export const getByDraftId = async (id: string) => {
-  console.log(id);
   return EvaluateResultModel.getByDraftId(id);
 };
 
 export const createResult = async (evaluateResult: EvaluateResult) => {
   return EvaluateResultModel.create(evaluateResult);
+};
+
+export const updateResultRoutes = async (
+  id: string,
+  routes: DriverRoute[] | undefined,
+  eaResult: EaEvaluateResponse | undefined
+) => {
+  return EvaluateResultModel.updateOne(
+    { _id: id},
+    { routes: routes, eaResult: eaResult }
+  );
 };
 
 export const deleteResult = async (id: string) => {

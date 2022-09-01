@@ -62,7 +62,7 @@ const EvaluateResultSchema = new Schema<EvaluateResult, EvaluateResultsModel>(
       default: false,
     },
     eaResult: {
-      type: EaResultSchema,
+      type: Object,
     },
     depot: {
       type: DepotSchema,

@@ -11,8 +11,10 @@ export const usePollingEffect = (
   const [dead,kill] = useState(false);
   const timeoutIdRef = useRef<any>(null);
   useEffect(() => {
-    if(dead)
+    if(dead){
+      clearTimeout(timeoutIdRef.current);
       return;
+    }
 
     let _stopped = false;
     // Side note: preceding semicolon needed for IIFEs.
@@ -21,7 +23,8 @@ export const usePollingEffect = (
         await asyncCallback();
       } finally {
         // Set timeout after it finished, unless stopped
-        timeoutIdRef.current = !_stopped && setTimeout(pollingCallback, interval);
+        timeoutIdRef.current =
+          !_stopped && setTimeout(pollingCallback, interval);
       }
     })();
     // Clean up if dependencies change
@@ -30,7 +33,7 @@ export const usePollingEffect = (
       clearTimeout(timeoutIdRef.current);
       onCleanUp();
     };
-  }, [...dependencies, interval]);
+  }, [...dependencies, interval,dead]);
 
   return [()=>kill(true), ()=>kill(false)]
 };

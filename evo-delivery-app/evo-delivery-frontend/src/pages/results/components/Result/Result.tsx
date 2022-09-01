@@ -48,7 +48,7 @@ export const Result = () => {
 
   const focusLocation = useFocusLocation();
   const stopThePolling = () => setStopPolling(true);
-  const [killPoll, respawnPoll] = usePollingEffect(async () => setResult(await fetchEntity(ENTITIES.results, resultId!)), [stopPolling], {
+  const [killPoll, respawnPoll] = usePollingEffect(async () => setResult(await fetchEntity(ENTITIES.results, resultId!)), [], {
     interval: 3000,
   });
 
