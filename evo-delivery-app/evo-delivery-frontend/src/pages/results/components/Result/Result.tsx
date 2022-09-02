@@ -30,6 +30,7 @@ import StopIcon from "@mui/icons-material/Stop";
 import ZoomInMapIcon from "@mui/icons-material/ZoomInMap";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import { fetchEntity } from "../../../../api/entities/fetch-entity";
+import { useStopRun } from "../../hooks/use-stop-run";
 
 export const Result = () => {
   const [result, setResult] = useState<EvaluateResult>({});
@@ -45,6 +46,7 @@ export const Result = () => {
     "darkorange",
   ]; // Add colors and move it to central place
 
+  const stopRun = useStopRun();
   const focusLocation = useFocusLocation();
   const [killPoll, respawnPoll] = usePollingEffect(
     async () => setResult(await fetchEntity(ENTITIES.results, resultId!)),
@@ -141,23 +143,23 @@ export const Result = () => {
   );
 
   return (
-    result && (
-      <>
-        <EntityList
-          key={"result-entity-list"}
-          isLoading={!result}
-          isError={false}
-          items={result?.routes || []}
-          renderItem={(route: DriverRoute, index: any) => (
-            <DriverRouteListItem
-              route={route}
-              setOpenCollapseItemKey={setOpenCollapseItemKey}
-              openCollapseItemKey={openCollapseItemKey}
-              routeColor={colors[index]}
-            />
-          )}
-          optionalComponent={renderDepotListItem()}
-        />
+    <>
+      <EntityList
+        key={"result-entity-list"}
+        isLoading={!result}
+        isError={false}
+        items={result?.routes || []}
+        renderItem={(route: DriverRoute, index: any) => (
+          <DriverRouteListItem
+            route={route}
+            setOpenCollapseItemKey={setOpenCollapseItemKey}
+            openCollapseItemKey={openCollapseItemKey}
+            routeColor={colors[index]}
+          />
+        )}
+        optionalComponent={renderDepotListItem()}
+      />
+      {result && (
         <Box
           sx={{
             display: "flex",
@@ -171,13 +173,13 @@ export const Result = () => {
               color="error"
               style={{ borderRadius: 50 }}
               startIcon={<StopIcon />}
-              onClick={killPoll}
+              onClick={() => stopRun(resultId!)}
             >
               Stop EA Run
             </Button>
           </Box>
         </Box>
-      </>
-    )
+      )}
+    </>
   );
 };
