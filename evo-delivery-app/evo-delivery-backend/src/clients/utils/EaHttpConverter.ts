@@ -49,7 +49,7 @@ export class EaHttpConverterImpl implements EaHttpConverter {
     const config = this.convertConfig(_config);
 
     return {
-      runId: _runId,
+      run_id: _runId,
       data: { drivers, orders, distances, root_id: depotId },
       config,
     } as EaEvaluateHttpRequestBody;
