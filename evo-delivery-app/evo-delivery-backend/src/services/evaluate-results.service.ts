@@ -21,7 +21,11 @@ export const getById = async (id: string) => {
   const enrichedResult = await prepareEvaluateResult(draft, drivers, orders, depot, evaluateResult.eaResult!);
 
   if (evaluateResult.isDone) {
-    evaluateResultsService.updateResultRoutes(id, enrichedResult.routes, evaluateResult.eaResult!);
+    await evaluateResultsService.updateResultRoutes(
+      id,
+      enrichedResult.routes,
+      evaluateResult.eaResult!
+    );
   }
   return { ...enrichedResult, isDone: evaluateResult.isDone };
 };
