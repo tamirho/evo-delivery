@@ -1,3 +1,4 @@
+from ctypes import Union
 from dataclasses import dataclass, field
 from typing import List, Dict
 
@@ -82,6 +83,7 @@ class EaConfigModel:
 
 
 @dataclass(frozen=True)
-class EaRequestModel:
+class EaDraftModel:
+    run_id:str
     data: EaData
     config: EaConfigModel

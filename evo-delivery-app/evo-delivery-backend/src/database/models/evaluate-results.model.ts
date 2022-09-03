@@ -1,5 +1,5 @@
 import mongoose, {Model, Schema} from "mongoose";
-import {EvaluateResult, DriverRoute} from "../../types";
+import {EvaluateResult, DriverRoute, EaResult, EaEvaluateResponse} from "../../types";
 import {DepotSchema} from "./depot.model";
 import {OrderSchema} from "./order.model";
 import {DriverSchema} from "./driver.model";
@@ -43,26 +43,40 @@ const DriverRoute = new Schema<DriverRoute>({
     _id: false
 })
 
-const EvaluateResultSchema = new Schema<EvaluateResult, EvaluateResultsModel>({
-        draftId: {
-            type: String,
-            required: true,
-        },
-        depot: {
-            type: DepotSchema,
-            required: true
-        },
-        routes: {
-            type: [DriverRoute],
-            required: true
-        }
+const EaResultSchema = new Schema<EaEvaluateResponse>(
+  {},
+  {
+    _id: false,
+    timestamps: true,
+  }
+);
+
+const EvaluateResultSchema = new Schema<EvaluateResult, EvaluateResultsModel>(
+  {
+    draftId: {
+      type: String,
+      required: true,
     },
-    {
-        versionKey: false,
-        timestamps: true,
-        collection: 'EvaluateResults'
-    }
-)
+    isDone: {
+      type: Boolean,
+      default: false,
+    },
+    eaResult: {
+      type: Object,
+    },
+    depot: {
+      type: DepotSchema,
+    },
+    routes: {
+      type: [DriverRoute],
+    },
+  },
+  {
+    versionKey: false,
+    timestamps: true,
+    collection: "EvaluateResults",
+  }
+);
 
 EvaluateResultSchema.statics.getAll = function () {
     return this.find({});
@@ -80,7 +94,6 @@ EvaluateResultSchema.statics.getByIds = function (ids: string[]) {
 }
 
 EvaluateResultSchema.statics.getByDraftId = function (draftId: string) {
-    console.log(draftId)
     return this.find({
             draftId: draftId
         }

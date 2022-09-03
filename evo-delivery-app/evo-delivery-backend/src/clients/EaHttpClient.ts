@@ -3,17 +3,18 @@ import {
   EaComponentTypes,
   EaEvaluateResponse,
   EaEvaluateHttpRequestBody,
-} from '../types';
+} from "../types";
 
 export interface EaHttpClient {
-  evaluate: (
-  requestBody: EaEvaluateHttpRequestBody
+  evaluateWithReturn: (
+    requestBody: EaEvaluateHttpRequestBody
   ) => Promise<EaEvaluateResponse>;
-  
+
+  evaluateWithUpdate: (requestBody: EaEvaluateHttpRequestBody) => Promise<void>;
+
   getComponentDetails: (
     componentType: EaComponentTypes
   ) => Promise<EaComponentDetails[]>;
+
+  terminate: (runId: string) => Promise<void>;
 }
-
-
-

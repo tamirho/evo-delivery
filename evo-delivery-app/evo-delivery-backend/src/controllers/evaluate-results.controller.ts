@@ -57,4 +57,13 @@ export const deleteById = async (req: Request, res: Response) => {
     }
 };
 
+export const terminateById = async (req: Request, res: Response) => {
+  const id: string = req.params.id;
 
+  try {
+    const response = await evaluateResultsService.terminateResult(id);
+    return res.status(200).json(OK({}));
+  } catch (e: any) {
+    return res.status(400).json(INVALID(400, e.message));
+  }
+};

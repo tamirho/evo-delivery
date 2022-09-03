@@ -21,22 +21,21 @@ import { useFocusLocation } from '../../../../hooks/map/use-focus-location';
 import { useNavigateToChild } from '../../../../hooks/router/use-navigate-to-child';
 import { useGetEntities } from '../../../../hooks/entities/use-get-entities';
 import { useDeleteEntity } from '../../../../hooks/entities/use-delete-entity';
+import { useEaRunDraft } from '../../../../hooks/ea/use-ea-run-draft';
+import { useNavigateToRunId } from '../../../../hooks/router/use-navigate-to-runid';
 
 export const Drafts = () => {
   const { dispatch } = useContext(MapContext);
   const { data: drafts = [], isFetching, isLoading, isError } = useGetEntities();
 
   const goToDraft = useNavigateToChild();
-  const deleteDraft = useDeleteEntity();
-  const focusLocation = useFocusLocation();
+  const runDraft = useEaRunDraft();
+  const goToRunId = useNavigateToRunId();
 
-    // useEffect(() => {
-    //   if (drafts) {
-    //     dispatch({ type: mapActions.UPDATE_STATE, payload: { orders: drafts, zoom: 12 } });
-    //   }
-    //
-    //   return () => dispatch({ type: mapActions.CLEAR_STATE, payload: {} });
-    // }, [drafts]);
+  const runDraftHandle = async (id:string) =>{
+    const runResponse = await runDraft(id);
+    goToRunId(runResponse._id);
+  }
 
   return (
     <EntityList
@@ -49,12 +48,17 @@ export const Drafts = () => {
             <ListItem
               key={draft._id}
               disablePadding
-              alignItems='center'
+              alignItems="center"
               secondaryAction={
                 <>
-                  <Tooltip title='Run'>
-                    <IconButton edge='end' aria-label='comments' size='small' onClick={() => alert('Run!')}>
-                      <RocketLaunch fontSize='inherit' />
+                  <Tooltip title="Run">
+                    <IconButton
+                      edge="end"
+                      aria-label="comments"
+                      size="small"
+                      onClick={() => runDraftHandle(draft._id)}
+                    >
+                      <RocketLaunch fontSize="inherit" />
                     </IconButton>
                   </Tooltip>
                 </>
@@ -70,7 +74,11 @@ export const Drafts = () => {
                   primary={`ID: ${draft._id}`}
                   secondary={
                     <>
-                      <Typography component='span' variant='body2' color='text.primary'>
+                      <Typography
+                        component="span"
+                        variant="body2"
+                        color="text.primary"
+                      >
                         {Object.entries(draft.config).map(([key, val]) => {
                           return (
                             <>
@@ -85,7 +93,11 @@ export const Drafts = () => {
                 />
               </ListItemButton>
             </ListItem>
-            <Divider key={`divider_${draft._id}`} variant='middle' component='li' />
+            <Divider
+              key={`divider_${draft._id}`}
+              variant="middle"
+              component="li"
+            />
           </div>
         ) : null
       }

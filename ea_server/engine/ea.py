@@ -1,7 +1,8 @@
 import random
+import threading
 import time
 from deap import algorithms, base, creator, tools
-
+from ..api.utils.constants import BOUND, DEFAULT_FITNESS_BOUND, DEFAULT_GENERATIONS_BOUND, DEFAULT_TIME_BOUND, FITNESS, GENERATIONS, TIME
 from ea_server.model.ea_request_model import EaData
 from ea_server.engine.components.crossover.cx import Crossover
 from ea_server.engine.components.fitness.fit import Fitness
@@ -9,6 +10,9 @@ from ea_server.engine.components.mutates.mut import Mutate
 from ea_server.engine.components.selection.sel import Selection
 from ea_server.engine.components.stop_condition.stop_condition import StopCondition, StopConditionType
 from ea_server.model.ea_request_model import EaConfigModel, ComponentConfig
+from ea_server.api.utils.parser import parse_result
+from flask_pymongo import PyMongo, ObjectId
+from flask import current_app
 
 creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
 creator.create("Individual", list, fitness=creator.FitnessMin)
@@ -19,7 +23,11 @@ class EA:
     def get_best_individual(result, top=1):
         return tools.selBest(result, top)[0]
 
-    def __init__(self, data: EaData, conf: EaConfigModel) -> None:
+    def __init__(self, data: EaData, conf: EaConfigModel, run_id:str) -> None:
+        self.running = True
+        self.t = threading.Thread(target=self.evaluate)
+        self.run_id = run_id
+        self.mongo = PyMongo(current_app)
         self.conf = conf
         self.data = data
         self.num_drivers = len(data.drivers)
@@ -42,6 +50,12 @@ class EA:
         self.stop_condition_func = None
         self.stop_condition_kwargs = None
         self.stop_condition_type = None
+
+    def terminate(self):
+        self.running = False
+
+    def run(self):
+        self.t.start()
 
     def prepare(self):
         self.set_selection(self.conf.selection)
@@ -170,9 +184,19 @@ class EA:
             if verbose:
                 print(logbook.stream)
 
+            cur_fitness = invalid_ind[0].fitness.values[0]
+            best = self.get_best_individual(population)
+            if self.run_id!="0":
+                result = parse_result(best, self.data)
+                self.mongo.db.EvaluateResults.update_one({'_id':ObjectId(self.run_id)},{'$set':{'eaResult':result}})
             generation += 1
 
-        return population, logbook
+        best = self.get_best_individual(population) 
+        if self.run_id!="0":  
+            result = parse_result(best, self.data)
+            self.mongo.db.EvaluateResults.update_one({'_id':ObjectId(self.run_id)},{'$set':{'eaResult':result, 'isDone': True}})
+
+        return best,logbook
 
     def evaluate(self):
         self.prepare()
@@ -187,6 +211,7 @@ class EA:
         return (fitness,)
 
     def should_finish(self, generation: int, fitness: float, time: float):
+        should_stop = not self.running
         if self.stop_condition_type == StopConditionType.Generations.value:
             bound = generation
         elif self.stop_condition_type == StopConditionType.Fitness.value:
@@ -194,4 +219,4 @@ class EA:
         elif self.stop_condition_type == StopConditionType.Time.value:
             bound = time
 
-        return self.stop_condition_func(bound, **self.stop_condition_kwargs)
+        return should_stop or self.stop_condition_func(bound, **self.stop_condition_kwargs)
