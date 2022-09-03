@@ -23,6 +23,9 @@ import { useGetEntities } from '../../../../hooks/entities/use-get-entities';
 import { useDeleteEntity } from '../../../../hooks/entities/use-delete-entity';
 import { useEaRunDraft } from '../../../../hooks/ea/use-ea-run-draft';
 import { useNavigateToRunId } from '../../../../hooks/router/use-navigate-to-runid';
+import { convertObjToNiceText } from '../common';
+import { EaComponentConfig, EaEvaluateConfig } from '@backend/types';
+import { capitalize, toHumanReadableStr } from '../../../../utils/string.utils';
 
 export const Drafts = () => {
   const { dispatch } = useContext(MapContext);
@@ -32,10 +35,20 @@ export const Drafts = () => {
   const runDraft = useEaRunDraft();
   const goToRunId = useNavigateToRunId();
 
-  const runDraftHandle = async (id:string) =>{
+  const runDraftHandle = async (id: string) => {
     const runResponse = await runDraft(id);
     goToRunId(runResponse._id);
-  }
+  };
+
+  const renderSubTitle = (val: number | EaComponentConfig) => {
+    if (val !== null && typeof val === 'object') {
+      const name = val.name ? capitalize(toHumanReadableStr(val.name)) : '';
+      const args = val.args ? convertObjToNiceText(val.args) : '';
+      return `${name}${args ? ` {${args}}` : ''}`;
+    } else {
+      return val;
+    }
+  };
 
   return (
     <EntityList
@@ -48,17 +61,12 @@ export const Drafts = () => {
             <ListItem
               key={draft._id}
               disablePadding
-              alignItems="center"
+              alignItems='center'
               secondaryAction={
                 <>
-                  <Tooltip title="Run">
-                    <IconButton
-                      edge="end"
-                      aria-label="comments"
-                      size="small"
-                      onClick={() => runDraftHandle(draft._id)}
-                    >
-                      <RocketLaunch fontSize="inherit" />
+                  <Tooltip title='Run'>
+                    <IconButton edge='end' aria-label='comments' size='small' onClick={() => runDraftHandle(draft._id)}>
+                      <RocketLaunch fontSize='inherit' />
                     </IconButton>
                   </Tooltip>
                 </>
@@ -74,15 +82,11 @@ export const Drafts = () => {
                   primary={`ID: ${draft._id}`}
                   secondary={
                     <>
-                      <Typography
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                      >
+                      <Typography component='span' variant='body2' color='text.primary'>
                         {Object.entries(draft.config).map(([key, val]) => {
                           return (
                             <>
-                              {/*{key}: {val}*/}
+                              {capitalize(toHumanReadableStr(key))} - {renderSubTitle(val)}
                               <br />
                             </>
                           );
@@ -93,11 +97,7 @@ export const Drafts = () => {
                 />
               </ListItemButton>
             </ListItem>
-            <Divider
-              key={`divider_${draft._id}`}
-              variant="middle"
-              component="li"
-            />
+            <Divider key={`divider_${draft._id}`} variant='middle' component='li' />
           </div>
         ) : null
       }

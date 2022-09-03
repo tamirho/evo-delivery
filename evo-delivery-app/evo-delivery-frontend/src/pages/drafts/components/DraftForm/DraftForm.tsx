@@ -27,7 +27,6 @@ export const DraftForm = ({ state, onSubmit = (data) => console.log(data), draft
   const [tabIndex, setTabIndex] = useState(0);
   const [dataTabActiveStep, setDataTabActiveStep] = useState(0);
   const [configTabActiveStep, setConfigTabActiveStep] = useState(0);
-  console.log('errors', methods.formState.errors);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabIndex(newValue);
@@ -39,6 +38,7 @@ export const DraftForm = ({ state, onSubmit = (data) => console.log(data), draft
   };
 
   const errorCount = countErrors(methods.formState.errors);
+  console.log(methods.formState.errors);
 
   return (
     <FormProvider {...methods}>

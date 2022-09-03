@@ -17,7 +17,6 @@ export const createDefaultDraft = (): DraftFormValues => ({
 });
 
 export const toIdsList = (list: { _id: string }[]) => {
-  console.log(list);
   return list?.map((item) => item?._id);
 };
 

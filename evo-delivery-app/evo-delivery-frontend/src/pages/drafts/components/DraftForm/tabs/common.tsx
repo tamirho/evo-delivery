@@ -1,13 +1,13 @@
 export const createStepperHandlers = (setActiveStep: React.Dispatch<React.SetStateAction<number>>) => {
-  const handleNext = () => {
+  const handleNext = (): void => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
-  const handleBack = () => {
+  const handleBack = (): void => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleReset = () => {
+  const handleReset = (): void => {
     setActiveStep(0);
   };
 

@@ -113,6 +113,20 @@ export const evaluateDraftWithReturn = async (draftId: string) => {
   return evaluateResultsService.createResult(evalResult);
 };
 
+export const getEnrichedDraft = async (draftId: string): Promise<EnrichedDraft> => {
+  const draft = await draftService.getDraftById(draftId);
+  const { data: draftData, ...restDraft } = draft;
+
+  const driversP = driverService.getByIds(draftData.drivers);
+  const ordersP = orderService.getOrderByIds(draftData.orders);
+  const depotP = depotService.getDepotById(draftData.depot);
+
+  const [drivers, orders, depot] = await Promise.all([driversP, ordersP, depotP]);
+
+  const data: EnrichedDraftData = { ...draft.data, drivers, orders, depot };
+  return { ...restDraft, data };
+};
+
 export const updateDraft = async (draftId: string, draft: Partial<Draft>) => {
   return DraftModel.findOneAndUpdate({ _id: draftId }, draft, {
     returnOriginal: false,

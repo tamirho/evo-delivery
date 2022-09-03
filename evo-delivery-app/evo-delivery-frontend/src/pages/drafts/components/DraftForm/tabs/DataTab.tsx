@@ -39,7 +39,7 @@ export type DataTabProps = {
 export const DataTab = ({ activeStep, setActiveStep, letsCustomizeOnClickHandler }: DataTabProps) => {
   const { formState } = useFormContext();
   const { handleNext, handleBack } = createStepperHandlers(setActiveStep);
-  const errors = formState.errors as StringObj
+  const errors = formState.errors as any;
   const errorCount = countErrors(errors);
 
   return (

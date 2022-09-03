@@ -7,14 +7,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { countErrors } from '../common';
 import { ErrorAlert, WellDoneAlert } from './alerts';
-
-export enum EaComponentTypes {
-  SELECTION = 'selection',
-  FITNESS = 'fitness',
-  MUTATE = 'mutate',
-  CROSSOVER = 'crossover',
-  STOP_CONDITION = 'stopCondition',
-}
+import { EaComponentTypes } from '../../common';
 
 export type ConfigTabProps = {
   activeStep: number;
@@ -22,12 +15,12 @@ export type ConfigTabProps = {
 };
 
 export const ConfigTab = ({ activeStep, setActiveStep }: ConfigTabProps) => {
-  const {
-    formState: { errors },
-  } = useFormContext();
-  const { handleNext, handleBack } = createStepperHandlers(setActiveStep);
+  const { formState } = useFormContext();
+  const { errors }: { errors: any } = formState;
   const { config: configErrors } = errors;
-  const errorCount = countErrors(errors)
+  const errorCount = countErrors(errors);
+
+  const { handleNext, handleBack } = createStepperHandlers(setActiveStep);
 
   return (
     <>
@@ -36,7 +29,7 @@ export const ConfigTab = ({ activeStep, setActiveStep }: ConfigTabProps) => {
           <StepLabel
             onClick={() => setActiveStep(0)}
             optional={activeStep !== 0 ? <GeneralConfigLabel /> : null}
-            // error={!!(configErrors?.popSize || configErrors?.crossoverProb || configErrors?.mutateProb)}
+            error={!!(configErrors?.popSize || configErrors?.crossoverProb || configErrors?.mutateProb)}
           >
             General
           </StepLabel>
@@ -59,7 +52,7 @@ export const ConfigTab = ({ activeStep, setActiveStep }: ConfigTabProps) => {
             <StepLabel
               onClick={() => setActiveStep(index + 1)}
               optional={activeStep !== index + 1 ? <ComponentConfigLabel componentType={componentType} /> : null}
-              // error={!!configErrors?.[componentType]}
+              error={!!configErrors?.[componentType]}
             >
               {capitalize(toHumanReadableStr(componentType))}
             </StepLabel>

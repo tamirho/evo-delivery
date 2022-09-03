@@ -1,10 +1,9 @@
-import { useState } from 'react';
-import { Box, Stack, Switch, Typography } from '@mui/material';
+import { Stack, Switch } from '@mui/material';
 import { useEaComponentDetails } from '../../../../../hooks/ea/use-ea-component-details';
 import { EaComponentConfigBuilder } from './EaComponentConfigBuilder';
 import { Controller, useFormContext } from 'react-hook-form';
 import { toHumanReadableStr } from '../../../../../utils/string.utils';
-import { convertObjToNiceText } from './common';
+import { convertObjToNiceText } from '../../common';
 
 type ComponentConfigLabelProps = {
   componentType: string;

@@ -1,37 +1,25 @@
-import { useContext, useEffect } from "react";
-import {
-  TextField,
-  Autocomplete,
-  IconButton,
-  Box,
-  Typography,
-} from "@mui/material";
-import { Controller, useFormContext } from "react-hook-form";
-import { useGetEntitiesByName } from "../../../../../hooks/entities/use-get-entities-by-name";
-import { useFocusLocation } from "../../../../../hooks/map/use-focus-location";
-import ZoomInMapIcon from "@mui/icons-material/ZoomInMap";
-import { mapActions, MapContext } from "../../../../../features/map/context";
-import { ENTITIES } from "../../../../common";
+import { useContext, useEffect } from 'react';
+import { TextField, Autocomplete, IconButton, Box, Typography } from '@mui/material';
+import { Controller, useFormContext } from 'react-hook-form';
+import { useGetEntitiesByName } from '../../../../../hooks/entities/use-get-entities-by-name';
+import { useFocusLocation } from '../../../../../hooks/map/use-focus-location';
+import ZoomInMapIcon from '@mui/icons-material/ZoomInMap';
+import { mapActions, MapContext } from '../../../../../features/map/context';
+import { ENTITIES } from '../../../../common';
 
 export const SelectDepotLabel = () => {
   const { watch } = useFormContext();
-  const watchedDepot = watch("data.depot");
+  const watchedDepot = watch('data.depot');
 
   return watchedDepot ? <span>{watchedDepot.name}</span> : null;
 };
 
 export const SelectDepotStep = () => {
-  const {
-    control,
-    getValues,
-    formState: { errors },
-  } = useFormContext();
+  const { control, getValues, formState } = useFormContext();
+  const { errors }: { errors: any } = formState;
+
   const { dispatch } = useContext(MapContext);
-  const {
-    data: depots,
-    isLoading,
-    isFetching,
-  } = useGetEntitiesByName(ENTITIES.depots);
+  const { data: depots, isLoading, isFetching } = useGetEntitiesByName(ENTITIES.depots);
   const focusDepot = useFocusLocation();
 
   useEffect(() => {
@@ -40,7 +28,7 @@ export const SelectDepotStep = () => {
     }
 
     return () => {
-      const selectedDepot = getValues("data.depot");
+      const selectedDepot = getValues('data.depot');
       dispatch({
         type: mapActions.UPDATE_STATE,
         payload: { depots: selectedDepot ? [selectedDepot] : [] },
@@ -50,11 +38,10 @@ export const SelectDepotStep = () => {
 
   return (
     <Controller
-      name="data.depot"
+      name='data.depot'
       control={control}
       rules={{
-        required: { value: true, message: "Required" },
-        //validate: (option) => option?._id,
+        required: { value: true, message: 'Required' },
       }}
       render={({ field, fieldState, formState }) => (
         <Autocomplete
@@ -66,37 +53,29 @@ export const SelectDepotStep = () => {
           getOptionLabel={(option) => option.name}
           isOptionEqualToValue={(option, value) => option._id === value._id}
           renderOption={(props, option) => (
-            <li {...props} style={{ justifyContent: "space-between" }}>
+            <li {...props} style={{ justifyContent: 'space-between' }}>
               <Box>
                 {`Name: ${option.name}`}
                 <br />
-                <Typography
-                  component="span"
-                  variant="body2"
-                  color="text.primary"
-                >
+                <Typography component='span' variant='body2' color='text.primary'>
                   {`Address: ${option.address}`}
                 </Typography>
                 <br />
-                <Typography
-                  component="span"
-                  variant="caption"
-                  color="text.muted"
-                >
+                <Typography component='span' variant='caption' color='text.muted'>
                   {`ID: ${option._id}`}
                 </Typography>
               </Box>
 
               <IconButton
-                edge="end"
-                aria-label="comments"
-                size="small"
+                edge='end'
+                aria-label='comments'
+                size='small'
                 onClick={(e) => {
                   focusDepot(option);
                   e.stopPropagation();
                 }}
               >
-                <ZoomInMapIcon fontSize="inherit" />
+                <ZoomInMapIcon fontSize='inherit' />
               </IconButton>
             </li>
           )}
@@ -107,15 +86,9 @@ export const SelectDepotStep = () => {
             return field.onChange(depot);
           }}
           loading={isLoading || isFetching}
-          id="select-depot-autocomplete"
-          sx={{ width: "100%" }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Select Depot"
-              // error={!!errors?.data?.depot}
-            />
-          )}
+          id='select-depot-autocomplete'
+          sx={{ width: '100%' }}
+          renderInput={(params) => <TextField {...params} label='Select Depot' error={!!errors?.data?.depot} />}
         />
       )}
     />

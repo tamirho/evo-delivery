@@ -1,14 +1,8 @@
-import { DriverRoute, EaEvaluateResponse, EvaluateResult } from "../types";
-import EvaluateResultModel from "../database/models/evaluate-results.model";
-import { eaHttpClientAdapter } from "../clients";
-import {
-  depotService,
-  draftService,
-  driverService,
-  evaluateResultsService,
-  orderService,
-} from ".";
-import { prepareEvaluateResult } from "./draft.service";
+import { DriverRoute, EaEvaluateResponse, EvaluateResult } from '../types';
+import EvaluateResultModel from '../database/models/evaluate-results.model';
+import { eaHttpClientAdapter } from '../clients';
+import { depotService, draftService, driverService, evaluateResultsService, orderService } from '.';
+import { prepareEvaluateResult } from './draft.service';
 
 export const getResults = async () => {
   return EvaluateResultModel.getAll();
@@ -22,26 +16,12 @@ export const getById = async (id: string) => {
   const ordersP = orderService.getOrderByIds(draft.data.orders);
   const depotP = depotService.getDepotById(draft.data.depot);
 
-  const [drivers, orders, depot] = await Promise.all([
-    driversP,
-    ordersP,
-    depotP,
-  ]);
+  const [drivers, orders, depot] = await Promise.all([driversP, ordersP, depotP]);
 
-  const enrichedResult = await prepareEvaluateResult(
-    draft,
-    drivers,
-    orders,
-    depot,
-    evaluateResult.eaResult!
-  );
+  const enrichedResult = await prepareEvaluateResult(draft, drivers, orders, depot, evaluateResult.eaResult!);
 
   if (evaluateResult.isDone) {
-    evaluateResultsService.updateResultRoutes(
-      id,
-      enrichedResult.routes,
-      evaluateResult.eaResult!
-    );
+    evaluateResultsService.updateResultRoutes(id, enrichedResult.routes, evaluateResult.eaResult!);
   }
   return { ...enrichedResult, isDone: evaluateResult.isDone };
 };
@@ -63,10 +43,7 @@ export const updateResultRoutes = async (
   routes: DriverRoute[] | undefined,
   eaResult: EaEvaluateResponse | undefined
 ) => {
-  return EvaluateResultModel.updateOne(
-    { _id: id},
-    { routes: routes, eaResult: eaResult }
-  );
+  return EvaluateResultModel.updateOne({ _id: id }, { routes: routes, eaResult: eaResult });
 };
 
 export const deleteResult = async (id: string) => {

@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
-import { draftService } from "../services";
-import { Draft } from "../types/draft.type";
-import { INVALID, OK } from "../utils/response.utils";
-import { EaEvaluateConfig } from "../types";
+import { Request, Response } from 'express';
+import { draftService } from '../services';
+import { Draft } from '../types/draft.type';
+import { INVALID, OK } from '../utils/response.utils';
+import { EaEvaluateConfig } from '../types';
 
 export type DraftDataApiRequest = {
   drivers: string[];
@@ -16,19 +16,19 @@ export type DraftApiRequest = {
 };
 
 export const getDrafts = async (req: Request, res: Response) => {
-    try {
-        const drafts = await draftService.getDrafts();
-        return res.status(200).json(OK(drafts));
-    } catch (e: any) {
-        return res.status(400).json(INVALID(400, e.message));
-    }
+  try {
+    const drafts = await draftService.getDrafts();
+    return res.status(200).json(OK(drafts));
+  } catch (e: any) {
+    return res.status(400).json(INVALID(400, e.message));
+  }
 };
 
 export const getDraft = async (req: Request, res: Response) => {
   const draftId = req.params.id;
 
   try {
-    const draft = await draftService.getDraftById(draftId);
+    const draft = await draftService.getEnrichedDraft(draftId);
     return res.status(200).json(OK({ draft }));
   } catch (e: any) {
     return res.status(400).json(INVALID(400, e.message));
