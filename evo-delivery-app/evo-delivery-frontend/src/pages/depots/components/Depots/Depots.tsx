@@ -26,7 +26,7 @@ export const Depots = () => {
 
   useEffect(() => {
     if (depots) {
-      dispatch({ type: mapActions.UPDATE_STATE, payload: { depots, zoom: 12 } });
+      dispatch({ type: mapActions.UPDATE_STATE, payload: { depots } });
     }
 
     return () => dispatch({ type: mapActions.CLEAR_STATE, payload: {} });

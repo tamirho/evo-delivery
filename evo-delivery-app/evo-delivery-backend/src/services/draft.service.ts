@@ -1,23 +1,10 @@
-import DraftModel from "../database/models/draft.model";
-import { Draft, DraftData } from "../types/draft.type";
-import {
-  depotService,
-  orderService,
-  driverService,
-  draftService,
-} from "./index";
-import { eaHttpClientAdapter, googleMatrixClient } from "../clients";
-import {
-  Depot,
-  DistanceMatrix,
-  Driver,
-  DriverRoute,
-  EaEvaluateResponse,
-  EvaluateResult,
-  Order,
-} from "../types";
-import { evaluateResultsService } from "../services";
-import { getPolylineRoute } from "./locations.service";
+import DraftModel from '../database/models/draft.model';
+import { Draft, DraftData, EnrichedDraft, EnrichedDraftData } from '../types/draft.type';
+import { depotService, orderService, driverService, draftService } from './index';
+import { eaHttpClientAdapter, googleMatrixClient } from '../clients';
+import { Depot, DistanceMatrix, Driver, DriverRoute, EaEvaluateResponse, EvaluateResult, Order } from '../types';
+import { evaluateResultsService } from '../services';
+import { getPolylineRoute } from './locations.service';
 
 export const getDrafts = async () => {
   return DraftModel.getAll();
@@ -40,10 +27,7 @@ export const createDraft = async (partialDraft: Partial<Draft>) => {
   const [orders, depot, _] = await Promise.all([ordersP, depotP, driversP]);
 
   const ordersAndRoot = [...orders, depot];
-  const distanceMatrix = await googleMatrixClient.getDistance(
-    ordersAndRoot,
-    ordersAndRoot
-  );
+  const distanceMatrix = await googleMatrixClient.getDistance(ordersAndRoot, ordersAndRoot);
 
   const data = { ...draftData, distances: distanceMatrix } as DraftData;
   const draft = { ...partialDraft, data: data } as Draft;
@@ -58,11 +42,7 @@ export const evaluateDraftWithUpdate = async (draftId: string) => {
   const ordersP = orderService.getOrderByIds(draft.data.orders);
   const depotP = depotService.getDepotById(draft.data.depot);
 
-  const [drivers, orders, depot] = await Promise.all([
-    driversP,
-    ordersP,
-    depotP,
-  ]);
+  const [drivers, orders, depot] = await Promise.all([driversP, ordersP, depotP]);
 
   const evalResult = await evaluateResultsService.createResult({
     draftId: draftId,
@@ -88,11 +68,7 @@ export const evaluateDraftWithReturn = async (draftId: string) => {
   const ordersP = orderService.getOrderByIds(draft.data.orders);
   const depotP = depotService.getDepotById(draft.data.depot);
 
-  const [drivers, orders, depot] = await Promise.all([
-    driversP,
-    ordersP,
-    depotP,
-  ]);
+  const [drivers, orders, depot] = await Promise.all([driversP, ordersP, depotP]);
 
   const evaluatedRoutes = await eaHttpClientAdapter.evaluateWithReturn(
     drivers,
@@ -101,14 +77,8 @@ export const evaluateDraftWithReturn = async (draftId: string) => {
     draft.data.distances as DistanceMatrix,
     draft.config
   );
-  
-  const evalResult = await prepareEvaluateResult(
-    draft,
-    drivers,
-    orders,
-    depot,
-    evaluatedRoutes
-  );
+
+  const evalResult = await prepareEvaluateResult(draft, drivers, orders, depot, evaluatedRoutes);
 
   return evaluateResultsService.createResult(evalResult);
 };
@@ -153,9 +123,7 @@ export const prepareEvaluateResult = async (
   const enrichedRoutes = (await Promise.all(
     Object.entries(routes).map(async ([driverId, ordersIds]) => {
       const driver: Driver = driversMap[driverId];
-      const routeOrders: Order[] = ordersIds.map(
-        (orderId) => ordersMap[orderId]
-      );
+      const routeOrders: Order[] = ordersIds.map((orderId) => ordersMap[orderId]);
       return enrichDriverRoute(depot, driver, routeOrders, distances);
     })
   )) as DriverRoute[];
@@ -194,7 +162,7 @@ const enrichDriverRoute = async (
       if (index > 0) {
         return getPolylineRoute(locations[index - 1], order);
       }
-      return "";
+      return '';
     })
   );
 

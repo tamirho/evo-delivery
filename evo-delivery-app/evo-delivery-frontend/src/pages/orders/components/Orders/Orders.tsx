@@ -32,7 +32,7 @@ export const Orders = () => {
 
   useEffect(() => {
     if (orders) {
-      dispatch({ type: mapActions.UPDATE_STATE, payload: { orders, zoom: 12 } });
+      dispatch({ type: mapActions.UPDATE_STATE, payload: { orders } });
     }
 
     return () => dispatch({ type: mapActions.CLEAR_STATE, payload: {} });

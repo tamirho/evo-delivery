@@ -1,7 +1,7 @@
-import { Order, Depot, EaEvaluateResponse } from '@backend/types';
+import { Order, Depot } from '@backend/types';
 import { LatLngExpression } from 'leaflet';
 import { DEFAULT_CENTER_POSITION, DEFAULT_MAP_ZOOM } from '../common/constants';
-import {DriverRoute, EvaluateResult} from "../../../../../evo-delivery-backend/src/types";
+import { DriverRoute } from '../../../../../evo-delivery-backend/src/types';
 
 export type mapState = {
   center?: LatLngExpression;
@@ -60,9 +60,10 @@ export const mapReducer = (state: mapState, action: mapAction) => {
       return { ...state, result: {} };
     case mapActions.CLEAR_ZOOM:
       return { ...state, zoom: DEFAULT_MAP_ZOOM };
-    case mapActions.CLEAR_STATE:
-      const { zoom, center } = state;
-      return { ...initialState, zoom, center };
+    case mapActions.CLEAR_STATE: {
+      const { zoom, center, ...rest } = initialState;
+      return { ...state, ...rest };
+    }
     case mapActions.INIT_STATE:
       return { ...initialState };
     default:

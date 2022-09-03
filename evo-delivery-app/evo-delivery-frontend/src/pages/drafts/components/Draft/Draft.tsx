@@ -12,22 +12,30 @@ import { mapActions, MapContext } from '../../../../features/map/context';
 import { CollapsibleListItem } from '../../../../features/entity-list/CollapsibleListItem';
 import { useGetEntity } from '../../../../hooks/entities/use-get-entity';
 import { useEntityId } from '../../../../hooks/router/use-entity-id';
+import { useNavigateToRunId } from '../../../../hooks/router/use-navigate-to-runid';
+import { useEaRunDraft } from '../../../../hooks/ea/use-ea-run-draft';
+import { useDraftRuns } from '../../hooks/use-draft-runs';
+
 import { DepotItems } from './list-items/DepotItems';
 import { OrderItems } from './list-items/OrderItems';
 import { DriverItems } from './list-items/DriverItems';
 import { ShowDraftConfig } from './list-items/ShowDraftConfig';
-import { useDraftRuns } from '../../hooks/use-draft-runs';
 import { DraftHistory } from './list-items/DraftHistory';
 
 export const Draft = () => {
   const { dispatch, state } = useContext(MapContext);
   const draftId = useEntityId();
+
+  const runDraft = useEaRunDraft();
+  const goToRunId = useNavigateToRunId();
+
   const {
     data: { draft } = {},
     isFetching: isFetchingEntity,
     isLoading: isLoadingEntity,
     isError: isErrorEntity,
   } = useGetEntity(draftId!);
+  
   const {
     data: draftRuns,
     isFetching: isFetchingRuns,
@@ -35,9 +43,9 @@ export const Draft = () => {
     isError: isErrorRuns,
   } = useDraftRuns(draftId!);
 
-  const handleRunClick = () => {
-    // todo: call to run => navigate to the runId
-    alert('TODO');
+  const handleRunClick = async () => {
+    const runResponse = await runDraft(draftId!);
+    goToRunId(runResponse._id);
   };
 
   useEffect(() => {

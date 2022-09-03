@@ -41,7 +41,7 @@ export const SelectOrdersStep = () => {
 
     return () => {
       const selectedOrders = getValues('data.orders');
-      dispatch({ type: mapActions.UPDATE_STATE, payload: { orders: selectedOrders || [], zoom: 15 } });
+      dispatch({ type: mapActions.UPDATE_STATE, payload: { orders: selectedOrders || [] } });
     };
   }, [orders]);
 

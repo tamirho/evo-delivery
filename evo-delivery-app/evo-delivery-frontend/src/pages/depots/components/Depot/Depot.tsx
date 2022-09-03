@@ -32,8 +32,8 @@ export const Depot = () => {
          dispatch({
            type: mapActions.UPDATE_STATE,
            payload: {
-             orders: [depot],
-             zoom: 14,
+             depots: [depot],
+             zoom: 12,
              center: [depot.latitude!, depot.longitude!],
            },
          });

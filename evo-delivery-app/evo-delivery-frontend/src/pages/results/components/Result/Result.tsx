@@ -67,7 +67,6 @@ export const Result = () => {
           routes: result.routes as DriverRoute[],
           orders: orders,
           depots: [result.depot!],
-          // zoom: 13,
           routesColors: colors,
           // ...(result.depot ? { center: [result.depot.latitude, result.depot.longitude] as LatLngTuple } : {}),
         },
@@ -143,7 +142,7 @@ export const Result = () => {
   );
 
   return (
-    <>
+    <Box sx={{ width: '100vw', height: '100vh' }}>
       <EntityList
         key={"result-entity-list"}
         isLoading={!result}
@@ -159,7 +158,7 @@ export const Result = () => {
         )}
         optionalComponent={renderDepotListItem()}
       />
-      {result && (
+      {result && result.isDone === false && (
         <Box
           sx={{
             display: "flex",
@@ -180,6 +179,6 @@ export const Result = () => {
           </Box>
         </Box>
       )}
-    </>
+    </Box>
   );
 };
