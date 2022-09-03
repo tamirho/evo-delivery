@@ -34,7 +34,7 @@ export class EaHttpClientAdapterImpl implements EaHttpClientAdapter {
       orders,
       depot,
       distanceMatrix,
-      config,
+      config
     );
     return this.eaHttpClient.evaluateWithReturn(requestBody);
   }
@@ -55,7 +55,7 @@ export class EaHttpClientAdapterImpl implements EaHttpClientAdapter {
       config,
       runId
     );
-    const body = {...requestBody,run_id:runId}
+    const body = { ...requestBody, runId: runId };
     return this.eaHttpClient.evaluateWithUpdate(body);
   }
 
@@ -65,7 +65,7 @@ export class EaHttpClientAdapterImpl implements EaHttpClientAdapter {
     return this.eaHttpClient.getComponentDetails(componentType);
   }
 
-  terminate(run_id: string): Promise<void> {
-    return this.eaHttpClient.terminate(run_id);
+  terminate(runId: string): Promise<void> {
+    return this.eaHttpClient.terminate(runId);
   }
 }

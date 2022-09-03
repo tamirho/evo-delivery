@@ -28,7 +28,7 @@ def api_version():
 
 @pytest.fixture()
 def ea_url(api_version):
-    return f'/api/{api_version}/evaluate'
+    return f'/api/{api_version}/evaluate_return'
 
 
 @pytest.fixture()

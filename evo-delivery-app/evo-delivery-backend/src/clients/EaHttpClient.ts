@@ -10,13 +10,11 @@ export interface EaHttpClient {
     requestBody: EaEvaluateHttpRequestBody
   ) => Promise<EaEvaluateResponse>;
 
-  evaluateWithUpdate: (
-    requestBody: EaEvaluateHttpRequestBody
-  ) => Promise<void>;
+  evaluateWithUpdate: (requestBody: EaEvaluateHttpRequestBody) => Promise<void>;
 
   getComponentDetails: (
     componentType: EaComponentTypes
   ) => Promise<EaComponentDetails[]>;
 
-  terminate: (run_id: string) => Promise<void>;
+  terminate: (runId: string) => Promise<void>;
 }

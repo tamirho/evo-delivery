@@ -1,13 +1,13 @@
-import { EA_ENGINE_API_V1_URL } from '../configs';
+import { EA_ENGINE_API_V1_URL } from "../configs";
 import {
   EaComponentDetails,
   EaComponentTypes,
   EaEvaluateResponse,
   EaEvaluateHttpRequestBody,
-} from '../types';
-import { camelToSnakeCase } from '../utils';
-import { EaHttpClient } from './EaHttpClient';
-import { HttpClient } from './HttpClient';
+} from "../types";
+import { camelToSnakeCase } from "../utils";
+import { EaHttpClient } from "./EaHttpClient";
+import { HttpClient } from "./HttpClient";
 
 export class EaHttpClientImpl implements EaHttpClient {
   private readonly httpClient: HttpClient;
@@ -30,9 +30,7 @@ export class EaHttpClientImpl implements EaHttpClient {
     return this.httpClient.post({ url, data, options });
   }
 
-  evaluateWithUpdate(
-    requestBody: EaEvaluateHttpRequestBody
-  ): Promise<void> {
+  evaluateWithUpdate(requestBody: EaEvaluateHttpRequestBody): Promise<void> {
     const headers = { "Content-Type": "application/json" };
     const url = `${this.baseUrl}/${this.apiUrlPrefix}/evaluate_update`;
     const data = JSON.stringify(requestBody);
@@ -44,14 +42,16 @@ export class EaHttpClientImpl implements EaHttpClient {
   getComponentDetails(
     componentType: EaComponentTypes
   ): Promise<EaComponentDetails[]> {
-    const url = `${this.baseUrl}/${this.apiUrlPrefix}/${camelToSnakeCase(componentType)}/details`;
+    const url = `${this.baseUrl}/${this.apiUrlPrefix}/${camelToSnakeCase(
+      componentType
+    )}/details`;
 
     return this.httpClient.get({ url });
   }
 
-  terminate(run_id: string): Promise<void> {
+  terminate(runId: string): Promise<void> {
     const headers = { "Content-Type": "application/json" };
-    const url = `${this.baseUrl}/${this.apiUrlPrefix}/terminate/${run_id}`;
+    const url = `${this.baseUrl}/${this.apiUrlPrefix}/terminate/${runId}`;
     const options = { headers };
 
     return this.httpClient.post({ url, options });

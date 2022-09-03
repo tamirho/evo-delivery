@@ -31,5 +31,5 @@ export interface EaHttpClientAdapter {
     componentType: EaComponentTypes
   ) => Promise<EaComponentDetails[]>;
 
-  terminate: (run_id: string) => Promise<void>;
+  terminate: (runId: string) => Promise<void>;
 }

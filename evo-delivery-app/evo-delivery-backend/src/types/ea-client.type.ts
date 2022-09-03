@@ -1,4 +1,4 @@
-import { EaDriverRoute } from './ea-engine.type';
+import { EaDriverRoute } from "./ea-engine.type";
 
 export type EaHttpRequestOrder = {
   id: string;
@@ -29,7 +29,7 @@ export type EaEvaluateHttpRequestData = {
 };
 
 export type EaEvaluateHttpRequestBody = {
-  run_id?: string,
+  runId?: string;
   data: EaEvaluateHttpRequestData;
   config: EaEvaluateHttpRequestConfig;
 };
