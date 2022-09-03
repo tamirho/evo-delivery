@@ -37,7 +37,7 @@ export const getById = async (id: string) => {
   );
 
   if (evaluateResult.isDone) {
-    evaluateResultsService.updateResultRoutes(
+    await evaluateResultsService.updateResultRoutes(
       id,
       enrichedResult.routes,
       evaluateResult.eaResult!
