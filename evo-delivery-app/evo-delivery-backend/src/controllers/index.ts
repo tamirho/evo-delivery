@@ -5,3 +5,4 @@ export * as evaluateResultsController from './evaluate-results.controller';
 export * as eaEngineController from './ea-engine.controller';
 export * as depotController from './depot.controller';
 export * as locationController from './locations.controller';
+export * as seedDbController from './seed-db.controller';
