@@ -45,8 +45,8 @@ export const EntityList = ({
   }
 
   return (
-    <List dense={!!dense} style={{ width: '100%', margin: 10 }}>
-      {optionalComponent!}
+    <List dense={!!dense} style={{ width: '100%' }}>
+      {optionalComponent || null}
       {items.map((item: any, index) => itemComponent(item, index))}
     </List>
   );

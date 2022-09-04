@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import {
   Avatar,
   Divider,
@@ -11,24 +10,19 @@ import {
   Tooltip,
 } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
-import DeleteIcon from '@mui/icons-material/Delete';
 import RocketLaunch from '@mui/icons-material/RocketLaunch';
 
 import { Draft } from '@backend/types/draft.type';
 import { EntityList } from '../../../../features/entity-list/EntityList';
-import { MapContext } from '../../../../features/map/context';
-import { useFocusLocation } from '../../../../hooks/map/use-focus-location';
 import { useNavigateToChild } from '../../../../hooks/router/use-navigate-to-child';
 import { useGetEntities } from '../../../../hooks/entities/use-get-entities';
-import { useDeleteEntity } from '../../../../hooks/entities/use-delete-entity';
 import { useEaRunDraft } from '../../../../hooks/ea/use-ea-run-draft';
 import { useNavigateToRunId } from '../../../../hooks/router/use-navigate-to-runid';
 import { convertObjToNiceText } from '../common';
-import { EaComponentConfig, EaEvaluateConfig } from '@backend/types';
+import { EaComponentConfig } from '@backend/types';
 import { capitalize, toHumanReadableStr } from '../../../../utils/string.utils';
 
 export const Drafts = () => {
-  const { dispatch } = useContext(MapContext);
   const { data: drafts = [], isFetching, isLoading, isError } = useGetEntities();
 
   const goToDraft = useNavigateToChild();
@@ -63,13 +57,19 @@ export const Drafts = () => {
               disablePadding
               alignItems='center'
               secondaryAction={
-                <>
-                  <Tooltip title='Run'>
-                    <IconButton edge='end' aria-label='comments' size='small' onClick={() => runDraftHandle(draft._id)}>
-                      <RocketLaunch fontSize='inherit' />
-                    </IconButton>
-                  </Tooltip>
-                </>
+                <Tooltip title='Run'>
+                  <IconButton
+                    edge='end'
+                    aria-label='comments'
+                    size='small'
+                    onClick={(e) => {
+                      runDraftHandle(draft._id);
+                      e.stopPropagation();
+                    }}
+                  >
+                    <RocketLaunch fontSize='inherit' />
+                  </IconButton>
+                </Tooltip>
               }
             >
               <ListItemButton onClick={() => goToDraft(draft._id)}>

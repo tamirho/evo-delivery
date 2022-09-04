@@ -1,4 +1,3 @@
-import { Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Outlet } from 'react-router-dom';
 
@@ -9,8 +8,7 @@ const DrawerContent = styled('div')(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
-type DetailsPanelContentProps = {
-};
+type DetailsPanelContentProps = {};
 
 export const DetailsPanelContent = (props: DetailsPanelContentProps) => {
   return (
