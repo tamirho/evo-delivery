@@ -1,45 +1,35 @@
-import { useContext, useEffect } from 'react';
 import {
+  Typography,
+  ListItemText,
   Avatar,
-  Divider,
+  IconButton,
   ListItem,
   ListItemAvatar,
-  ListItemButton,
-  ListItemText,
-  Typography,
-  IconButton,
   Tooltip,
 } from '@mui/material';
+
 import WarehouseIcon from '@mui/icons-material/Warehouse';
 import ZoomInMapIcon from '@mui/icons-material/ZoomInMap';
 
 import { Depot } from '@backend/types';
-import { EntityList } from '../../../../features/entity-list/EntityList';
-import { MapContext, mapActions } from '../../../../features/map/context';
-import { useFocusLocation } from '../../../../hooks/map/use-focus-location';
-import { useNavigateToChild } from '../../../../hooks/router/use-navigate-to-child';
-import { useGetEntities } from '../../../../hooks/entities/use-get-entities';
+import { EntityList } from '../../../../../features/entity-list/EntityList';
+import { useFocusLocation } from '../../../../../hooks/map/use-focus-location';
 
-export const Depots = () => {
-  const { dispatch } = useContext(MapContext);
-  const { data: depots = [], isFetching, isLoading, isError } = useGetEntities();
+export type DepotItemsProps = {
+  items: any[];
+  isLoading: boolean;
+  isError: boolean;
+};
 
-  useEffect(() => {
-    if (depots) {
-      dispatch({ type: mapActions.UPDATE_STATE, payload: { depots } });
-    }
-
-    return () => dispatch({ type: mapActions.CLEAR_STATE, payload: {} });
-  }, [depots]);
-
-  const goToDepot = useNavigateToChild();
+export const DepotItems = ({ items, isLoading, isError }: DepotItemsProps) => {
   const focusDepot = useFocusLocation();
 
   return (
     <EntityList
-      isLoading={isFetching || isLoading}
+      dense={true}
+      isLoading={isLoading}
       isError={isError}
-      items={depots}
+      items={items}
       renderItem={(depot: Depot) =>
         depot ? (
           <div key={`div_${depot._id}`}>
@@ -57,7 +47,7 @@ export const Depots = () => {
                 </>
               }
             >
-              <ListItemButton onClick={() => goToDepot(depot._id)}>
+              <ListItem>
                 <ListItemAvatar>
                   <Avatar>
                     <WarehouseIcon />
@@ -77,9 +67,8 @@ export const Depots = () => {
                     </>
                   }
                 />
-              </ListItemButton>
+              </ListItem>
             </ListItem>
-            <Divider key={`divider_${depot._id}`} variant='middle' component='li' />
           </div>
         ) : null
       }

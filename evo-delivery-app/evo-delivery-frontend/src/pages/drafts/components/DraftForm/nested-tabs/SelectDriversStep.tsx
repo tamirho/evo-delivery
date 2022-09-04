@@ -24,10 +24,8 @@ export const SelectDriversLabel = () => {
 };
 
 export const SelectDriversStep = () => {
-  const {
-    control,
-    formState: { errors },
-  } = useFormContext();
+  const { control, formState } = useFormContext();
+  const { errors }: { errors: any } = formState;
 
   const { data: drivers, isLoading, isFetching } = useGetEntitiesByName(ENTITIES.drivers);
 
@@ -44,6 +42,7 @@ export const SelectDriversStep = () => {
           {...fieldState}
           {...formState}
           multiple
+          filterSelectedOptions
           disableCloseOnSelect
           options={drivers || []}
           value={field.value || []}
@@ -75,13 +74,7 @@ export const SelectDriversStep = () => {
           loading={isLoading || isFetching}
           id='select-drivers-autocomplete'
           sx={{ width: '100%' }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label='Select Drivers'
-              // error={!!errors?.data?.drivers}
-            />
-          )}
+          renderInput={(params) => <TextField {...params} label='Select Drivers' error={!!errors?.data?.drivers} />}
         />
       )}
     />

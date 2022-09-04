@@ -1,6 +1,6 @@
 import { TextField, Stack } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
-import { convertObjToNiceText } from './common';
+import { convertObjToNiceText } from '../../common';
 
 export const GeneralConfigLabel = () => {
   const { watch } = useFormContext();
@@ -16,10 +16,8 @@ export const GeneralConfigLabel = () => {
 };
 
 export const GeneralConfigStep = () => {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
+  const { register, formState } = useFormContext();
+  const { errors }: { errors: any } = formState;
 
   return (
     <Stack spacing={3} style={{ width: '100%' }}>
@@ -34,7 +32,7 @@ export const GeneralConfigStep = () => {
           min: 0,
         }}
         {...register('config.popSize', { valueAsNumber: true, required: true })}
-        // error={!!errors?.config?.['popSize']}
+        error={!!errors?.config?.popSize}
       />
       <TextField
         id='input-crossoverProb'
@@ -50,7 +48,7 @@ export const GeneralConfigStep = () => {
           valueAsNumber: true,
           required: true,
         })}
-        // error={!!errors?.config?.['crossoverProb']}
+        error={!!errors?.config?.crossoverProb}
       />
       <TextField
         id='input-mutateProb'
@@ -63,7 +61,7 @@ export const GeneralConfigStep = () => {
           min: 0,
         }}
         {...register('config.mutateProb', { valueAsNumber: true, required: true })}
-        // error={!!errors?.config?.['mutateProb']}
+        error={!!errors?.config?.mutateProb}
       />
     </Stack>
   );

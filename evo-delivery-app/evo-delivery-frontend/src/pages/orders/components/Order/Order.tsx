@@ -33,7 +33,7 @@ export const Order = () => {
         type: mapActions.UPDATE_STATE,
         payload: {
           orders: [order],
-          zoom: 14,
+          zoom: 12,
           center: [order.latitude!, order.longitude!],
         },
       });

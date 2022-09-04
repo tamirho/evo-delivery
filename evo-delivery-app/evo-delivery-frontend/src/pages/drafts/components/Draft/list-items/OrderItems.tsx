@@ -1,48 +1,36 @@
-import { useContext, useEffect } from 'react';
 import {
+  Typography,
+  ListItemText,
   Avatar,
   Divider,
+  IconButton,
   ListItem,
   ListItemAvatar,
-  ListItemButton,
-  ListItemText,
-  Typography,
-  IconButton,
   Tooltip,
 } from '@mui/material';
+
 import InventoryIcon from '@mui/icons-material/Inventory';
-import DeleteIcon from '@mui/icons-material/Delete';
 import ZoomInMapIcon from '@mui/icons-material/ZoomInMap';
 
 import { Order } from '@backend/types';
-import { EntityList } from '../../../../features/entity-list/EntityList';
-import { MapContext, mapActions } from '../../../../features/map/context';
-import { useFocusLocation } from '../../../../hooks/map/use-focus-location';
-import { useNavigateToChild } from '../../../../hooks/router/use-navigate-to-child';
-import { useGetEntities } from '../../../../hooks/entities/use-get-entities';
-import { useDeleteEntity } from '../../../../hooks/entities/use-delete-entity';
+import { EntityList } from '../../../../../features/entity-list/EntityList';
+import { useFocusLocation } from '../../../../../hooks/map/use-focus-location';
 
-export const Orders = () => {
-  const { dispatch } = useContext(MapContext);
-  const { data: orders = [], isFetching, isLoading, isError } = useGetEntities();
+export type OrderItemsProps = {
+  items: any[];
+  isLoading: boolean;
+  isError: boolean;
+};
 
-  const goToOrder = useNavigateToChild();
-  const deleteOrder = useDeleteEntity();
+export const OrderItems = ({ items, isLoading, isError }: OrderItemsProps) => {
   const focusOrder = useFocusLocation();
-
-  useEffect(() => {
-    if (orders) {
-      dispatch({ type: mapActions.UPDATE_STATE, payload: { orders } });
-    }
-
-    return () => dispatch({ type: mapActions.CLEAR_STATE, payload: {} });
-  }, [orders]);
 
   return (
     <EntityList
-      isLoading={isFetching || isLoading}
+      dense={true}
+      isLoading={isLoading}
       isError={isError}
-      items={orders}
+      items={items}
       renderItem={(order: Order) =>
         order ? (
           <div key={`div_${order._id}`}>
@@ -60,7 +48,7 @@ export const Orders = () => {
                 </>
               }
             >
-              <ListItemButton onClick={() => goToOrder(order._id)}>
+              <ListItem>
                 <ListItemAvatar>
                   <Avatar>
                     <InventoryIcon />
@@ -80,7 +68,7 @@ export const Orders = () => {
                     </>
                   }
                 />
-              </ListItemButton>
+              </ListItem>
             </ListItem>
             <Divider key={`divider_${order._id}`} variant='middle' component='li' />
           </div>

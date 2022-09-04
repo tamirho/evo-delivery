@@ -28,11 +28,8 @@ export const SelectOrdersLabel = () => {
 };
 
 export const SelectOrdersStep = () => {
-  const {
-    control,
-    getValues,
-    formState: { errors },
-  } = useFormContext();
+  const { control, getValues, formState } = useFormContext();
+  const { errors }: { errors: any } = formState;
   const { dispatch } = useContext(MapContext);
   const { data: orders, isLoading, isFetching } = useGetEntitiesByName(ENTITIES.orders);
   const focusOrder = useFocusLocation();
@@ -44,7 +41,7 @@ export const SelectOrdersStep = () => {
 
     return () => {
       const selectedOrders = getValues('data.orders');
-      dispatch({ type: mapActions.UPDATE_STATE, payload: { orders: selectedOrders || [], zoom: 15 } });
+      dispatch({ type: mapActions.UPDATE_STATE, payload: { orders: selectedOrders || [] } });
     };
   }, [orders]);
 
@@ -61,6 +58,7 @@ export const SelectOrdersStep = () => {
           {...fieldState}
           {...formState}
           multiple
+          filterSelectedOptions
           disableCloseOnSelect
           options={orders || []}
           value={field.value || []}
@@ -105,13 +103,7 @@ export const SelectOrdersStep = () => {
           loading={isLoading || isFetching}
           id='select-orders-autocomplete'
           sx={{ width: '100%' }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label='Select Orders'
-              // error={!!errors?.data?.orders}
-            />
-          )}
+          renderInput={(params) => <TextField {...params} label='Select Orders' error={!!errors?.data?.orders} />}
         />
       )}
     />

@@ -1,22 +1,22 @@
-import {
-  Alert,
-  AlertTitle,
-  Divider,
-  List,
-  ListItem,
-  Skeleton,
-  Stack,
-} from '@mui/material';
+import { Alert, AlertTitle, Divider, List, ListItem, Skeleton, Stack } from '@mui/material';
 
 type EntityListProps = {
   items: any[];
   isLoading: boolean;
   isError: boolean;
   renderItem: (item: any, index: number) => JSX.Element | null;
-  optionalComponent?: any
+  optionalComponent?: any;
+  dense?: boolean;
 };
 
-export const EntityList = ({ items, isLoading, isError, renderItem: itemComponent, optionalComponent}: EntityListProps) => {
+export const EntityList = ({
+  items,
+  isLoading,
+  isError,
+  renderItem: itemComponent,
+  optionalComponent,
+  dense,
+}: EntityListProps) => {
   if (isError) {
     return (
       <Alert severity='error' style={{ width: '100%', margin: 10 }}>
@@ -28,7 +28,7 @@ export const EntityList = ({ items, isLoading, isError, renderItem: itemComponen
 
   if (isLoading) {
     return (
-      <List>
+      <List dense={!!dense}>
         {[...Array(15)].map((_, index) => (
           <>
             <ListItem key={`skeleton_${index}`}>
@@ -44,5 +44,10 @@ export const EntityList = ({ items, isLoading, isError, renderItem: itemComponen
     );
   }
 
-  return <List style={{ width: '100%', margin: 10 }}>{optionalComponent!}{items.map((item: any, index) => itemComponent(item, index))}</List>;
+  return (
+    <List dense={!!dense} style={{ width: '100%', margin: 10 }}>
+      {optionalComponent!}
+      {items.map((item: any, index) => itemComponent(item, index))}
+    </List>
+  );
 };

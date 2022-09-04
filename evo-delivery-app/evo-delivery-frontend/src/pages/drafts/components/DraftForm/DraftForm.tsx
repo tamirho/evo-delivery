@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Badge, Box, Button, Tab, Tabs } from '@mui/material';
 
@@ -13,6 +13,7 @@ import { TabPanel } from './tabs/TabPanel';
 import { ConfigTab } from './tabs/ConfigTab';
 import { a11yProps, countErrors, createDefaultDraft, transformToDraft } from './common';
 import { FormStates } from '../../../common';
+import { mapActions, MapContext } from '../../../../features/map/context';
 
 export type DraftFormProps = {
   state: FormStates;
@@ -22,12 +23,21 @@ export type DraftFormProps = {
 
 export const DraftForm = ({ state, onSubmit = (data) => console.log(data), draft }: DraftFormProps) => {
   const defaultDraft = createDefaultDraft();
+  const { dispatch } = useContext(MapContext);
   const methods = useForm({ defaultValues: defaultDraft, mode: 'onBlur' });
 
   const [tabIndex, setTabIndex] = useState(0);
   const [dataTabActiveStep, setDataTabActiveStep] = useState(0);
   const [configTabActiveStep, setConfigTabActiveStep] = useState(0);
-  console.log('errors', methods.formState.errors);
+
+  useEffect(() => {
+    return () => {
+      dispatch({
+        type: mapActions.CLEAR_STATE,
+        payload: {},
+      });
+    };
+  }, []);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabIndex(newValue);
