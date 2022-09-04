@@ -20,8 +20,6 @@ export const DriverForm = ({ state, onSubmit = (data) => console.log(data), driv
     formState: { errors },
   } = useForm({ defaultValues: driver || ({} as Driver) });
 
-  const navigateToState = useNavigateToEntityViewState();
-
   return (
     <Stack component='form' onSubmit={handleSubmit(onSubmit)} spacing={3} style={{ width: '100%', margin: 20 }}>
       {state !== ENTITY_VIEW_STATES.create ? (

@@ -49,7 +49,6 @@ export const DraftForm = ({ state, onSubmit = (data) => console.log(data), draft
   };
 
   const errorCount = countErrors(methods.formState.errors);
-  console.log(methods.formState.errors);
 
   return (
     <FormProvider {...methods}>
