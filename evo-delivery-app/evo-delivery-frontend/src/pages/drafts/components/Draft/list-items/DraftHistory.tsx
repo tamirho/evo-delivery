@@ -5,6 +5,7 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
+  CircularProgress,
 } from '@mui/material';
 
 import RouteIcon from '@mui/icons-material/Route';
@@ -35,9 +36,7 @@ export const DraftHistory = ({ items, isLoading, isError }: DraftHistoryProps) =
                 navigateToResult(result._id as string);
               }}
             >
-              <ListItemIcon>
-                <RouteIcon />
-              </ListItemIcon>
+              <ListItemIcon>{result.isDone === false ? <CircularProgress size={20} /> : <RouteIcon />}</ListItemIcon>
               <ListItemText
                 primary={`ID: ${result._id}`}
                 secondary={
