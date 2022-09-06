@@ -30,7 +30,7 @@ import { fetchEntity } from '../../../../api/entities/fetch-entity';
 import { useStopRun } from '../../hooks/use-stop-run';
 
 export const Result = () => {
-  const [result, setResult] = useState<EvaluateResult>({});
+  const [result, setResult] = useState<EvaluateResult>();
   const { dispatch } = useContext(MapContext);
   const [openCollapseItemKey, setOpenCollapseItemKey] = useState(null);
   const resultId = useEntityId();
@@ -62,7 +62,7 @@ export const Result = () => {
         },
       });
 
-      if (result.isDone === true) {
+      if (result.isDone === true || result.eaError === true) {
         killPoll();
       }
     }
@@ -125,7 +125,7 @@ export const Result = () => {
       <EntityList
         key={'result-entity-list'}
         isLoading={!result}
-        isError={false}
+        isError={result?.eaError!}
         items={result?.routes || []}
         renderItem={(route: DriverRoute, index: any) => (
           <DriverRouteListItem
