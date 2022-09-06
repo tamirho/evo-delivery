@@ -10,7 +10,6 @@ class CrossoverTypes(Enum):
     SinglePoint = SINGLE_POINT
     TwoPoints = TWO_POINTS
     Uniform = UNIFORM
-    PartialMatched = PARTIAL_MATCHED
     Blend = BLEND
 
 
