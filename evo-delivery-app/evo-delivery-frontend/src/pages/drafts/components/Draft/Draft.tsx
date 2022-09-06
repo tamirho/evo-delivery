@@ -7,6 +7,8 @@ import InventoryIcon from '@mui/icons-material/Inventory';
 import SettingsIcon from '@mui/icons-material/Settings';
 import RocketLaunch from '@mui/icons-material/RocketLaunch';
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
+import CopyAllIcon from '@mui/icons-material/CopyAll';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import { mapActions, MapContext } from '../../../../features/map/context';
 import { CollapsibleListItem } from '../../../../features/entity-list/CollapsibleListItem';
@@ -15,17 +17,22 @@ import { useEntityId } from '../../../../hooks/router/use-entity-id';
 import { useNavigateToRunId } from '../../../../hooks/router/use-navigate-to-runid';
 import { useEaRunDraft } from '../../../../hooks/ea/use-ea-run-draft';
 import { useDraftRuns } from '../../hooks/use-draft-runs';
+import { useDeleteEntity } from '../../../../hooks/entities/use-delete-entity';
+import { useNavigateToEntityViewState } from '../../../../hooks/router/use-navigate-to-view-state';
 
 import { DepotItems } from './list-items/DepotItems';
 import { OrderItems } from './list-items/OrderItems';
 import { DriverItems } from './list-items/DriverItems';
 import { ShowDraftConfig } from './list-items/ShowDraftConfig';
 import { DraftHistory } from './list-items/DraftHistory';
+import { ENTITY_VIEW_STATES } from '../../../common';
 
 export const Draft = () => {
-  const { dispatch, state } = useContext(MapContext);
+  const { dispatch } = useContext(MapContext);
   const draftId = useEntityId();
 
+  const navigateToViewState = useNavigateToEntityViewState();
+  const deleteDraft = useDeleteEntity();
   const runDraft = useEaRunDraft();
   const goToRunId = useNavigateToRunId();
 
@@ -35,7 +42,7 @@ export const Draft = () => {
     isLoading: isLoadingEntity,
     isError: isErrorEntity,
   } = useGetEntity(draftId!);
-  
+
   const {
     data: draftRuns,
     isFetching: isFetchingRuns,
@@ -153,6 +160,24 @@ export const Draft = () => {
       </List>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginRight: '20px' }}>
         <Box sx={{ position: 'absolute', bottom: '20px' }}>
+          <Button
+            variant='outlined'
+            color='error'
+            style={{ borderRadius: 50, marginRight: 10 }}
+            startIcon={<DeleteIcon />}
+            onClick={() => draftId && deleteDraft(draftId)}
+          >
+            Delete
+          </Button>
+          <Button
+            variant='outlined'
+            color='primary'
+            style={{ borderRadius: 50, marginRight: 10}}
+            startIcon={<CopyAllIcon />}
+            onClick={() => navigateToViewState(ENTITY_VIEW_STATES.clone)}
+          >
+            Clone
+          </Button>
           <Button
             type='submit'
             variant='contained'

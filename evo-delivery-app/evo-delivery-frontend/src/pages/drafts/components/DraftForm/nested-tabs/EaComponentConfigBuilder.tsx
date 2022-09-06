@@ -21,7 +21,7 @@ export const EaComponentConfigBuilder = ({
   componentDetails,
   disabled,
 }: EaComponentConfigBuilderProps) => {
-  const { register, control, watch, clearErrors, formState } = useFormContext();
+  const { register, control, watch, clearErrors, formState, resetField } = useFormContext();
   const { errors }: { errors: any } = formState;
   const watchComponentName = watch(`config.${componentType}.name`);
   return (
@@ -79,6 +79,8 @@ export const EaComponentConfigBuilder = ({
             )}
             onChange={(event, value) => {
               clearErrors(`config.${componentType}`);
+              resetField(`config.${componentType}.args`);
+              // resetField(`config.${componentType}.args`, {defaultValue: {}});
               return field.onChange(value?.name);
             }}
             id={`select-component-${componentType}-config-autocomplete`}

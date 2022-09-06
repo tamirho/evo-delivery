@@ -25,6 +25,7 @@ export const ENTITY_VIEW_STATES = {
   create: 'create',
   edit: 'edit',
   delete: 'delete',
+  clone: 'clone',
 } as const;
 
 export const PANEL_STATES = {
