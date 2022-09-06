@@ -17,7 +17,7 @@ def generations_stop_cond_strategy(cur_generations, generations_bound):
 time = EaFunctionModel(function=time_stop_cond_strategy,
                        description="Upon reaching x time, the algorithm will be stopped and the last generation will be returned",
                        kwargs=[KwargModel(name=TIME_BOUND,
-                                          description="The maximum time that the algorithm will run (in hours)",
+                                          description="The maximum time that the algorithm will run (in seconds)",
                                           type="int")])
 
 fitness = EaFunctionModel(function=fitness_stop_cond_strategy,
