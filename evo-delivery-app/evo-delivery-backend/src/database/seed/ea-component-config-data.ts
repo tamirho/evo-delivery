@@ -5,7 +5,6 @@ export const createCrossover = () => {
   const fakeCrossover: (EaComponentConfig | null)[] = [
     { name: 'single_point', args: {} },
     { name: 'two_points', args: {} },
-    { name: 'partial_matched', args: {} },
     {
       name: 'uniform',
       args: { indpb: faker.datatype.number({ min: 0.1, max: 0.9, precision: 0.05 }) },

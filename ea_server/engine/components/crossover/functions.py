@@ -23,7 +23,3 @@ blend = EaFunctionModel(function=tools.cxBlend,
                                            type="float",
                                            description="Extent of the interval in which the new values can be drawn for each attribute on both side of the parents' attributes.")]
                         )
-
-partial_matched = EaFunctionModel(function=tools.cxPartialyMatched,
-                                  description="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwia0pDagbz3AhWUs6QKHSlJC0MQFnoECAsQAQ&url=https%3A%2F%2Fwww.researchgate.net%2Ffigure%2FExample-of-partially-mapped-crossover_fig1_312336654&usg=AOvVaw3zRwPS45TDz1xUXAb0i96l",
-                                  kwargs=[])
