@@ -6,14 +6,14 @@ from ea_server.model.ea_function_model import EaFunctionModel, KwargModel
 from ea_server.model.ea_request_model import EaData
 
 
-def __bounded_distance_strategy(data: EaData, individual, bound):
+def __bounded_distance_strategy(data: EaData, individual, distance):
     drivers_total_distance, drivers_total_weight = \
         __calculate_routes_distance_and_weight_from_individual(data, individual)
 
     infeas_num_weight, over_weight = __weight_penalty(data.drivers, drivers_total_weight)
     infeas_num_distance, over_distance = __distance_penalty(data.drivers, drivers_total_distance)
 
-    return (bound - sum(drivers_total_distance)) / bound + \
+    return (distance - sum(drivers_total_distance)) / distance + \
            (over_weight * infeas_num_weight + over_distance * infeas_num_distance)
 
 

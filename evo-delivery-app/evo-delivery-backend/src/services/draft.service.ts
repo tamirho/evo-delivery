@@ -36,7 +36,7 @@ export const prepareDraft = async (partialDraft: Partial<Draft>) => {
 };
 
 export const createDraft = async (partialDraft: Partial<Draft>) => {
-  const draft = prepareDraft(partialDraft);
+  const draft = await prepareDraft(partialDraft);
   return DraftModel.create(draft);
 };
 
