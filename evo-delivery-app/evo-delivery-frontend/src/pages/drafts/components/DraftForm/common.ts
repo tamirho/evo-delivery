@@ -1,18 +1,28 @@
-import { EaEvaluateConfig } from '@backend/types';
+import { EnrichedDraft, EaEvaluateConfig, EaComponentConfig } from '@backend/types';
 import { DraftFormValues } from './types';
 
+const adaptEaComponent = (componentConfig: EaComponentConfig | undefined) => ({
+  enabled: !!componentConfig,
+  name: '',
+  args: {},
+  ...componentConfig,
+});
 
-export const createDefaultDraft = (): DraftFormValues => ({
-  data: { drivers: [], orders: [], depot: null },
+export const createDefaultDraft = (draft: EnrichedDraft | undefined): DraftFormValues => ({
+  data: {
+    drivers: draft?.data?.drivers || [],
+    orders: draft?.data?.orders || [],
+    depot: draft?.data?.depot || null,
+  },
   config: {
-    popSize: 100,
-    crossoverProb: 0.5,
-    mutateProb: 0.5,
-    crossover: { enabled: false, name: '', args: {} },
-    fitness: { enabled: false, name: '', args: {} },
-    selection: { enabled: false, name: '', args: {} },
-    mutate: { enabled: false, name: '', args: {} },
-    stopCondition: { enabled: false, name: '', args: {} },
+    popSize: draft?.config?.popSize || 100,
+    crossoverProb: draft?.config?.crossoverProb || 0.5,
+    mutateProb: draft?.config?.mutateProb || 0.5,
+    crossover: adaptEaComponent(draft?.config?.crossover),
+    fitness: adaptEaComponent(draft?.config?.fitness),
+    selection: adaptEaComponent(draft?.config?.selection),
+    mutate: adaptEaComponent(draft?.config?.mutate),
+    stopCondition: adaptEaComponent(draft?.config?.stopCondition),
   },
 });
 
@@ -40,7 +50,7 @@ export const transformToDraft = (formData: any) => ({
   data: {
     drivers: toIdsList(formData.data.drivers),
     orders: toIdsList(formData.data.orders),
-    depot: formData.data.depot?._id || null ,
+    depot: formData.data.depot?._id || null,
   },
   config: removeEmptyComponents(formData.config),
 });

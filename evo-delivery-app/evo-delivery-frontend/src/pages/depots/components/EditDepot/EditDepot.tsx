@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack';
 import { useGetEntity } from '../../../../hooks/entities/use-get-entity';
 import { useUpdateEntity } from '../../../../hooks/entities/use-update-entity';
 import { useEntityId } from '../../../../hooks/router/use-entity-id';
-import { useNavigateToEntityViewState } from '../../../../hooks/router/use-navigate-to-edit';
+import { useNavigateToEntityViewState } from '../../../../hooks/router/use-navigate-to-view-state';
 import { ENTITY_VIEW_STATES } from '../../../common';
 import { DepotForm } from '../DepotForm/DepotForm';
 

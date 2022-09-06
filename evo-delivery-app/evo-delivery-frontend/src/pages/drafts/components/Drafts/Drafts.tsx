@@ -9,8 +9,11 @@ import {
   IconButton,
   Tooltip,
 } from '@mui/material';
+
 import DescriptionIcon from '@mui/icons-material/Description';
 import RocketLaunch from '@mui/icons-material/RocketLaunch';
+import CopyAllIcon from '@mui/icons-material/CopyAll';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import { Draft } from '@backend/types/draft.type';
 import { EntityList } from '../../../../features/entity-list/EntityList';
@@ -18,7 +21,10 @@ import { useNavigateToChild } from '../../../../hooks/router/use-navigate-to-chi
 import { useGetEntities } from '../../../../hooks/entities/use-get-entities';
 import { useEaRunDraft } from '../../../../hooks/ea/use-ea-run-draft';
 import { useNavigateToRunId } from '../../../../hooks/router/use-navigate-to-runid';
+import { useDeleteEntity } from '../../../../hooks/entities/use-delete-entity';
+import { useNavigateToEntityViewState } from '../../../../hooks/router/use-navigate-to-view-state';
 import { convertObjToNiceText } from '../common';
+import { ENTITY_VIEW_STATES } from '../../../common';
 import { EaComponentConfig } from '@backend/types';
 import { capitalize, toHumanReadableStr } from '../../../../utils/string.utils';
 
@@ -28,6 +34,8 @@ export const Drafts = () => {
   const goToDraft = useNavigateToChild();
   const runDraft = useEaRunDraft();
   const goToRunId = useNavigateToRunId();
+  const deleteDraft = useDeleteEntity();
+  const navigateToViewState = useNavigateToEntityViewState();
 
   const runDraftHandle = async (id: string) => {
     const runResponse = await runDraft(id);
@@ -57,19 +65,47 @@ export const Drafts = () => {
               disablePadding
               alignItems='center'
               secondaryAction={
-                <Tooltip title='Run'>
-                  <IconButton
-                    edge='end'
-                    aria-label='comments'
-                    size='small'
-                    onClick={(e) => {
-                      runDraftHandle(draft._id);
-                      e.stopPropagation();
-                    }}
-                  >
-                    <RocketLaunch fontSize='inherit' />
-                  </IconButton>
-                </Tooltip>
+                <>
+                  <Tooltip title='Delete'>
+                    <IconButton
+                      edge='end'
+                      aria-label='comments'
+                      size='small'
+                      onClick={(e) => {
+                        deleteDraft(draft._id);
+                        e.stopPropagation();
+                      }}
+                    >
+                      <DeleteIcon fontSize='inherit' />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title='Clone'>
+                    <IconButton
+                      edge='end'
+                      aria-label='comments'
+                      size='small'
+                      onClick={(e) => {
+                        navigateToViewState(ENTITY_VIEW_STATES.clone, draft._id);
+                        e.stopPropagation();
+                      }}
+                    >
+                      <CopyAllIcon fontSize='inherit' />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title='Run'>
+                    <IconButton
+                      edge='end'
+                      aria-label='comments'
+                      size='small'
+                      onClick={(e) => {
+                        runDraftHandle(draft._id);
+                        e.stopPropagation();
+                      }}
+                    >
+                      <RocketLaunch fontSize='inherit' />
+                    </IconButton>
+                  </Tooltip>
+                </>
               }
             >
               <ListItemButton onClick={() => goToDraft(draft._id)}>

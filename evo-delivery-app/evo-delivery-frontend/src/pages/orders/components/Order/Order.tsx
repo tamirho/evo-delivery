@@ -9,7 +9,7 @@ import { useNavigateToParent } from "../../../../hooks/router/use-navigate-to-pa
 import { useGetEntity } from "../../../../hooks/entities/use-get-entity";
 import { ENTITY_VIEW_STATES } from "../../../common";
 import { OrderForm } from "../OrderForm/OrderForm";
-import { useNavigateToEntityViewState } from "../../../../hooks/router/use-navigate-to-edit";
+import { useNavigateToEntityViewState } from "../../../../hooks/router/use-navigate-to-view-state";
 
 export const Order = () => {
   const { dispatch } = useContext(MapContext);
