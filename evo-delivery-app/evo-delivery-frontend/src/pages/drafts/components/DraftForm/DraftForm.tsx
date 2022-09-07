@@ -44,9 +44,8 @@ export const DraftForm = ({ state, onSubmit = (data) => console.log(data), draft
   };
 
   const transformAndSubmit = (data: any) => {
-    // const t = transformToDraft(data);
-    console.log(data)
-    // onSubmit(t);
+    const t = transformToDraft(data);
+    onSubmit(t);
   };
 
   const errorCount = countErrors(methods.formState.errors);
