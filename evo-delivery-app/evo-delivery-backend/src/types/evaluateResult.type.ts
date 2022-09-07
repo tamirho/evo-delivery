@@ -17,6 +17,7 @@ export type EvaluateResult = {
   draftId?: string;
   isDone?: boolean;
   eaResult?: EaEvaluateResponse;
+  eaError: boolean;
   depot?: Depot;
   routes?: DriverRoute[];
   createdAt?: string;

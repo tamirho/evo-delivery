@@ -18,16 +18,25 @@ export const getById = async (id: string) => {
 
   const [drivers, orders, depot] = await Promise.all([driversP, ordersP, depotP]);
 
-  const enrichedResult = await prepareEvaluateResult(draft, drivers, orders, depot, evaluateResult.eaResult!);
-
-  if (evaluateResult.isDone) {
-    await evaluateResultsService.updateResultRoutes(
-      id,
-      enrichedResult.routes,
+  if (evaluateResult.routes!.length == 0 && !evaluateResult.eaError) {
+    const enrichedResult = await prepareEvaluateResult(
+      draft,
+      drivers,
+      orders,
+      depot,
       evaluateResult.eaResult!
     );
+
+    if (evaluateResult.isDone) {
+      await evaluateResultsService.updateResultRoutes(
+        id,
+        enrichedResult.routes,
+        evaluateResult.eaResult!
+      );
+    }
+    return { ...enrichedResult, isDone: evaluateResult.isDone };
   }
-  return { ...enrichedResult, isDone: evaluateResult.isDone };
+  return evaluateResult;
 };
 
 export const getByIds = async (ids: string[]) => {
