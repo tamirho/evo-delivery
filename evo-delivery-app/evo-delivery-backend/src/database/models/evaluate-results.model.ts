@@ -1,5 +1,5 @@
 import mongoose, {Model, Schema} from "mongoose";
-import {EvaluateResult, DriverRoute, EaResult, EaEvaluateResponse} from "../../types";
+import {EvaluateResult, DriverRoute, EaEvaluateResponse, EaResultInfo} from "../../types";
 import {DepotSchema} from "./depot.model";
 import {OrderSchema} from "./order.model";
 import {DriverSchema} from "./driver.model";
@@ -51,6 +51,24 @@ const EaResultSchema = new Schema<EaEvaluateResponse>(
   }
 );
 
+const EaInfoSchema = new Schema<EaResultInfo>(
+  {
+    generation:{
+      type:Number
+    },
+    fitness:{
+      type:Number
+    },
+    time:{
+      type:Number
+    }
+  },
+  {
+    _id: false,
+    timestamps: true,
+  }
+);
+
 const EvaluateResultSchema = new Schema<EvaluateResult, EvaluateResultsModel>(
   {
     draftId: {
@@ -60,6 +78,9 @@ const EvaluateResultSchema = new Schema<EvaluateResult, EvaluateResultsModel>(
     isDone: {
       type: Boolean,
       default: false,
+    },
+    eaInfo:{
+      type: EaInfoSchema
     },
     eaError:{
       type:Boolean,

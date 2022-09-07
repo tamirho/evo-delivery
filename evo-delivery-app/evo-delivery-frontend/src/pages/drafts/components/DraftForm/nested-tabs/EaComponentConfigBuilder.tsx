@@ -79,8 +79,7 @@ export const EaComponentConfigBuilder = ({
             )}
             onChange={(event, value) => {
               clearErrors(`config.${componentType}`);
-              resetField(`config.${componentType}.args`);
-              // resetField(`config.${componentType}.args`, {defaultValue: {}});
+              resetField(`config.${componentType}.args`, {defaultValue: {}});
               return field.onChange(value?.name);
             }}
             id={`select-component-${componentType}-config-autocomplete`}

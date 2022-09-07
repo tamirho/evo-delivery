@@ -17,6 +17,7 @@ export type EvaluateResult = {
   draftId?: string;
   isDone?: boolean;
   eaResult?: EaEvaluateResponse;
+  eaInfo?: EaResultInfo;
   eaError: boolean;
   depot?: Depot;
   routes?: DriverRoute[];
@@ -24,10 +25,10 @@ export type EvaluateResult = {
   updatedAt?: string;
 };
 
-export type EaResult = {
-  _id?: string;
-  EaResult: {}
+export type EaResultInfo = {
+  generation: number;
+  fitness: number;
+  time: number;
   createdAt?: string;
   updatedAt?: string;
 };
-

@@ -34,7 +34,7 @@ export const getById = async (id: string) => {
         evaluateResult.eaResult!
       );
     }
-    return { ...enrichedResult, isDone: evaluateResult.isDone };
+    return { ...evaluateResult, ...enrichedResult, isDone: evaluateResult.isDone };
   }
   return evaluateResult;
 };
