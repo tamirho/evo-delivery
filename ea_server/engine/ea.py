@@ -210,6 +210,7 @@ class EA:
         except Exception as e:
             self.mongo.db.EvaluateResults.update_one({'_id': ObjectId(self.run_id)},
                                                      {'$set': {'eaError': True, 'isDone': True}})
+            raise e
 
     def _evaluation(self, individual):
         fitness = self.fitness_func(
