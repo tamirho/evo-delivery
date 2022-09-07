@@ -4,7 +4,7 @@ import { ENTITY_VIEW_STATES } from "../../../common";
 import { useEntityId } from "../../../../hooks/router/use-entity-id";
 import { useUpdateEntity } from "../../../../hooks/entities/use-update-entity";
 import { useGetEntity } from "../../../../hooks/entities/use-get-entity";
-import { useNavigateToEntityViewState } from "../../../../hooks/router/use-navigate-to-edit";
+import { useNavigateToEntityViewState } from "../../../../hooks/router/use-navigate-to-view-state";
 import Alert from "@mui/material/Alert";
 import { AlertTitle, Skeleton, Stack } from "@mui/material";
 import { MapContext, mapActions } from "../../../../features/map/context";

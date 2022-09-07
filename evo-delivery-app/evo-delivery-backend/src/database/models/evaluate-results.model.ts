@@ -61,6 +61,10 @@ const EvaluateResultSchema = new Schema<EvaluateResult, EvaluateResultsModel>(
       type: Boolean,
       default: false,
     },
+    eaError:{
+      type:Boolean,
+      default:false,
+    },
     eaResult: {
       type: Object,
     },

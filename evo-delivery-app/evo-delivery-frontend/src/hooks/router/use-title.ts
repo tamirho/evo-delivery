@@ -19,6 +19,8 @@ export const useTitle = () => {
       return `Edit ${capitalize(toSingular(entityName))}`;
     case ENTITY_VIEW_STATES.delete:
       return `Delete ${capitalize(toSingular(entityName))}`;
+    case ENTITY_VIEW_STATES.clone:
+      return `Clone ${capitalize(toSingular(entityName))}`;
     default:
       return '';
   }

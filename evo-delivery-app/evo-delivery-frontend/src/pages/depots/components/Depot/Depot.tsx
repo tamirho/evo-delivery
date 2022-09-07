@@ -7,7 +7,7 @@ import { useContext, useEffect } from 'react';
 import { mapActions, MapContext } from '../../../../features/map/context';
 import { useGetEntity } from '../../../../hooks/entities/use-get-entity';
 import { useEntityId } from '../../../../hooks/router/use-entity-id';
-import { useNavigateToEntityViewState } from '../../../../hooks/router/use-navigate-to-edit';
+import { useNavigateToEntityViewState } from '../../../../hooks/router/use-navigate-to-view-state';
 import { ENTITY_VIEW_STATES } from '../../../common';
 import { DepotForm } from '../DepotForm/DepotForm';
 

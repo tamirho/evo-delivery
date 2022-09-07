@@ -5,7 +5,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import { Driver } from '@backend/types/driver.type';
 import { useForm } from 'react-hook-form';
 import { ENTITY_VIEW_STATES, FormStates } from '../../../common';
-import { useNavigateToEntityViewState } from '../../../../hooks/router/use-navigate-to-edit';
+import { useNavigateToEntityViewState } from '../../../../hooks/router/use-navigate-to-view-state';
 
 export type DriverFormProps = {
   state: FormStates;

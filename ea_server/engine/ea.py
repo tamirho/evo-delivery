@@ -199,11 +199,15 @@ class EA:
         return best,logbook
 
     def evaluate(self):
-        self.prepare()
-        self.result = self.evoEvaluate(self.__pop, self.__toolbox,
+        try:
+            self.prepare()
+            self.result = self.evoEvaluate(self.__pop, self.__toolbox,
                                        cxpb=self.cxpb, mutpb=self.mutpd,
                                        verbose=False)
-        return self.result
+            return self.result
+        except Exception as e:
+            self.mongo.db.EvaluateResults.update_one({'_id':ObjectId(self.run_id)},{'$set':{'eaError':True}})
+
 
     def _evaluation(self, individual):
         fitness = self.fitness_func(
