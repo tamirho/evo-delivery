@@ -28,6 +28,7 @@ import ZoomInMapIcon from '@mui/icons-material/ZoomInMap';
 import WarehouseIcon from '@mui/icons-material/Warehouse';
 import { fetchEntity } from '../../../../api/entities/fetch-entity';
 import { useStopRun } from '../../hooks/use-stop-run';
+import { ResultEaInfo } from './ResultEaInfo';
 
 export const Result = () => {
   const [result, setResult] = useState<EvaluateResult>();
@@ -122,6 +123,9 @@ export const Result = () => {
 
   return (
     <Box sx={{ width: '100vw', height: '100vh' }}>
+      {result?.eaInfo ? (
+        <ResultEaInfo info={result.eaInfo} isDone={!!result.isDone} eaError={!!result.eaError} />
+      ) : null}
       <EntityList
         key={'result-entity-list'}
         isLoading={!result}

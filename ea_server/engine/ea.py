@@ -135,7 +135,7 @@ class EA:
 
         logbook = tools.Logbook()
         logbook.header = ['gen', 'nevals', 'best'] + \
-                         (stats.fields if stats else [])
+            (stats.fields if stats else [])
 
         # Evaluate the individuals with an invalid fitness
         invalid_ind = [ind for ind in population if not ind.fitness.valid]
@@ -190,16 +190,16 @@ class EA:
             if self.run_id != "0":
                 result = parse_result(best, self.data)
                 self.mongo.db.EvaluateResults.update_one(
-                    {'_id':ObjectId(self.run_id)},{'$set':{'eaResult':result, 'eaInfo':
-                    {'generation':generation, 'fitness':min_fitness, 'time':time.time()-start_time}}})
+                    {'_id': ObjectId(self.run_id)}, {'$set': {'eaResult': result, 'eaInfo':
+                                                              {'generation': generation, 'fitness': min_fitness, 'time': time.time()-start_time}}})
             generation += 1
 
         best = self.get_best_individual(population)
         if self.run_id != "0":
             result = parse_result(best, self.data)
-            self.mongo.db.EvaluateResults.update_one({'_id':ObjectId(self.run_id)},{'$set':{'eaResult':result,
-            'isDone': True,
-            'eaInfo':{'generation':generation, 'fitness':min_fitness, 'time':time.time()-start_time}}})
+            self.mongo.db.EvaluateResults.update_one({'_id': ObjectId(self.run_id)}, {'$set': {'eaResult': result,
+                                                                                               'isDone': True,
+                                                                                               'eaInfo': {'generation': generation, 'fitness': min_fitness, 'time': time.time()-start_time}}})
 
         return best, logbook
 

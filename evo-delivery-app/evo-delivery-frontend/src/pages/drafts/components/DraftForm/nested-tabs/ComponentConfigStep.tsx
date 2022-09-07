@@ -43,7 +43,7 @@ export const ComponentConfigStep = ({ componentType }: ComponentConfigStepProps)
               onChange={(_, value) => {
                 if (!value) {
                   clearErrors(`config.${componentType}`);
-                  resetField(`config.${componentType}`);
+                  resetField(`config.${componentType}`, { defaultValue: { enabled: false, name: '', args: {} } });
                 }
                 props.field.onChange(value);
               }}
