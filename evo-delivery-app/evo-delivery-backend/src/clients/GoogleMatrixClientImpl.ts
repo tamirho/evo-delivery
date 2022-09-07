@@ -89,18 +89,7 @@ export class GoogleMatrixClientImpl implements GoogleMatrixClient {
               if (matrix.data.status != "OK") throw Error;
             });
 
-            //console.log(a);
             const mergedDistanceMatrixRow = distnaceMatrixArr.flatMap((a) => a.data.rows);
-
-            // const response: DistanceMatrixResponse = await this.matrixClient.distancematrix({
-            //         params: {
-            //             origins,
-            //             destinations,
-            //             key: process.env.GOOGLE_MAPS_API_KEY as string,
-            //         },
-            //         timeout: 1000, // milliseconds
-            //     }
-            // );
 
             return this.convertToDistanceMatrix(
               mergedDistanceMatrixRow,

@@ -2,7 +2,8 @@ import random
 import threading
 import time
 from deap import algorithms, base, creator, tools
-from ..api.utils.constants import BOUND, DEFAULT_FITNESS_BOUND, DEFAULT_GENERATIONS_BOUND, DEFAULT_TIME_BOUND, FITNESS, GENERATIONS, TIME
+from ..api.utils.constants import BOUND, DEFAULT_FITNESS_BOUND, DEFAULT_GENERATIONS_BOUND, DEFAULT_TIME_BOUND, FITNESS, \
+    GENERATIONS, TIME
 from ea_server.model.ea_request_model import EaData
 from ea_server.engine.components.crossover.cx import Crossover
 from ea_server.engine.components.fitness.fit import Fitness
@@ -23,7 +24,7 @@ class EA:
     def get_best_individual(result, top=1):
         return tools.selBest(result, top)[0]
 
-    def __init__(self, data: EaData, conf: EaConfigModel, run_id:str) -> None:
+    def __init__(self, data: EaData, conf: EaConfigModel, run_id: str) -> None:
         self.running = True
         self.t = threading.Thread(target=self.evaluate)
         self.run_id = run_id
@@ -134,7 +135,7 @@ class EA:
 
         logbook = tools.Logbook()
         logbook.header = ['gen', 'nevals', 'best'] + \
-            (stats.fields if stats else [])
+                         (stats.fields if stats else [])
 
         # Evaluate the individuals with an invalid fitness
         invalid_ind = [ind for ind in population if not ind.fitness.valid]
@@ -186,29 +187,30 @@ class EA:
 
             cur_fitness = invalid_ind[0].fitness.values[0]
             best = self.get_best_individual(population)
-            if self.run_id!="0":
+            if self.run_id != "0":
                 result = parse_result(best, self.data)
-                self.mongo.db.EvaluateResults.update_one({'_id':ObjectId(self.run_id)},{'$set':{'eaResult':result}})
+                self.mongo.db.EvaluateResults.update_one({'_id': ObjectId(self.run_id)}, {'$set': {'eaResult': result}})
             generation += 1
 
-        best = self.get_best_individual(population) 
-        if self.run_id!="0":  
+        best = self.get_best_individual(population)
+        if self.run_id != "0":
             result = parse_result(best, self.data)
-            self.mongo.db.EvaluateResults.update_one({'_id':ObjectId(self.run_id)},{'$set':{'eaResult':result, 'isDone': True}})
+            self.mongo.db.EvaluateResults.update_one({'_id': ObjectId(self.run_id)},
+                                                     {'$set': {'eaResult': result, 'isDone': True}})
 
-        return best,logbook
+        return best, logbook
 
     def evaluate(self):
         try:
             self.prepare()
             self.result = self.evoEvaluate(self.__pop, self.__toolbox,
-                                       cxpb=self.cxpb, mutpb=self.mutpd,
-                                       verbose=False)
+                                           cxpb=self.cxpb, mutpb=self.mutpd,
+                                           verbose=False)
             return self.result
         except Exception as e:
             print(e.__str__())
-            self.mongo.db.EvaluateResults.update_one({'_id':ObjectId(self.run_id)},{'$set':{'eaError':True}})
-
+            self.mongo.db.EvaluateResults.update_one({'_id':ObjectId(self.run_id)},
+            										{'$set':{'eaError':True, 'isDone':True}})
 
     def _evaluation(self, individual):
         fitness = self.fitness_func(
