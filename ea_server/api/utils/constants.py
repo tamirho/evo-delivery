@@ -8,7 +8,7 @@ DISTANCE = "distance"
 
 #fitness params
 BOUND = "bound"
-DEFAULT_BOUNDED_DISTANCE = 1000000
+DEFAULT_BOUNDED_DISTANCE = 100000
 
 # ----------------------------------------------
 

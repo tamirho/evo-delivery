@@ -6,7 +6,7 @@ from dacite import MissingValueError
 
 from ea_server.api.utils.constants import DEFAULT_GENERATIONS_BOUND, DEFAULT_TOUR_SIZE, \
     GENERATIONS, GENERATIONS_BOUND, TOUR_SIZE, DEFAULT_INDPB, INDPB, \
-    DEFAULT_BOUNDED_DISTANCE, BOUND, SINGLE_POINT, BOUNDED_DISTANCE, TOURNAMENT, SHUFFLE
+    DEFAULT_BOUNDED_DISTANCE, BOUND, SINGLE_POINT, BOUNDED_DISTANCE, TOURNAMENT, SHUFFLE, DISTANCE
 
 
 @dataclass(frozen=True)
@@ -69,7 +69,7 @@ class EaConfigModel:
     crossover: ComponentConfig = field(
         default_factory=lambda: ComponentConfig(name=SINGLE_POINT, args={}))
     fitness: ComponentConfig = field(
-        default_factory=lambda: ComponentConfig(name=BOUNDED_DISTANCE, args={BOUND: DEFAULT_BOUNDED_DISTANCE}))
+        default_factory=lambda: ComponentConfig(name=BOUNDED_DISTANCE, args={DISTANCE: DEFAULT_BOUNDED_DISTANCE}))
     selection: ComponentConfig = field(
         default_factory=lambda: ComponentConfig(name=TOURNAMENT, args={TOUR_SIZE: DEFAULT_TOUR_SIZE}))
     mutate: ComponentConfig = field(
