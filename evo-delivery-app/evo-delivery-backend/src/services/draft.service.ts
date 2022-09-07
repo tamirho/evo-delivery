@@ -18,9 +18,9 @@ export const getDraftByIds = async (draftIds: string[]) => {
   return DraftModel.getByIds(draftIds);
 };
 
-export const createDraft = async (partialDraft: Partial<Draft>) => {
+export const prepareDraft = async (partialDraft: Partial<Draft>) => {
   const draftData = partialDraft.data as DraftData;
-
+  
   const driversP = driverService.getByIds(draftData.drivers); // validating drivers exist
   const ordersP = orderService.getOrderByIds(draftData.orders);
   const depotP = depotService.getDepotById(draftData.depot);
@@ -32,6 +32,11 @@ export const createDraft = async (partialDraft: Partial<Draft>) => {
   const data = { ...draftData, distances: distanceMatrix } as DraftData;
   const draft = { ...partialDraft, data: data } as Draft;
 
+  return draft;
+};
+
+export const createDraft = async (partialDraft: Partial<Draft>) => {
+  const draft = await prepareDraft(partialDraft);
   return DraftModel.create(draft);
 };
 

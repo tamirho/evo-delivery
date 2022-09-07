@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Badge, Box, Button, Tab, Tabs } from '@mui/material';
 
@@ -7,7 +7,7 @@ import NewspaperIcon from '@mui/icons-material/Newspaper';
 import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
 import ClearIcon from '@mui/icons-material/Clear';
 
-import { Draft } from '@backend/types/';
+import { Draft, EnrichedDraft } from '@backend/types/';
 import { DataTab } from './tabs/DataTab';
 import { TabPanel } from './tabs/TabPanel';
 import { ConfigTab } from './tabs/ConfigTab';
@@ -18,11 +18,11 @@ import { mapActions, MapContext } from '../../../../features/map/context';
 export type DraftFormProps = {
   state: FormStates;
   onSubmit?: (data: any, event?: React.BaseSyntheticEvent) => any | Promise<any>;
-  draft?: Draft;
+  draft?: EnrichedDraft;
 };
 
 export const DraftForm = ({ state, onSubmit = (data) => console.log(data), draft }: DraftFormProps) => {
-  const defaultDraft = createDefaultDraft();
+  const defaultDraft = useMemo(() => createDefaultDraft(draft), [draft]);
   const { dispatch } = useContext(MapContext);
   const methods = useForm({ defaultValues: defaultDraft, mode: 'onBlur' });
 
@@ -44,8 +44,9 @@ export const DraftForm = ({ state, onSubmit = (data) => console.log(data), draft
   };
 
   const transformAndSubmit = (data: any) => {
-    const t = transformToDraft(data);
-    onSubmit(t);
+    // const t = transformToDraft(data);
+    console.log(data)
+    // onSubmit(t);
   };
 
   const errorCount = countErrors(methods.formState.errors);

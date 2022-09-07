@@ -17,7 +17,7 @@ import {
   CreateDriver,
   CreateOrder,
   EditDepot,
-  EditDraft,
+  CloneDraft,
   EditDriver,
   NotFound,
   Result,
@@ -58,7 +58,7 @@ root.render(
             <Route index element={<Drafts />} />
             <Route path={`${ENTITY_VIEW_STATES.create}`} element={<CreateDraft />} />
             <Route path={`:draftId/${ENTITY_VIEW_STATES.view}`} element={<Draft />} />
-            <Route path={`:draftId/${ENTITY_VIEW_STATES.edit}`} element={<EditDraft />} />
+            <Route path={`:draftId/${ENTITY_VIEW_STATES.clone}`} element={<CloneDraft />} />
           </Route>
           <Route path={ENTITIES.results}>
             <Route index element={<Results />} />
