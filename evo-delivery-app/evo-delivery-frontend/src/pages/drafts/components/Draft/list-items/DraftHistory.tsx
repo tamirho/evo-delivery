@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 
 import RouteIcon from '@mui/icons-material/Route';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 import { EvaluateResult } from '@backend/types';
 import { EntityList } from '../../../../../features/entity-list/EntityList';
@@ -36,7 +37,15 @@ export const DraftHistory = ({ items, isLoading, isError }: DraftHistoryProps) =
                 navigateToResult(result._id as string);
               }}
             >
-              <ListItemIcon>{result.isDone === false ? <CircularProgress size={20} /> : <RouteIcon />}</ListItemIcon>
+              <ListItemIcon>
+                {result.eaError ? (
+                  <ErrorOutlineIcon color='error'/>
+                ) : result.isDone === false ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  <RouteIcon />
+                )}
+              </ListItemIcon>
               <ListItemText
                 primary={`ID: ${result._id}`}
                 secondary={

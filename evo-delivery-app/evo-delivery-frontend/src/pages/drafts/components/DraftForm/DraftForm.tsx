@@ -7,7 +7,7 @@ import NewspaperIcon from '@mui/icons-material/Newspaper';
 import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
 import ClearIcon from '@mui/icons-material/Clear';
 
-import { Draft, EnrichedDraft } from '@backend/types/';
+import { EnrichedDraft } from '@backend/types/';
 import { DataTab } from './tabs/DataTab';
 import { TabPanel } from './tabs/TabPanel';
 import { ConfigTab } from './tabs/ConfigTab';
@@ -43,10 +43,7 @@ export const DraftForm = ({ state, onSubmit = (data) => console.log(data), draft
     setTabIndex(newValue);
   };
 
-  const transformAndSubmit = (data: any) => {
-    const t = transformToDraft(data);
-    onSubmit(t);
-  };
+  const transformAndSubmit = (data: any) => onSubmit(transformToDraft(data));
 
   const errorCount = countErrors(methods.formState.errors);
 
