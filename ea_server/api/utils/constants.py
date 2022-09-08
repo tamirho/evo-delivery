@@ -5,10 +5,12 @@
 BOUNDED_DISTANCE = "bounded_distance"
 POWER = "power"
 DISTANCE = "distance"
+MULTIPLY = "multiply"
 
 #fitness params
 BOUND = "bound"
 DEFAULT_BOUNDED_DISTANCE = 100000
+MULTIPLIER = "multiplier"
 
 # ----------------------------------------------
 

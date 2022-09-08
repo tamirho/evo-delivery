@@ -1,7 +1,7 @@
 import math
 from operator import itemgetter
 
-from ea_server.api.utils.constants import DISTANCE, BOUND, POWER, BOUNDED_DISTANCE
+from ea_server.api.utils.constants import DISTANCE, BOUND, POWER, MULTIPLIER
 from ea_server.model.ea_function_model import EaFunctionModel, KwargModel
 from ea_server.model.ea_request_model import EaData
 
@@ -28,6 +28,20 @@ def __power_strategy(data: EaData, individual, power, **kwargs):
 
     return sum(drivers_total_distance) + (
             pow(over_weight, power) + pow(over_distance, power)) * (infeas_num_distance + infeas_num_weight)
+
+
+def __multiply_strategy(data: EaData, individual, multiplier, **kwargs):
+    if multiplier < 0:
+        raise ValueError("multiplier can't be negative value")
+
+    drivers_total_distance, drivers_total_weight = \
+        __calculate_routes_distance_and_weight_from_individual(data, individual)
+
+    infeas_num_weight, over_weight = __weight_penalty(data.drivers, drivers_total_weight)
+    infeas_num_distance, over_distance = __distance_penalty(data.drivers, drivers_total_distance)
+
+    return sum(drivers_total_distance) * (infeas_num_distance + infeas_num_weight) * multiplier + (
+            multiplier * (over_weight + over_distance)) / sum(drivers_total_distance)
 
 
 def __weight_penalty(drivers_data, drivers_total_weight):
@@ -83,12 +97,22 @@ def __calculate_routes_distance_and_weight_from_individual(data: EaData, individ
 bound = EaFunctionModel(function=__bounded_distance_strategy,
                         description="""Choose this fitness strategy when the total travel distance can be estimated""",
                         kwargs=[KwargModel(name=DISTANCE,
-                                           description="The maximum travel distance that all the drivers will do together",
+                                           description="The maximum travel distance that all the drivers will do "
+                                                       "together",
                                            type="int")])
 
-
 power = EaFunctionModel(function=__power_strategy,
-                        description="""Fitness strategy that penalized the invalid solutions based on the input power - the greater the power, the less possibility that the invalid solution will be picked""",
+                        description="""Fitness strategy that penalized the invalid solutions based on the input power 
+                        - the greater the power, the less possibility that the invalid solution will be picked""",
                         kwargs=[KwargModel(name=POWER,
                                            description="The power parameter that will be injected to the formula",
                                            type="int")])
+
+multiply = EaFunctionModel(function=__multiply_strategy,
+                           description="""Fitness strategy that penalized the invalid solutions based on the input 
+                           multiplier - the greater the power, multiplier less possibility that the invalid solution 
+                           will be picked""",
+                           kwargs=[KwargModel(name=MULTIPLIER,
+                                              description="The multiplier parameter that will be injected to the "
+                                                          "formula",
+                                              type="int")])
