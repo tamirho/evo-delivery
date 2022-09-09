@@ -24,7 +24,6 @@ export class GoogleMatrixClientImpl implements GoogleMatrixClient {
 
     async getPolylineRoute(origin: Partial<EaLocation>, dest: Partial<EaLocation>): Promise<string> {
         try {
-            console.info(`Get polyline from ${origin._id} to ${dest._id}`);
             const response = await this.matrixClient.directions({
                 params: {
                     origin: [origin.latitude, origin.longitude],

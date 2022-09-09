@@ -211,7 +211,6 @@ class EA:
                                            verbose=False)
             return self.result
         except Exception as e:
-            print(e.__str__())
             self.mongo.db.EvaluateResults.update_one({'_id':ObjectId(self.run_id)},
             										{'$set':{'eaError':True, 'isDone':True}})
             raise e
