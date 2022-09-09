@@ -51,7 +51,7 @@ export const DriverForm = ({ state, onSubmit = (data) => console.log(data), driv
       <TextField
         style={{ marginLeft: '5%', marginRight: '10%', marginTop: '5%' }}
         id='filled-number'
-        label='Max Capacity'
+        label='Max Capacity (KGs)'
         type='number'
         InputProps={{
           readOnly: state === ENTITY_VIEW_STATES.view,
@@ -64,7 +64,7 @@ export const DriverForm = ({ state, onSubmit = (data) => console.log(data), driv
       <TextField
         style={{ marginLeft: '5%', marginRight: '10%', marginTop: '5%' }}
         id='filled-number'
-        label='Max Distance'
+        label='Max Distance (KMs)'
         type='number'
         InputProps={{
           readOnly: state === ENTITY_VIEW_STATES.view,

@@ -110,7 +110,6 @@ export const Result = () => {
               <>
                 <Typography sx={{ display: 'inline' }} component='span' variant='body2' color='text.secondary'>
                   {`ID: ${result?.depot?._id}`} <br />
-                  {`Is Done: ${result?.isDone}`} <br />
                 </Typography>
               </>
             }

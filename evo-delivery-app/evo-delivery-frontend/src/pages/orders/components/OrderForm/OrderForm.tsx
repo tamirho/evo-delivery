@@ -95,7 +95,7 @@ export const OrderForm = ({ state, onSubmit = (data) => console.log(data), order
 
       <TextField
         id='filled-number'
-        label='Weight'
+        label='Weight (KGs)'
         InputProps={{
           readOnly: state === ENTITY_VIEW_STATES.view,
         }}
@@ -108,7 +108,7 @@ export const OrderForm = ({ state, onSubmit = (data) => console.log(data), order
 
       <TextField
         id='filled-number'
-        label='Shipping Date'
+        label='Shipping Date '
         InputProps={{
           readOnly: state === ENTITY_VIEW_STATES.view,
         }}

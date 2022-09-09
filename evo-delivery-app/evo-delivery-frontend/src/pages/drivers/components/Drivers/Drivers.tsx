@@ -60,9 +60,9 @@ export const Drivers = () => {
                     </Typography>
                     <br />
                     <Typography component='span' variant='caption' color='text.muted'>
-                      {`Capacity: ${driver.maxCapacity}`}
+                      {`Capacity: ${driver.maxCapacity} KGs`}
                       <br />
-                      {`Distance: ${driver.maxDistance}`}
+                      {`Distance: ${driver.maxDistance} KMs`}
                     </Typography>
                   </>
                 }

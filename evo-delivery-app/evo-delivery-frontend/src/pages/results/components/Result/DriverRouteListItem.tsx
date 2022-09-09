@@ -13,6 +13,7 @@ import {DriverRoute} from "../../../../../../evo-delivery-backend/src/types";
 import {useFocusLocation} from "../../../../hooks/map/use-focus-location";
 import ZoomInMapIcon from "@mui/icons-material/ZoomInMap";
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import * as React from "react";
 
 type ResultsListItemProps = {
     route: DriverRoute
@@ -56,29 +57,28 @@ export const DriverRouteListItem = ({
                     setOpenCollapseItemKey(null)
             }}>
                 <ListItemAvatar>
-                    <Avatar sx={{bgcolor: routeColor}}>
-                        <LocalShippingIcon/>
-                    </Avatar>
+                    <Avatar sx={{bgcolor: routeColor}}>{route.driver.name.split(' ').map((word) => word[0])}</Avatar>
                 </ListItemAvatar>
                 <ListItemText
                     primary={`Driver Name: ${route.driver.name}`}
                     secondary={
                         <>
                             <Typography color='text.primary'> {`ID: ${route.driver._id}`} </Typography>
+                            <br/>
 
                             <Typography sx={{display: 'inline'}} component='span' variant='body2'
                                         color='text.secondary'>
-                                {`Driver's maximum travel distance: ${route.driver.maxDistance} kms`}
+                                {`Driver's maximum travel distance: ${route.driver.maxDistance} KMs`}
                             </Typography>
                             <br/>
                             <Typography sx={{display: 'inline'}} component='span' variant='body2' color={
                                 hasTravelDistanceConstraintViolated ? 'error' : 'text.secondary'
-                            }> {`Planned travel distance: ${route.totalDistance.toFixed(2)} kms`}  </Typography>
+                            }> {`Planned travel distance: ${route.totalDistance.toFixed(2)} KMs`}  </Typography>
                             <br/>
-
+                            <br/>
                             <Typography sx={{display: 'inline'}} component='span' variant='body2'
                                         color='text.secondary'>
-                                {`Driver's maximum load: ${route.driver.maxCapacity} kgs`}
+                                {`Driver's maximum load: ${route.driver.maxCapacity} KGs`}
                             </Typography>
                             <br/>
                             <Typography sx={{display: 'inline'}} component='span' variant='body2' color={
