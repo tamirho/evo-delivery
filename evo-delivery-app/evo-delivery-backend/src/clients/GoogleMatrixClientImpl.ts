@@ -6,7 +6,7 @@ import Axios, {AxiosInstance} from 'axios';
 import {DistanceMatrix, DistanceMatrixColumnData, DistanceMatrixRowData, Location as EaLocation} from '../types';
 import {GoogleMatrixClient} from './GoogleMatrixClient';
 
-import {LatLng} from "@googlemaps/google-maps-services-js/dist/common";
+import {DistanceMatrixRow, LatLng} from "@googlemaps/google-maps-services-js/dist/common";
 import {getPolylineRoute} from "../services/locations.service";
 
 const axios: AxiosInstance = Axios.create();
@@ -65,21 +65,36 @@ export class GoogleMatrixClientImpl implements GoogleMatrixClient {
                 [order.latitude, order.longitude] as LatLng);
             const destinations = destinationsLocations.map((order) =>
                 [order.latitude, order.longitude] as LatLng);
+            
+            const distnaceMatrixResponseP = origins.map(async (origin) => {
+              const origins = new Array(origin);
 
-            const response: DistanceMatrixResponse = await this.matrixClient.distancematrix({
-                    params: {
-                        origins,
-                        destinations,
-                        key: process.env.GOOGLE_MAPS_API_KEY as string,
-                    },
-                    timeout: 1000, // milliseconds
-                }
+              const response: DistanceMatrixResponse =
+                await this.matrixClient.distancematrix({
+                  params: {
+                    origins,
+                    destinations,
+                    key: process.env.GOOGLE_MAPS_API_KEY as string,
+                  },
+                  timeout: 1000, // milliseconds
+                });
+
+              return response;
+            });
+
+            const distnaceMatrixArr = await Promise.all(
+              distnaceMatrixResponseP
             );
+            distnaceMatrixArr.forEach((matrix) => {
+              if (matrix.data.status != "OK") throw Error;
+            });
+
+            const mergedDistanceMatrixRow = distnaceMatrixArr.flatMap((a) => a.data.rows);
 
             return this.convertToDistanceMatrix(
-                response.data,
-                originsLocations,
-                destinationsLocations
+              mergedDistanceMatrixRow,
+              originsLocations,
+              destinationsLocations
             );
         } catch (e) {
             console.error('Failed to fetch distance from Google Matrix API');
@@ -88,13 +103,13 @@ export class GoogleMatrixClientImpl implements GoogleMatrixClient {
     }
 
     private convertToDistanceMatrix(
-        response: DistanceMatrixResponseData,
+        rows: DistanceMatrixRow[],
         originsLocations: EaLocation[],
         destinationsLocations: EaLocation[]
     ): DistanceMatrix {
-        if (response.status !== 'OK') throw Error;
+        
 
-        return response.rows.reduce((distanceMatrix, {elements}, i) => {
+        return rows.reduce((distanceMatrix, {elements}, i) => {
             const originId = originsLocations[i]._id;
 
             distanceMatrix[originId] = elements.reduce(

@@ -197,9 +197,9 @@ class EA:
         best = self.get_best_individual(population)
         if self.run_id != "0":
             result = parse_result(best, self.data)
-            self.mongo.db.EvaluateResults.update_one({'_id': ObjectId(self.run_id)}, {'$set': {'eaResult': result,
-                                                                                               'isDone': True,
-                                                                                               'eaInfo': {'generation': generation, 'fitness': min_fitness, 'time': time.time()-start_time}}})
+            self.mongo.db.EvaluateResults.update_one({'_id': ObjectId(self.run_id)}, 
+                                                    {'$set': {'eaResult': result,'isDone': True,
+                                                    'eaInfo': {'generation': generation, 'fitness': min_fitness, 'time': time.time()-start_time}}})
 
         return best, logbook
 
@@ -211,8 +211,9 @@ class EA:
                                            verbose=False)
             return self.result
         except Exception as e:
-            self.mongo.db.EvaluateResults.update_one({'_id': ObjectId(self.run_id)},
-                                                     {'$set': {'eaError': True, 'isDone': True}})
+            print(e.__str__())
+            self.mongo.db.EvaluateResults.update_one({'_id':ObjectId(self.run_id)},
+            										{'$set':{'eaError':True, 'isDone':True}})
             raise e
 
     def _evaluation(self, individual):
