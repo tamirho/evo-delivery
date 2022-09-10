@@ -148,19 +148,19 @@ export const Result = () => {
             justifyContent: 'flex-end',
           }}
         >
-          <Box sx={{ position: 'absolute', bottom: '20px', marginRight: '20px' }}>
+          <Box sx={{ position: '', bottom: '0px', width: '100%' }}>
+            <LinearProgress />
+          </Box>
+          <Box sx={{ position: '', bottom: '20px', width: '45%', marginRight: '0px'}}>
             <Button
-              variant='contained'
-              color='error'
-              style={{ borderRadius: 50 }}
-              startIcon={<StopIcon />}
-              onClick={() => stopRun(resultId!)}
+                variant='contained'
+                color='error'
+                style={{ borderRadius: 50 }}
+                startIcon={<StopIcon />}
+                onClick={() => stopRun(resultId!)}
             >
               Stop EA Run
             </Button>
-          </Box>
-          <Box sx={{ position: 'absolute', bottom: '2px', width: '100%' }}>
-            <LinearProgress />
           </Box>
         </Box>
       </Fade>

@@ -159,7 +159,7 @@ export const Draft = () => {
         ) : null}
       </List>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginRight: '20px' }}>
-        <Box sx={{ position: 'absolute', bottom: '20px' }}>
+        <Box sx={{ position: '', marginBottom: '20px' }}>
           <Button
             variant='outlined'
             color='error'
