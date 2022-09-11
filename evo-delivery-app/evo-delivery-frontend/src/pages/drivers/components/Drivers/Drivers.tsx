@@ -16,6 +16,7 @@ import { useNavigateToChild } from '../../../../hooks/router/use-navigate-to-chi
 import DeleteIcon from '@mui/icons-material/Delete';
 import * as React from 'react';
 import { useDeleteEntity } from '../../../../hooks/entities/use-delete-entity';
+import { DriverAvatar } from '../DriverAvatar/DriverAvatar';
 
 export const Drivers = () => {
   const { data: drivers, isFetching, isLoading, isError } = useGetEntities();
@@ -28,6 +29,11 @@ export const Drivers = () => {
       isLoading={isFetching || isLoading}
       isError={isError}
       items={drivers}
+      withFilter={(obj, text) =>
+        (obj._id as string).toLowerCase().includes(text.toLowerCase()) ||
+        (obj.name as string).toLowerCase().includes(text.toLowerCase())
+      }
+      filterPlaceholder={'Filter drivers by id or name'}
       renderItem={(driver: Driver) => (
         <>
           <ListItem
@@ -49,7 +55,7 @@ export const Drivers = () => {
           >
             <ListItemButton onClick={() => goToDriver(driver._id)}>
               <ListItemAvatar>
-                <Avatar>{driver.name.split(' ').map((word) => word[0])}</Avatar>
+                <DriverAvatar name={driver.name} />
               </ListItemAvatar>
               <ListItemText
                 primary={`ID: ${driver._id}`}

@@ -40,6 +40,12 @@ export const Depots = () => {
       isLoading={isFetching || isLoading}
       isError={isError}
       items={depots}
+      withFilter={(obj, text) =>
+        (obj._id as string).toLowerCase().includes(text.toLowerCase()) ||
+        (obj.name as string).toLowerCase().includes(text.toLowerCase()) ||
+        (obj.address as string).toLowerCase().includes(text.toLowerCase())
+      }
+      filterPlaceholder={'Filter depots by id, name or address'}
       renderItem={(depot: Depot) =>
         depot ? (
           <div key={`div_${depot._id}`}>

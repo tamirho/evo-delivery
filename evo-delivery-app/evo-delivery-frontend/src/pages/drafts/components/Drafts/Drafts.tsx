@@ -57,6 +57,10 @@ export const Drafts = () => {
       isLoading={isFetching || isLoading}
       isError={isError}
       items={drafts}
+      withFilter={(obj, text) =>
+        (JSON.stringify(obj)).toLowerCase().includes(text.toLowerCase())
+      }
+      filterPlaceholder={'Filter drafts by id, key or value'}
       renderItem={(draft: Draft) =>
         draft ? (
           <div key={`div_${draft._id}`}>

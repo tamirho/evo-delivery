@@ -1,4 +1,5 @@
-import { Alert, AlertTitle, Divider, List, ListItem, Skeleton, Stack } from '@mui/material';
+import { Alert, AlertTitle, Box, Divider, List, ListItem, Skeleton, Stack, TextField } from '@mui/material';
+import { useState } from 'react';
 
 type EntityListProps = {
   items: any[];
@@ -7,6 +8,8 @@ type EntityListProps = {
   renderItem: (item: any, index: number) => JSX.Element | null;
   optionalComponent?: any;
   dense?: boolean;
+  withFilter?: (obj: any, text: string) => boolean;
+  filterPlaceholder?: string
 };
 
 export const EntityList = ({
@@ -16,7 +19,11 @@ export const EntityList = ({
   renderItem: itemComponent,
   optionalComponent,
   dense,
+  withFilter,
+  filterPlaceholder,
 }: EntityListProps) => {
+  const [filter, setFilter] = useState('');
+
   if (isError) {
     return (
       <Alert severity='error' style={{ width: '100%', margin: 10 }}>
@@ -44,10 +51,30 @@ export const EntityList = ({
     );
   }
 
+  const filteredItems = withFilter && filter !== '' ? items.filter((item) => withFilter(item, filter)) : items;
+  const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFilter(event.target.value);
+  };
+  console.log(filter);
+
   return (
-    <List dense={!!dense} style={{ width: '100%' }}>
-      {optionalComponent || null}
-      {items.map((item: any, index) => itemComponent(item, index))}
-    </List>
+    <>
+      <List dense={!!dense} style={{ width: '100%' }}>
+        {withFilter ? (
+          <ListItem key='filter-list-item' alignItems='center'>
+            <TextField
+              id='text-filter-list-item'
+              label='Filter'
+              variant='outlined'
+              fullWidth
+              onChange={handleFilterChange}
+              placeholder={filterPlaceholder}
+            />
+          </ListItem>
+        ) : null}
+        {optionalComponent || null}
+        {filteredItems.map((item: any, index) => itemComponent(item, index))}
+      </List>
+    </>
   );
 };
