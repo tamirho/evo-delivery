@@ -31,4 +31,22 @@ export const IsraelCitiesCoordinates: [number, number][] = [
   [32.992, 35.691], // Katzrin
   [33.2079, 35.5702], // Qiryat Shemona
   [31.253, 34.7915], // Be'er Sheva
+  [32.029444, 34.853622], // Or Yehuda
+  [32.0512, 34.5006], // Bnei Brak
+  [32.0417, 34.4836], // Givatayim
+  [32.0243, 34.80632], // Azor
+  [32.02379, 34.75185], // Bat Yam
+  [32.08074, 34.8338], // Bnei Brak
+  [32.07817, 34.84858], // Giv'at Shmuel
+  [32.07225, 34.81253], // Givatayim
+  [32.16627, 34.82536], // Herzliya
+  [32.17409, 34.8028], // Herzliya Pituah
+  [32.01034, 34.77918], // H̱olon
+  [32.05043, 34.75224], // Jaffa
+  [32.18529, 34.82082], // Kefar Shemaryahu
+  [32.02923, 34.85788], // Or Yehuda
+  [32.08227, 34.81065], // Ramat Gan
+  [32.14613, 34.8394], // Ramat HaSharon
+  [32.08088, 34.78057], // Tel Aviv
+  [32.0284, 34.8796], // Yehud-Monosson
 ];
