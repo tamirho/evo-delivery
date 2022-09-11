@@ -42,7 +42,13 @@ export const Orders = () => {
     <EntityList
       isLoading={isFetching || isLoading}
       isError={isError}
-      items={orders}
+      items={orders.sort((a: any, b: any) => new Date(a.shippingDate).getTime() - new Date(b.shippingDate).getTime())}
+      withFilter={(obj, text) =>
+        (obj._id as string).toLowerCase().includes(text.toLowerCase()) ||
+        (obj.address as string).toLowerCase().includes(text.toLowerCase()) ||
+        (obj.shippingDate as string).toLowerCase().includes(text.toLowerCase())
+      }
+      filterPlaceholder={'Filter orders by id, address or date'}
       renderItem={(order: Order) =>
         order ? (
           <div key={`div_${order._id}`}>

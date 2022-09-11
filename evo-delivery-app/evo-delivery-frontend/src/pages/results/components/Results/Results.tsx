@@ -28,6 +28,10 @@ export const Results = () => {
             isLoading={isFetching || isLoading}
             isError={isError}
             items={results as EvaluateResult[]}
+            withFilter={(obj, text) =>
+                (JSON.stringify(obj)).toLowerCase().includes(text.toLowerCase())
+              }
+              filterPlaceholder={'Filter results by id or draft id'}
             renderItem={(result: EvaluateResult) => (
                 <>
                     <ListItem key={result._id} disablePadding alignItems='center' secondaryAction={

@@ -158,37 +158,43 @@ export const Draft = () => {
           </>
         ) : null}
       </List>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginRight: '20px' }}>
-        <Box sx={{ position: '', marginBottom: '20px' }}>
-          <Button
-            variant='outlined'
-            color='error'
-            style={{ borderRadius: 50, marginRight: 10 }}
-            startIcon={<DeleteIcon />}
-            onClick={() => draftId && deleteDraft(draftId)}
-          >
-            Delete
-          </Button>
-          <Button
-            variant='outlined'
-            color='primary'
-            style={{ borderRadius: 50, marginRight: 10}}
-            startIcon={<CopyAllIcon />}
-            onClick={() => navigateToViewState(ENTITY_VIEW_STATES.clone)}
-          >
-            Clone
-          </Button>
-          <Button
-            type='submit'
-            variant='contained'
-            color='info'
-            style={{ borderRadius: 50 }}
-            startIcon={<RocketLaunch />}
-            onClick={handleRunClick}
-          >
-            Run
-          </Button>
-        </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          marginRight: '20px',
+          marginTop: '10px',
+          paddingBottom: '20px',
+        }}
+      >
+        <Button
+          variant='outlined'
+          color='error'
+          style={{ borderRadius: 50, marginRight: 10 }}
+          startIcon={<DeleteIcon />}
+          onClick={() => draftId && deleteDraft(draftId)}
+        >
+          Delete
+        </Button>
+        <Button
+          variant='outlined'
+          color='primary'
+          style={{ borderRadius: 50, marginRight: 10 }}
+          startIcon={<CopyAllIcon />}
+          onClick={() => navigateToViewState(ENTITY_VIEW_STATES.clone)}
+        >
+          Clone
+        </Button>
+        <Button
+          type='submit'
+          variant='contained'
+          color='info'
+          style={{ borderRadius: 50 }}
+          startIcon={<RocketLaunch />}
+          onClick={handleRunClick}
+        >
+          Run
+        </Button>
       </Box>
     </Box>
   );

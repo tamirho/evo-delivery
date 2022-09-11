@@ -1,7 +1,8 @@
-import { Typography, ListItemText, Avatar, Divider, ListItem, ListItemAvatar } from '@mui/material';
+import { Typography, ListItemText, Divider, ListItem, ListItemAvatar } from '@mui/material';
 
 import { Driver } from '@backend/types';
 import { EntityList } from '../../../../../features/entity-list/EntityList';
+import { DriverAvatar } from '../../../../drivers/components/DriverAvatar/DriverAvatar';
 
 export type DriverItemsProps = {
   items: any[];
@@ -22,7 +23,7 @@ export const DriverItems = ({ items, isLoading, isError }: DriverItemsProps) => 
             <ListItem key={driver._id} disablePadding alignItems='center'>
               <ListItem>
                 <ListItemAvatar>
-                  <Avatar>{driver.name.split(' ').map((word) => word[0])}</Avatar>
+                  <DriverAvatar name={driver.name} />
                 </ListItemAvatar>
                 <ListItemText
                   primary={`ID: ${driver._id}`}
