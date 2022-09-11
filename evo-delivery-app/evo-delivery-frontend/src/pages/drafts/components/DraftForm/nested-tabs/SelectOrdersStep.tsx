@@ -60,7 +60,8 @@ export const SelectOrdersStep = () => {
           multiple
           filterSelectedOptions
           disableCloseOnSelect
-          options={orders || []}
+          groupBy={(option) => new Date(option.shippingDate as string).toDateString()}
+          options={(orders || []).sort((a: any, b: any) => new Date(a.shippingDate).getTime() - new Date(b.shippingDate).getTime())}
           value={field.value || []}
           getOptionLabel={(option) => option._id}
           renderOption={(props, option, { selected }) => (
