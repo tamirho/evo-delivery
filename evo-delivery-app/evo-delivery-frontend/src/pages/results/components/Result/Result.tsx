@@ -146,22 +146,20 @@ export const Result = () => {
           sx={{
             display: 'flex',
             justifyContent: 'flex-end',
+            marginRight: '20px',
+            marginTop: '10px',
+            paddingBottom: '20px',
           }}
         >
-          <Box sx={{ position: '', bottom: '0px', width: '100%' }}>
-            <LinearProgress />
-          </Box>
-          <Box sx={{ position: '', bottom: '20px', width: '45%', marginRight: '0px'}}>
-            <Button
-                variant='contained'
-                color='error'
-                style={{ borderRadius: 50 }}
-                startIcon={<StopIcon />}
-                onClick={() => stopRun(resultId!)}
-            >
-              Stop EA Run
-            </Button>
-          </Box>
+          <Button
+            variant='contained'
+            color='error'
+            style={{ borderRadius: 50 }}
+            startIcon={<StopIcon />}
+            onClick={() => stopRun(resultId!)}
+          >
+            Stop EA Run
+          </Button>
         </Box>
       </Fade>
     </Box>
